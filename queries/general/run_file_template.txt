@@ -1,0 +1,106 @@
+import torch
+import torchvision
+import torchvision.transforms as transforms
+import torch.nn as nn
+import torch.optim as optim
+from sklearn.metrics import classification_report
+from torch.utils.data import DataLoader, random_split
+
+# Function for validation loop
+def validate_model(model, dataloader, criterion):
+    model.eval()  # Set the model to evaluation mode
+    total = 0
+    correct = 0
+    running_loss = 0.0
+    all_labels = []
+    all_preds = []
+
+    with torch.no_grad():
+        for data in dataloader:
+            images, labels = data
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            running_loss += loss.item()
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+            all_labels.extend(labels.cpu().numpy())
+            all_preds.extend(predicted.cpu().numpy())
+
+    accuracy = 100 * correct / total
+    loss = running_loss / len(dataloader)
+    report = classification_report(all_labels, all_preds, target_names=classes, output_dict=True)
+    return accuracy, loss, report
+
+# Step 1: Data Loading
+# Transformations for the images
+transform = transforms.Compose(
+    [transforms.ToTensor(),
+     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+# # Load CIFAR10 training and test datasets
+# trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+# trainloader = torch.utils.data.DataLoader(trainset, batch_size=4, shuffle=True, num_workers=2)
+# testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
+# testloader = torch.utils.data.DataLoader(testset, batch_size=4, shuffle=False, num_workers=2)
+
+# Load the full CIFAR10 training dataset
+full_trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+full_testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
+# Define the size for the split
+train_size = int(0.25 * len(full_trainset))
+unused_size = len(full_trainset) - train_size
+# Randomly split the full training dataset into new train and test sets
+train_subset, _ = random_split(full_trainset, [train_size, unused_size])
+# DataLoader for the new train subset
+trainloader = DataLoader(train_subset, batch_size=64, shuffle=True, num_workers=2)
+
+test_size = int(0.3 * len(full_testset))
+unused_size = len(full_testset) - test_size
+# Randomly split the full training dataset into new train and test sets
+test_subset, _ = random_split(full_testset, [test_size, unused_size])
+# DataLoader for the new test subset
+testloader = DataLoader(test_subset, batch_size=64, shuffle=False, num_workers=2)
+
+
+
+classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
+# Step 2: Classifier Model
+
+net = ClsNet()
+
+# Step 3: Training Loop
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(net.parameters(), lr=0.001)
+
+for epoch in range(4):  # loop over the dataset multiple times
+    running_loss = 0.0
+    for i, data in enumerate(trainloader, 0):
+        # get the inputs; data is a list of [inputs, labels]
+        inputs, labels = data
+
+        # zero the parameter gradients
+        optimizer.zero_grad()
+        # forward + backward + optimize
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        # print statistics
+        running_loss += loss.item()
+        if i % 200 == 199:    # print every 2000 mini-batches
+            print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
+            running_loss = 0.0
+
+print('Finished Training')
+accuracy, loss, report = validate_model(net, testloader, criterion)
+mean_f1_score = report['macro avg']['f1-score']
+results = f"{accuracy},{mean_f1_score}"
+
+with open(results_path, 'w') as file:
+    file.write(results)
+    
+print("JOB DONE")

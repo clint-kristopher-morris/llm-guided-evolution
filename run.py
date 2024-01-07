@@ -8,7 +8,7 @@ from deap.tools import HallOfFame
 import pickle
 
 
-def write_bash_script(gpu='TeslaV100S-PCIE-32GB', fname='queries/py/query_instruct.py', max_seq_len=1024, temp=0.2, unique_id='test', out_dir='./', query=None):
+def write_bash_script(gpu='TeslaV100S-PCIE-32GB', fname='queries/py/query_instruct_huggingface.py', max_seq_len=1024, temp=0.2, unique_id='test', out_dir='./', query=None):
     bash_script_content = f"""#!/bin/bash
 #SBATCH --job-name=AIsur_x1
 #SBATCH -t 8-00:00
@@ -37,7 +37,8 @@ def create_bash_file(file_path, query, **kwargs):
 
 def submit_bash(query, file_path, **kwargs):
     create_bash_file(file_path, query, **kwargs)
-    result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+    #result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+    result = subprocess.run(["bash", file_path], capture_output=True, text=True)
 
     if result.returncode == 0:
         print("Script submitted successfully.\nOutput:", result.stdout)
@@ -116,7 +117,7 @@ def create_individual(container, creation_queries_path="queries/general/create_p
     file_path = os.path.join(out_dir, f'{gene_id}.sh')
     
     successful_sub_flag, job_id = submit_bash(query_path, file_path, gpu='TeslaV100S-PCIE-32GB', 
-                                              fname='queries/py/query_instruct.py', max_seq_len=2048, temp=temp,
+                                              fname='queries/py/query_instruct_huggingface.py', max_seq_len=2048, temp=temp,
                                               unique_id=gene_id, out_dir=out_dir)
     # Log data
     GLOBAL_DATA[gene_id] = {'sub_flag':successful_sub_flag, 'job_id':job_id, 
@@ -352,7 +353,7 @@ def customCrossover(ind1, ind2):
         # Create the bash file for the new job
         file_path = os.path.join(out_dir, f'{new_gene_id}.sh')
         successful_sub_flag, job_id = submit_bash(query_path, file_path, gpu='TeslaV100S-PCIE-32GB', 
-                                                  fname='queries/py/query_instruct.py', max_seq_len=2048,
+                                                  fname='queries/py/query_instruct_huggingface.py', max_seq_len=2048,
                                                   unique_id=new_gene_id, out_dir=out_dir)
         
         # Update global data for the new individual
@@ -430,7 +431,7 @@ def customMutation(individual, indpb, mutation_query_path="queries/general/mutat
     # Name of the sh bash file
     file_path = os.path.join(str(GENERATION), f'{new_gene_id}.sh')
     successful_sub_flag, job_id = submit_bash(query_path, file_path, gpu='TeslaV100S-PCIE-32GB', 
-                                              fname='query_instruct.py', max_seq_len=2048,
+                                              fname='query_instruct_huggingface.py', max_seq_len=2048,
                                               unique_id=new_gene_id, out_dir=out_dir)
     
     # Update the individual with the new gene ID

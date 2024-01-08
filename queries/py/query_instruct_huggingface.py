@@ -26,7 +26,7 @@ def set_model_paths(model='7b'):
 
 def extract_code_from_text(text):
     # Regular expression pattern
-    pattern = r"```(.*?)```"
+    pattern = r"```python(.*?)```"
     # Find all occurrences of the pattern
     return re.findall(pattern, text, re.DOTALL)[0]
 
@@ -52,7 +52,7 @@ def main(query:str="query.txt",
     #generator = Llama.build(ckpt_dir=model_paths['ckpt_dir'], tokenizer_path=model_paths['tokenizer_path'], 
     #                        max_seq_len=max_seq_len, max_batch_size=max_batch_size)
 
-    instructions = instructions = [
+    instructions = [
         
             {
                 "role": "user",
@@ -74,15 +74,16 @@ def main(query:str="query.txt",
     
     prompt = tokenizer_converter.apply_chat_template(instructions, tokenize=False)
 
-    results = client.text_generation(prompt, max_new_tokens=max_gen_len, return_full_text=False, temperature=temperature, seed=101)    
+    results = [client.text_generation(prompt, max_new_tokens=max_gen_len, return_full_text=False, temperature=temperature, seed=101)]  
     print(results)
     # Directory where the file will be saved
-    
     print(f'Output dir: {out_dir}')
     os.makedirs(out_dir, exist_ok=True)
     assert len(results) == 1 # We can add batches later 
+    instructions = [instructions]
     for instruction, result in zip(instructions, results):
-        python_code_string = result['generation']['content']
+        #python_code_string = result['generation']['content']
+        python_code_string = result
         # Specify the filename
         filename = os.path.join(out_dir, f"{unique_id}_raw.txt")
         # Save the code to a file

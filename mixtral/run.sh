@@ -14,4 +14,4 @@ source /opt/apps/Module/anaconda3/2021.11/bin/activate
 conda activate AIsurBL
 conda info
 
-python run.py
+python run_improved.py

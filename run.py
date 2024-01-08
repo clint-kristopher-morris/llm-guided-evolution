@@ -25,7 +25,7 @@ source /opt/apps/Module/anaconda3/2021.11/bin/activate
 conda activate REMAPS
 conda info
 
-torchrun --nproc_per_node 2 {fname} --max_seq_len {max_seq_len} --query {query} --temperature {temp} --unique_id {unique_id} --out_dir {out_dir}
+torchrun --nproc_per_node 1 {fname} --max_seq_len {max_seq_len} --query {query} --temperature {temp} --unique_id {unique_id} --out_dir {out_dir}
 """
     return bash_script_content
 
@@ -49,7 +49,8 @@ def submit_bash(query, file_path, **kwargs):
         successful_sub_flag = False
         job_id = None
 
-    return successful_sub_flag, job_id
+    #return successful_sub_flag, job_id
+    return successful_sub_flag, file_path
 
 
 def check4job_completion(job_id, check_interval=20, timeout=3600):
@@ -65,7 +66,8 @@ def check4job_completion(job_id, check_interval=20, timeout=3600):
     bool: True if job completed successfully, False otherwise.
     """
     start_time = time.time()
-    output_file = f'slurm-{job_id}.out'
+    #output_file = f'slurm-{job_id}.out'
+    output_file = job_id[:-3] + '_model.txt'
 
     while True:
         # Check if the timeout is reached
@@ -84,9 +86,12 @@ def check4job_completion(job_id, check_interval=20, timeout=3600):
                 elif "job done" in contents.lower():
                     print("Job completed successfully.")
                     return True
+                elif len(contents) > 0:
+                    print("Job completed successfully.")
+                    return True
                 else:
                     pass
-
+        print('checking for', output_file)
         # Wait for some time before checking again
         time.sleep(check_interval)
         
@@ -163,7 +168,8 @@ def create_bash_file_py(file_path, py_file_path, **kwargs):
 
 def submit_bash_py(py_file_path, file_path, **kwargs):
     create_bash_file_py(file_path, py_file_path, **kwargs)
-    result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+    #result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+    result = subprocess.run(["bash", file_path], capture_output=True, text=True)
     if result.returncode == 0:
         print("Script submitted successfully.\nOutput:", result.stdout)
         successful_sub_flag = True

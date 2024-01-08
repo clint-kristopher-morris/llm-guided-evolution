@@ -103,3 +103,54 @@ class AdaIN(nn.Module):
         style_mean, style_std = mean_std(style)
         gamma = self.gamma * style
 ```
+<br><br><br><br>
+
+### Example Prompt:
+_____
+I'm working with a Python code segment for a neural network classifier in PyTorch, focused on image classification. My current aim is not just to improve its performance and efficiency but to experiment with unconventional and non-standard modifications to this specific code block. The goal is to try something different, possibly even unconventional, that might offer new insights or approaches. Key areas for this exploration include:
+
+- Unconventional Accuracy Enhancement: I'm interested in unique approaches to improve performance on diverse datasets, distinct from typical methods.
+- Creative Overfitting Reduction: Experiment with non-traditional strategies for mitigating overfitting. Think outside the box, beyond standard dropout or regularization techniques.
+- Innovative Computational Efficiency: Optimize the code for efficiency in ways that aren't commonly used in mainstream solutions.
+- Parameter Exploration: Freely experiment with parameters in ways that are not typically considered, aiming to uncover unexpected improvements.
+
+Here is the current code block:
+
+```python
+class ME(nn.Module):
+    def __init__(self, cin, cout):
+        super().__init__()
+        self.maxpool = nn.MaxPool2d(2, ceil_mode=True)
+        self.pw = nn.Conv2d(cin, cout, 1, 1, bias=False)
+        self.bn = nn.BatchNorm2d(cout)
+
+    def forward(self, x):
+        x = self.maxpool(x)
+        x = self.pw(x)
+        x = self.bn(x)
+        return x
+```
+
+Your task is to modify this code block with the mindset of 'trying something new.' The changes should be distinctive, deviating from the usual solutions found in textbooks or conventional practices. Please focus on the code itself, limiting explanations, and present your modified code in Markdown format. This exercise is about exploring new avenues and techniques, even if they are unconventional or untested.
+
+<br><br>
+
+### Returned Code:
+
+```python
+class ME(nn.Module):
+    def __init__(self, cin, cout):
+        super().__init__()
+        self.maxpool = nn.MaxPool2d(2, ceil_mode=True)
+        self.pw = nn.Conv2d(cin, cout, 1, 1, bias=False)
+        self.bn = nn.BatchNorm2d(cout)
+        self.softplus = nn.Softplus()
+
+    def forward(self, x):
+        x = self.maxpool(x)
+        x = self.pw(x)
+        x = self.bn(x)
+        x = self.softplus(x)
+        x = F.avg_pool2d(x, kernel_size=3, stride=1, padding=1)
+        return x
+```

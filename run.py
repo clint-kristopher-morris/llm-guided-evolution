@@ -178,7 +178,7 @@ def submit_bash_py(py_file_path, file_path, **kwargs):
         print("Failed to submit script.\nError:", result.stderr)
         successful_sub_flag = False
         job_id = None
-    return successful_sub_flag, job_id
+    return successful_sub_flag, file_path
 
 def submit_run(gene_id):
     def create_py_file(gene_id, run_file_template_path="queries/general/run_file_template.txt", 
@@ -242,8 +242,13 @@ def check4model2run(gene_id):
 def check4results(gene_id):
     def check4error(gene_id):
         job_id = GLOBAL_DATA[gene_id]['results_job']
-        output_file = f'slurm-{job_id}.out'
+        #output_file = f'slurm-{job_id}.out'
+        #output_file = GLOBAL_DATA[gene_id]['results_job'][:-3] + '_results.txt'
+        out_dir = str(GENERATION)
+
+        output_file = os.path.join(out_dir, f'{gene_id}_results.txt')
         # Check if the output file exists
+        print('CHECKING OUTPUT FILE', output_file)
         if os.path.exists(output_file):
             with open(output_file, 'r') as file:
                 contents = file.read()
@@ -253,6 +258,8 @@ def check4results(gene_id):
                     return False
                 elif "job done" in contents.lower():
                     print("Job completed successfully.", flush=True)
+                    return True
+                elif len(contents) > 0:
                     return True
                 else:
                     pass
@@ -287,7 +294,7 @@ def check4results(gene_id):
         pass
         
 
-def check_and_update_fitness(population, timeout=3600*2, loop_delay=100):
+def check_and_update_fitness(population, timeout=600, loop_delay=100):
     # Set a timeout for each job
     while True:
         all_done = True
@@ -437,7 +444,7 @@ def customMutation(individual, indpb, mutation_query_path="queries/general/mutat
     # Name of the sh bash file
     file_path = os.path.join(str(GENERATION), f'{new_gene_id}.sh')
     successful_sub_flag, job_id = submit_bash(query_path, file_path, gpu='TeslaV100S-PCIE-32GB', 
-                                              fname='query_instruct_huggingface.py', max_seq_len=2048,
+                                              fname='queries/py/query_instruct_huggingface.py', max_seq_len=2048,
                                               unique_id=new_gene_id, out_dir=out_dir)
     
     # Update the individual with the new gene ID
@@ -512,7 +519,7 @@ GENERATION = 0
 GLOBAL_DATA = {}
 GLOBAL_DATA_HIST = {}
 num_generations = 30  # Number of generations
-start_population_size = 30  # Size of the population
+start_population_size = 12  # Size of the population
 population_size = 12
 crossover_probability = 0.2  # Probability of mating two individuals
 mutation_probability = 0.4   # Probability of mutating an individual

@@ -25,7 +25,7 @@ def augment_network(input_filename_x='network.py',
             break
     
     # TODO: make parameter
-    template_path = '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/mixtral/templates/crossover.txt'
+    template_path = 'templates/crossover.txt'
     with open(template_path, 'r') as file:
         template_txt = file.read()
     # add code to be augmented 

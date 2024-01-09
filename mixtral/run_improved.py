@@ -116,7 +116,7 @@ def submit_bash(file_path, **kwargs):
         job_id
     """
     create_bash_file(file_path, **kwargs)
-    result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+    result = subprocess.run(["bash", file_path], capture_output=True, text=True)
 
     if result.returncode == 0:
         print("Script submitted successfully.\nOutput:", result.stdout, flush=True)

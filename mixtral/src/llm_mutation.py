@@ -23,7 +23,7 @@ def augment_network(input_filename='network.py', output_filename='network_x.py',
     
     # TODO: make parameter
     fname = np.random.choice(['improvement_xs.txt','improvement_xl.txt','improvement_xp.txt'])
-    template_path = f'/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/mixtral/templates/{fname}'
+    template_path = f'templates/{fname}'
     with open(template_path, 'r') as file:
         template_txt = file.read()
     # add code to be augmented 

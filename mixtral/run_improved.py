@@ -9,10 +9,12 @@ from deap import base, creator, tools
 from deap.tools import HallOfFame
 
 
+LLM_GPU = 'NVIDIAA100-SXM4-80GB|TeslaV100-PCIE-32GB'
+SOTA_ROOT = './../sota/ExquisiteNetV2'
+
 FITNESS_WEIGHTS = (1.0, -1.0)
 INVALID_FITNESS_MAX = tuple([float(x*np.inf*-1) for x in FITNESS_WEIGHTS])
-TMP_FITNESS = tuple([int(x*9999999999*-1) for x in FITNESS_WEIGHTS])
-LLM_GPU = 'NVIDIAA100-SXM4-80GB'
+PLACEHOLDER_FITNESS = tuple([int(x*9999999999*-1) for x in FITNESS_WEIGHTS])
 
 PYTHON_BASH_SCRIPT_TEMPLATE = """#!/bin/bash
 #SBATCH --job-name=AIsur_x1
@@ -20,7 +22,7 @@ PYTHON_BASH_SCRIPT_TEMPLATE = """#!/bin/bash
 #SBATCH --gres=gpu:1
 #SBATCH -C "QuadroP4000|QuadroRTX4000|GeForceGTX1080Ti|GeForceGTX1080|TeslaV100-PCIE-32GB|TeslaV100S-PCIE-32GB"
 #SBATCH --mem 8G
-#SBATCH -c 4
+#SBATCH -c 8
 echo "Launching AIsurBL"
 hostname
 
@@ -45,7 +47,7 @@ LLM_BASH_SCRIPT_TEMPLATE = """#!/bin/bash
 #SBATCH --gres=gpu:2
 #SBATCH -C "{}"
 #SBATCH --mem 32G
-#SBATCH -c 1
+#SBATCH -c 32
 echo "Launching AIsurBL"
 hostname
 
@@ -65,6 +67,35 @@ export TOKENIZERS_PARALLELISM=false
 """
 
 
+"""
+Printing Functions: Move to Other File
+"""
+def print_scores(population, fitness_weights):
+    num_objectives = len(fitness_weights)
+    objective_scores = [[] for _ in range(num_objectives)]
+
+    # Collect scores for each objective
+    for ind in population:
+        for i, f in enumerate(ind.fitness.values):
+            objective_scores[i].append(f)
+
+    # Calculate and print stats for each objective
+    box_print("SCORES", print_bbox_len=110, new_line_end=True)
+    for i in range(num_objectives):
+        fits = objective_scores[i]
+        length = len(fits)
+        mean = sum(fits) / length
+        sum2 = sum(x*x for x in fits)
+        std = abs(sum2 / length - mean**2)**0.5
+        direction = "Maximize" if fitness_weights[i] > 0 else "Minimize"
+        
+        print(f"Objective {i+1} ({direction}):")
+        print(f"  Min: {min(fits)}")
+        print(f"  Max: {max(fits)}")
+        print(f"  Avg: {mean}")
+        print(f"  Std: {std}")
+        print()
+
 def box_print(txt, print_bbox_len=110, new_line_end=True):
     # just for logging 
     def replace_middle(v, x):
@@ -75,11 +106,19 @@ def box_print(txt, print_bbox_len=110, new_line_end=True):
     end = '\n' if new_line_end else ''
     print_result = "\n" + "*" * print_bbox_len + "\n" + replace_middle(v, txt) + "\n" + "*" * print_bbox_len + end
     print(print_result, flush=True)
+    
+def print_job_info(job_dict):
+    print(f"\t‣ Fitness: {job_dict['fitness']}, Submission Flag: {job_dict['sub_flag']}")
+    print(f"\t‣ Runtime: {round((time.time()-job_dict['start_time'])/60)} min, Status: {job_dict['status']}")
+    print(f"\t‣ LLM Job-ID: {job_dict['job_id']}, Model Job-ID: {job_dict['results_job']}")
 
-# was write_bash_script
-def write_bash_script(input_filename_x='./../sota/ExquisiteNetV2/network.py',
+    
+"""
+Main Job Functions
+"""  
+def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
                       input_filename_y=None,
-                      output_filename='./../sota/ExquisiteNetV2/models/network_x.py',
+                      output_filename=f'{SOTA_ROOT}/models/network_x.py',
                       gpu='TeslaV100-PCIE-32GB',
                       python_file='src/llm_mutation.py', 
                       top_p=0.1, temperature=0.2):
@@ -96,7 +135,6 @@ def write_bash_script(input_filename_x='./../sota/ExquisiteNetV2/network.py',
     bash_script_content = LLM_BASH_SCRIPT_TEMPLATE.format(gpu, python_runline)
     return bash_script_content
 
-
 def create_bash_file(file_path, **kwargs):
     bash_script_content = write_bash_script(**kwargs)
     # Extract the directory from the file path
@@ -109,7 +147,6 @@ def create_bash_file(file_path, **kwargs):
         file.write(bash_script_content)
     print(f"Bash script saved to {file_path}", flush=True)
 
-
 def submit_bash(file_path, **kwargs):
     """ This should be general for subbing anything and returning:
         successful_sub_flag 
@@ -119,11 +156,11 @@ def submit_bash(file_path, **kwargs):
     result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
 
     if result.returncode == 0:
-        print("Script submitted successfully.\nOutput:", result.stdout, flush=True)
+        print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip(), flush=True)
         successful_sub_flag = True
         job_id = result.stdout.split('job ')[-1].strip()
     else:
-        print("Failed to submit script.\nError:", result.stderr, flush=True)
+        print("\t‣ Failed to Submit Script.\n\t‣ Error:", result.stderr.strip(), flush=True)
         successful_sub_flag = False
         job_id = None
 
@@ -167,7 +204,7 @@ def check4job_completion(job_id, check_interval=60, timeout=3600):
 
         # Wait for some time before checking again
         time.sleep(check_interval)
-        print(f'waiting on check4job_completion LLM job:{job_id} time:{round(time.time() - start_time)}', flush=True)
+        print(f'\t‣ Waiting on check4job_completion LLM job: {job_id} Time: {round(time.time() - start_time)}s', flush=True)
         
         
 def generate_random_string(length=20):
@@ -188,8 +225,8 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
     # Assign a file path and name for the model creation bash
     file_path = os.path.join(out_dir, f'{gene_id}.sh')
     successful_sub_flag, job_id = submit_bash(file_path, 
-                                              input_filename_x='./../sota/ExquisiteNetV2/network.py',
-                                              output_filename=f'./../sota/ExquisiteNetV2/models/network_{gene_id}.py',
+                                              input_filename_x=f'{SOTA_ROOT}/network.py',
+                                              output_filename =f'{SOTA_ROOT}/models/network_{gene_id}.py',
                                               gpu=LLM_GPU,
                                               python_file='src/llm_mutation.py', 
                                               top_p=0.1, temperature=temperature)
@@ -199,9 +236,9 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
     individual = container([gene_id])  # Assign a file ID
     
     if successful_sub_flag:
-        print(f'Checking for job completion: {job_id} for {gene_id}', flush=True)
+        print(f'Checking for Job Completion: {job_id} for {gene_id}', flush=True)
         job_done = check4job_completion(job_id)
-        print(f'Model files for {gene_id} are loaded') if job_done else print(f'Error loading model files for {gene_id}', flush=True)
+        print(f'Model Files for {gene_id} are Loaded') if job_done else print(f'Error Loading Model Files for {gene_id}', flush=True)
     # return individual,
     return individual
 
@@ -210,7 +247,7 @@ def submit_run(gene_id):
     def write_bash_script_py(gene_id, train_file='./../sota/ExquisiteNetV2/train.py'):
         tmp = "-data cifar10 -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
         # python_runline = f'python {train_file} -bs 384 -network "models.network_{gene_id}" {tmp}'
-        python_runline = f'python {train_file} -bs 400 -epoch 2 -network "models.network_{gene_id}" {tmp}'
+        python_runline = f'python {train_file} -bs 200 -network "models.network_{gene_id}" {tmp}'
         bash_script_content = PYTHON_BASH_SCRIPT_TEMPLATE.format(python_runline)
         return bash_script_content
 
@@ -219,17 +256,17 @@ def submit_run(gene_id):
         bash_script_content = write_bash_script_py(gene_id, **kwargs)
         with open(file_path, 'w') as file:
             file.write(bash_script_content)
-        print(f"Bash script saved to {file_path}")
+        print(f"\t‣ Bash Script Saved to {file_path}")
 
     def submit_bash_py(file_path, gene_id, **kwargs):
         create_bash_file_py(file_path, gene_id, **kwargs)
         result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
         if result.returncode == 0:
-            print("Script submitted successfully.\nOutput:", result.stdout)
+            print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip())
             successful_sub_flag = True
             job_id = result.stdout.split('job ')[-1].strip()
         else:
-            print("Failed to submit script.\nError:", result.stderr)
+            print("\t‣ Failed to Submit script.\n\t‣ Error:", result.stderr.strip())
             successful_sub_flag = False
             job_id = None
         return successful_sub_flag, job_id
@@ -239,7 +276,7 @@ def submit_run(gene_id):
     successful_sub_flag, job_id = submit_bash_py(file_path, gene_id)
     GLOBAL_DATA[gene_id]['status'] = 'running eval'
     GLOBAL_DATA[gene_id]['results_job'] = job_id
-    print(f'Running py file for {gene_id}, {job_id}')
+    print(f'\t‣ Running py File for {gene_id}, {job_id}')
 
     
 def evalModel(individual):
@@ -250,15 +287,14 @@ def evalModel(individual):
 
 def check4model2run(gene_id):
     # model_path = os.path.join(str(GENERATION), f'{gene_id}_model.txt')
-    print(f'Checking for: ./../sota/ExquisiteNetV2/models/network_{gene_id}.py')
-    model_path = f'./../sota/ExquisiteNetV2/models/network_{gene_id}.py'
+    print(f'Checking for: {SOTA_ROOT}/models/network_{gene_id}.py')
+    model_path = f'{SOTA_ROOT}/models/network_{gene_id}.py'
     if os.path.exists(model_path):
         if GLOBAL_DATA[gene_id]['status'] != 'running eval':
             submit_run(gene_id)
             
             
 def check4results(gene_id):
-    # TODO: fix this to check for my results also save the results from the train.py into a file
     def check4error(gene_id):
         job_id = GLOBAL_DATA[gene_id]['results_job']
         output_file = f'slurm-{job_id}.out'
@@ -268,10 +304,11 @@ def check4results(gene_id):
                 contents = file.read()
                 # Check for error indicators in the file
                 if "traceback" in contents.lower():
-                    print("Error found in job output.")
+                    # print("Error Found in Job Output.")
+                    print(f'\t‣ The Model for Gene: {gene_id} - {job_id} Failed to Run',flush=True)
                     return False
                 elif "job done" in contents.lower():
-                    print("Job completed successfully.", flush=True)
+                    print(f'\t‣ The Model for Gene: {gene_id} - {job_id} Completed Successfully!', flush=True)
                     return True
                 else:
                     pass
@@ -282,30 +319,40 @@ def check4results(gene_id):
         out_dir = str(GENERATION)
         # The job saves the model results to a file f'{gene_id}_results.txt'
         # results_path = os.path.join(out_dir, f'{gene_id}_results.txt')
-        results_path = f'./../sota/ExquisiteNetV2/results/{gene_id}_results.txt'
+        results_path = f'{SOTA_ROOT}/results/{gene_id}_results.txt'
         with open(results_path, 'r') as file:
             results = file.read()
         results = results.split(',')
         fitness = [float(r.strip()) for r in results]
-        
         # TODO: get all features later
         fitness = [fitness[0], fitness[1]]
         fitness = tuple(fitness)
         
         GLOBAL_DATA[gene_id]['status'] = 'completed'
         GLOBAL_DATA[gene_id]['fitness'] = fitness
-        print(f'Model from gene: {gene_id} evaluated')
+        # print(f'Model from Gene: {gene_id} Evaluated')
     elif job_done is False:
         GLOBAL_DATA[gene_id]['status'] = 'completed'
         GLOBAL_DATA[gene_id]['fitness'] = INVALID_FITNESS_MAX
-        print(f'Model from gene: {gene_id} failed to run')
+        # print(f'Model from Gene: {gene_id} Failed to Run')
     else:
-        print('Job has not finished running yet...', flush=True)
+        # print('Job Has Not Finished Running Yet...', flush=True)
         pass
         
 
-# TODO: if llm fails it forces a max wait time
-def check_and_update_fitness(population, timeout=3600*20, loop_delay=60*2.5):
+def check_and_update_fitness(population, timeout=3600*20, loop_delay=60*30):
+    """ This function submits jobs and then if submitted it checks for four possibilities.
+    
+    timeout: (int): seconds until the model run is killed and assigned the max error
+    loop_delay (int): seconds until iterating over the jobs
+    
+    for a job four are four possibilities:
+        ‣ The Model for Gene: {gene_id} Failed to Run
+        ‣ The Model for Gene: {gene_id} Completed Successfully!
+        
+        ‣ Still Waiting On: Gene: {gene_id}
+        ‣ Timeout for gene ID {gene_id}
+    """
     # Set a timeout for each job
     box_print("SUBMITTING MODELS CREATED BY LLM")
     count = 0
@@ -318,18 +365,17 @@ def check_and_update_fitness(population, timeout=3600*20, loop_delay=60*2.5):
             if GLOBAL_DATA[gene_id]['sub_flag']==False:
                 ind.fitness.values = INVALID_FITNESS_MAX # Max error
                 GLOBAL_DATA[gene_id]['status'] == "completed"
-            if ind.fitness.values == TMP_FITNESS:  # If fitness not assigned
+            if ind.fitness.values == PLACEHOLDER_FITNESS:  # If fitness not assigned
                 # check for gene_id_model.txt file
                 if GLOBAL_DATA[gene_id]['status'] == 'subbed file':
-                    # here we generate/sub model.txt file
+                    # here we generate/sub the model file
                     # also we assign GLOBAL_DATA[gene_id]['status'] = 'running eval' in check4model2run
                     check4model2run(gene_id) 
                 if GLOBAL_DATA[gene_id]['status'] == 'running eval':
-                    print(f'Checking for results for: {gene_id}')
-                    non_error_flag = check4results(gene_id) # here we look for the results file for gene_id
-                    if non_error_flag == False:
-                        # TODO: change FAILED: TIMEOUT to "LLM FAILURE"
-                        print(f"LLM failed for gene ID {gene_id}")
+                    print(f'Checking the Results for Gene: {gene_id}')
+                    no_error_flag = check4results(gene_id) # here we look for the results file for gene_id
+                    if no_error_flag == False:
+                        print(f"LLM Failed for Gene: {gene_id}")
                         ind.fitness.values = INVALID_FITNESS_MAX 
                         GLOBAL_DATA[gene_id]['status'] = 'completed'
                 
@@ -343,13 +389,14 @@ def check_and_update_fitness(population, timeout=3600*20, loop_delay=60*2.5):
                     ind.fitness.values = INVALID_FITNESS_MAX 
                     GLOBAL_DATA[gene_id]['status'] = 'FAILED: TIMEOUT'
                 else:
-                    # print(f"Still Waiting On: \n\t(Gene:{gene_id}, LLM_Job:{GLOBAL_DATA['job_id']}, Model_Job:{GLOBAL_DATA['results_job']} Status:{''}")
-                    print(f"Still Waiting On: Gene:{gene_id}")
-                    print(GLOBAL_DATA[gene_id])
+                    print(f"\t‣ Still Waiting On: Gene: {gene_id}", flush=True)
+                    print_job_info(GLOBAL_DATA[gene_id])
                     all_done = False  # Some jobs are still running
         if all_done:
-            box_print("Evalutated All Genes", print_bbox_len=80)
+            box_print("Evalutated All Genes", print_bbox_len=60)
             break  # All jobs are done or timed out
+            
+        print('Delayed...', flush=True)
         time.sleep(loop_delay)  # Wait some time before checking again
         count+=1
         
@@ -377,9 +424,9 @@ def customCrossover(ind1, ind2):
         # Create the bash file for the new job
         file_path = os.path.join(out_dir, f'{new_gene_id}.sh')
         successful_sub_flag, job_id = successful_sub_flag, job_id = submit_bash(file_path, 
-                                          input_filename_x=f'./../sota/ExquisiteNetV2/models/network_{gene_id_1}.py',
-                                          input_filename_y=f'./../sota/ExquisiteNetV2/models/network_{gene_id_2}.py',
-                                          output_filename=f'./../sota/ExquisiteNetV2/models/network_{new_gene_id}.py',
+                                          input_filename_x=f'{SOTA_ROOT}/models/network_{gene_id_1}.py',
+                                          input_filename_y=f'{SOTA_ROOT}/models/network_{gene_id_2}.py',
+                                          output_filename=f'{SOTA_ROOT}/models/network_{new_gene_id}.py',
                                           gpu=LLM_GPU,
                                           python_file='src/llm_crossover.py', 
                                           top_p=0.1, temperature=temperature)
@@ -389,9 +436,9 @@ def customCrossover(ind1, ind2):
                                     'status':'subbed file', 'fitness':None, 'start_time':time.time()}
         
         if successful_sub_flag:
-            print(f'Checking for job completion - cross: {job_id} for {new_gene_id}')
+            print(f'\t‣ Checking for Crossover Job Completion: {job_id} for {new_gene_id}')
             job_done = check4job_completion(job_id)
-            print(f'Model files for {new_gene_id} are loaded') if job_done else print(f'Error loading model files for {new_gene_id}!!!\n\n')
+            print(f'\t‣ Model Files for {new_gene_id} are Loaded') if job_done else print(f'\t‣ Error Loading Model Files for {new_gene_id}!!!\n\n')
 
         failed_process = True if (successful_sub_flag is False) or (job_done is False) else False
         # Return the new gene ID
@@ -441,13 +488,13 @@ def customMutation(individual, indpb, temp_min=0.05, temp_max=0.4):
     old_gene_id = individual[0]
     # Generate a new gene ID
     new_gene_id = generate_random_string(length=24)
-    print(f'Mutating: {old_gene_id} and replaceing with: {new_gene_id}')
+    print(f'Mutating: {old_gene_id} and Replaceing with: {new_gene_id}')
     # Name of the sh bash file
     file_path = os.path.join(str(GENERATION), f'{new_gene_id}.sh')
     temperature = round(random.uniform(temp_min, temp_max), 2)
     successful_sub_flag, job_id = submit_bash(file_path, 
-                                              input_filename_x= f'./../sota/ExquisiteNetV2/models/network_{old_gene_id}.py',
-                                              output_filename=f'./../sota/ExquisiteNetV2/models/network_{new_gene_id}.py',
+                                              input_filename_x= f'{SOTA_ROOT}/models/network_{old_gene_id}.py',
+                                              output_filename = f'{SOTA_ROOT}/models/network_{new_gene_id}.py',
                                               gpu=LLM_GPU,
                                               python_file='src/llm_mutation.py', 
                                               top_p=0.1, temperature=temperature)
@@ -459,9 +506,9 @@ def customMutation(individual, indpb, temp_min=0.05, temp_max=0.4):
                                 'status':'subbed file', 'fitness':None, 'start_time':time.time()}
 
     if successful_sub_flag:
-        print(f'Checking for job completion Mutate: {job_id} for {new_gene_id}')
+        print(f'\t‣ Checking for Mutation Job Completion: {job_id} for {new_gene_id}')
         job_done = check4job_completion(job_id)
-        print(f'Model files for {new_gene_id} are loaded') if job_done else print(f'Error loading model files for {new_gene_id}')
+        print(f'\t‣ Model Files for {new_gene_id} are Loaded') if job_done else print(f'\t‣ Error Loading Model Files for {new_gene_id}')
 
     failed_process = True if (successful_sub_flag is False) or (job_done is False) else False
     
@@ -477,18 +524,6 @@ def customMutation(individual, indpb, temp_min=0.05, temp_max=0.4):
     return individual
 
 
-def print_scores(fits, population):
-    length = len(population)
-    mean = sum(fits) / length
-    sum2 = sum(x*x for x in fits)
-    std = abs(sum2 / length - mean**2)**0.5
-
-    print(f"  Min: {min(fits)}")
-    print(f"  Max: {max(fits)}")
-    print(f"  Avg: {mean}")
-    print(f"  Std: {std}")
-    
-    
 def remove_duplicates(population):
     unique_individuals = []
     seen_chromosomes = set()
@@ -551,29 +586,20 @@ toolbox.register("mate", customCrossover)
 toolbox.register("mutate", customMutation, indpb=0.2)
 toolbox.register("select", true_nsga2)
 
-# Change epoch, change loop check time to 60*30,
+# TODO: start using percent diff of train acc vs val test acc as an over fitt metric 
+# 40398682
 
 # --- Parameters --- #
-# GENERATION = 0
-# GLOBAL_DATA = {}
-# GLOBAL_DATA_HIST = {}
-# num_generations = 30  # Number of generations
-# start_population_size = 16  # Size of the population
-# population_size = 12
-# crossover_probability = 0.25  # Probability of mating two individuals
-# mutation_probability = 0.4   # Probability of mutating an individual
-# num_elites = 16
-# hof_size = 100
-
 GENERATION = 0
 GLOBAL_DATA = {}
 GLOBAL_DATA_HIST = {}
 num_generations = 30  # Number of generations
-start_population_size = 10  # Size of the population
-population_size = 4
-crossover_probability = 0.99  # Probability of mating two individuals
-mutation_probability = 0.99   # Probability of mutating an individual
-num_elites = 4
+start_population_size = 24  # Size of the population
+population_size = 20 # with cx_prob (0.25) and mute_prob (0.7) you get about %50 successful turnover
+crossover_probability = 0.25  # Probability of mating two individuals
+mutation_probability = 0.7   # Probability of mutating an individual
+num_elites = 20
+
 hof_size = 100
 
 # Main Evolution Loop
@@ -594,22 +620,21 @@ if __name__ == "__main__":
 
     # Evaluate the entire population
     for ind in population:
-        ind.fitness.values = TMP_FITNESS
+        ind.fitness.values = PLACEHOLDER_FITNESS
     check_and_update_fitness(population)
     # Evolution
     for gen in range(start_gen, num_generations):
-        box_print(f"STARTING GENERATION: {gen}")
+        box_print(f"STARTING GENERATION: {gen}", new_line_end=False)
         # Select the next generation's parents
-        elites = tools.selSPEA2(population, num_elites)
-        # elites = tools.selBest(population, num_elites)
+        elites = tools.selSPEA2(population, num_elites) # elites = tools.selBest(population, num_elites)
         # Select the next generation's parents
         offspring = toolbox.select(population, population_size)
         # Clone the selected individuals
         offspring = list(map(toolbox.clone, offspring))
         GLOBAL_DATA_HIST.update(GLOBAL_DATA.copy())
-        
         # Remove individuals with placeholder fitness
         offspring = [ind for ind in offspring if ind.fitness.values != INVALID_FITNESS_MAX]
+
 
         # Apply crossover and mutation on the offspring
         box_print("Mating", print_bbox_len=60, new_line_end=False)
@@ -631,17 +656,23 @@ if __name__ == "__main__":
         # After merging the offspring and the elites
         offspring = remove_duplicates(offspring)
         elites_keys = [k[0] for k in elites]
-        for k in elites_keys:
-            # Bring back the elite history
+        
+        # Bring back the elite history
+        for k in elites_keys: 
             GLOBAL_DATA[k] = GLOBAL_DATA_HIST[k]
-
+            """
+            GLOBAL_DATA should have the job information and fitness values
+            When it hits the below in check_and_update_fitness it will load the results from the dict 
+                if GLOBAL_DATA[gene_id]['status'] == "completed":
+            """
+            
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
         fitnesses = map(toolbox.evaluate, invalid_ind)
 
         for ind in offspring:
             # assign placeholder to all so I can check them all at once
-            ind.fitness.values = TMP_FITNESS 
+            ind.fitness.values = PLACEHOLDER_FITNESS 
 
         GLOBAL_DATA_HIST.update(GLOBAL_DATA.copy())
         check_and_update_fitness(offspring)
@@ -649,13 +680,8 @@ if __name__ == "__main__":
         # Replace the old population with the offspring
         population[:] = offspring
         # Gather all the fitnesses in one list and print the stats
-        fits1 = [ind.fitness.values[0] for ind in population]
-        fits2 = [ind.fitness.values[1] for ind in population]
-
-        print_scores(fits1, population)
-        print_scores(fits2, population)
+        print_scores(population, FITNESS_WEIGHTS)
         hof.update(population)
-
         save_checkpoint(gen)
 
     print("-- End of Evolution --")

@@ -17,7 +17,7 @@ def augment_network(input_filename_x='network.py',
     parts_x = split_file(input_filename_x)
     parts_y = split_file(input_filename_y)
     
-    parts = [(x, y, idx) for idx, (x, y) in enumerate(zip(parts_x, parts_y))]
+    parts = [(x, y, idx) for idx, (x, y) in enumerate(zip(parts_x[1:], parts_y[1:]))]
     random.shuffle(parts)
     
     for x, y, augment_idx in parts:
@@ -44,7 +44,14 @@ def augment_network(input_filename_x='network.py',
         note_txt = ''
     
     parts_x[augment_idx] = "\n" + note_txt + code_from_llm + "\n"
-    python_network_txt = '# --OPTION--'.join(parts_x)
+    
+    try:
+        prompt_log_cross = parts_y[0].split("# --PROMPT LOG--\n")[0]
+        prompt_log_cross = "\n"+"="*10+prompt_log_cross+"="*10+"\n"
+    except:
+        prompt_log_cross = "\n"
+        
+    python_network_txt = prompt_log_cross + '# --OPTION--'.join(parts_x)
     print(code_from_llm);print("="*120)
     # Write the text to the file
     

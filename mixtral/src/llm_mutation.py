@@ -22,7 +22,7 @@ def augment_network(input_filename='network.py', output_filename='network_x.py',
         note_txt = ''
     
     # TODO: make parameter
-    fname = np.random.choice(['improvement_xs.txt','improvement_xl.txt','improvement_xp.txt'])
+    fname = np.random.choice(['improvement_xs.txt','improvement_xl.txt','improvement_xp.txt','improvement_xm.txt'])
     template_path = f'/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/mixtral/templates/{fname}'
     with open(template_path, 'r') as file:
         template_txt = file.read()
@@ -33,7 +33,9 @@ def augment_network(input_filename='network.py', output_filename='network_x.py',
     # clean txt
     code_from_llm = code_from_llm.split('```python')[1].split('```')[0].strip()
     parts[augment_idx] = "\n" + note_txt + code_from_llm + "\n"
-    python_network_txt = '# --OPTION--'.join(parts)
+    # parent prompt and root code
+    prompt_log = f'# Parent Prompt: {fname} Root Code: {input_filename}\n'
+    python_network_txt = prompt_log + '# --OPTION--'.join(parts)
     print(code_from_llm);print("="*120)
     # Write the text to the file
     with open(output_filename, 'w') as file:

@@ -1,0 +1,19 @@
+OBJECTIVE:
+'Code Segment 1' is supposed to be an updated version of 'Code Segment 2'. Code 'Code Segment 1' should only be an enhanced version of 'Code Segment 2'.
+Any added features that do not pertrain to or directly enhance the functions in 'Code Segment 2' should be removed! 
+If 'Code Segment 1' comprises only enhanced versions of functionalities in 'Code Segment 2' or matches it. Return 'Code Segment 1' in markdown format, with no changes.
+
+Code Segments:
+
+- Code Segment 1
+```python
+{} 
+```
+
+- Code Segment 2
+```python
+{} 
+```
+
+After following the above steps, return only an updated version of 'Code Segment 1' in markdown format.
+Take a breath and think about the problem step-by-step.

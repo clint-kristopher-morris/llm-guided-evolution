@@ -13,4 +13,4 @@ The current code block:
 
 ```
 
-Apply one specific modification to the existing code block, aimed at improving the highlighted focus areas, while strictly avoiding any addition of features not pertinent to this segment. Keep explanations minimal, focusing on the code changes. Submit your augmented code in Markdown format.
+Apply one specific modification to the existing code block, aimed at improving the highlighted focus areas, while strictly avoiding any addition of features not pertinent to this segment. Keep explanations minimal, focusing on the code changes. Submit your augmented code in Markdown format. Please exclude any code related to the initial setup or configuration.

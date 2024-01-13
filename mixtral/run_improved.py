@@ -3,116 +3,15 @@ import time
 import string
 import random
 import pickle
+import argparse
 import subprocess
 import numpy as np
 from deap import base, creator, tools
 from deap.tools import HallOfFame
+from src.utils.print_utils import print_population, print_scores, box_print, print_job_info
+from src.utils.constants import *
 
 
-LLM_GPU = 'NVIDIAA100-SXM4-80GB|TeslaV100-PCIE-32GB'
-SOTA_ROOT = './../sota/ExquisiteNetV2'
-
-FITNESS_WEIGHTS = (1.0, -1.0)
-INVALID_FITNESS_MAX = tuple([float(x*np.inf*-1) for x in FITNESS_WEIGHTS])
-PLACEHOLDER_FITNESS = tuple([int(x*9999999999*-1) for x in FITNESS_WEIGHTS])
-
-PYTHON_BASH_SCRIPT_TEMPLATE = """#!/bin/bash
-#SBATCH --job-name=AIsur_x1
-#SBATCH -t 8-00:00
-#SBATCH --gres=gpu:1
-#SBATCH -C "QuadroP4000|QuadroRTX4000|GeForceGTX1080Ti|GeForceGTX1080|TeslaV100-PCIE-32GB|TeslaV100S-PCIE-32GB"
-#SBATCH --mem 8G
-#SBATCH -c 8
-echo "Launching AIsurBL"
-hostname
-
-# Load GCC version 9.2.0
-module load gcc/13.2.0
-# module load cuda/11.8
-
-# Activate Conda environment
-source /opt/apps/Module/anaconda3/2021.11/bin/activate mix
-conda info
-
-# Set the TOKENIZERS_PARALLELISM environment variable if needed
-export TOKENIZERS_PARALLELISM=false
-
-# Run Python script
-{}
-"""
-
-LLM_BASH_SCRIPT_TEMPLATE = """#!/bin/bash
-#SBATCH --job-name=AIsur_x1
-#SBATCH -t 8-00:00
-#SBATCH --gres=gpu:2
-#SBATCH -C "{}"
-#SBATCH --mem 32G
-#SBATCH -c 32
-echo "Launching AIsurBL"
-hostname
-
-# Load GCC version 9.2.0
-module load gcc/13.2.0
-# module load cuda/11.8
-
-# Activate Conda environment
-source /opt/apps/Module/anaconda3/2021.11/bin/activate mix
-conda info
-
-# Set the TOKENIZERS_PARALLELISM environment variable if needed
-export TOKENIZERS_PARALLELISM=false
-
-# Run Python script
-{}
-"""
-
-
-"""
-Printing Functions: Move to Other File
-"""
-def print_scores(population, fitness_weights):
-    num_objectives = len(fitness_weights)
-    objective_scores = [[] for _ in range(num_objectives)]
-
-    # Collect scores for each objective
-    for ind in population:
-        for i, f in enumerate(ind.fitness.values):
-            objective_scores[i].append(f)
-
-    # Calculate and print stats for each objective
-    box_print("SCORES", print_bbox_len=110, new_line_end=True)
-    for i in range(num_objectives):
-        fits = objective_scores[i]
-        length = len(fits)
-        mean = sum(fits) / length
-        sum2 = sum(x*x for x in fits)
-        std = abs(sum2 / length - mean**2)**0.5
-        direction = "Maximize" if fitness_weights[i] > 0 else "Minimize"
-        
-        print(f"Objective {i+1} ({direction}):")
-        print(f"  Min: {min(fits)}")
-        print(f"  Max: {max(fits)}")
-        print(f"  Avg: {mean}")
-        print(f"  Std: {std}")
-        print()
-
-def box_print(txt, print_bbox_len=110, new_line_end=True):
-    # just for logging 
-    def replace_middle(v, x):
-        start_pos = (len(v) - len(x)) // 2
-        return v[:start_pos] + x + v[start_pos + len(x):]
-    
-    v = "*" + " " * (print_bbox_len - 2) + "*"
-    end = '\n' if new_line_end else ''
-    print_result = "\n" + "*" * print_bbox_len + "\n" + replace_middle(v, txt) + "\n" + "*" * print_bbox_len + end
-    print(print_result, flush=True)
-    
-def print_job_info(job_dict):
-    print(f"\t‣ Fitness: {job_dict['fitness']}, Submission Flag: {job_dict['sub_flag']}")
-    print(f"\t‣ Runtime: {round((time.time()-job_dict['start_time'])/60)} min, Status: {job_dict['status']}")
-    print(f"\t‣ LLM Job-ID: {job_dict['job_id']}, Model Job-ID: {job_dict['results_job']}")
-
-    
 """
 Main Job Functions
 """  
@@ -124,11 +23,14 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
                       top_p=0.1, temperature=0.2):
     
     # gpu='NVIDIAA100-SXM4-80GB'
+    QC_CHECK_BOOL = PROB_QC > np.random.uniform()
+    
     if python_file=='src/llm_mutation.py':
-        python_runline = f'python {python_file} {input_filename_x} {output_filename} --top_p {top_p} --temperature {temperature}'
+        temp_text = f'{python_file} {input_filename_x} {output_filename}'
+        python_runline = f"python {temp_text} --top_p {top_p} --temperature {temperature} --apply_quality_control '{QC_CHECK_BOOL}' --hugging_face {HUGGING_FACE_BOOL}"
     elif python_file=='src/llm_crossover.py':
         temp_text = f"{python_file} {input_filename_x} {input_filename_y} {output_filename}"
-        python_runline = f'python {temp_text} --top_p {top_p} --temperature {temperature}' 
+        python_runline = f"python {temp_text} --top_p {top_p} --temperature {temperature}  --apply_quality_control '{QC_CHECK_BOOL}' --hugging_face {HUGGING_FACE_BOOL}"
     else:
         raise ValueError("Invalid python_file argument")
 
@@ -145,7 +47,7 @@ def create_bash_file(file_path, **kwargs):
     # Write the file
     with open(file_path, 'w') as file:
         file.write(bash_script_content)
-    print(f"Bash script saved to {file_path}", flush=True)
+    print(f"\t‣ Bash script saved to {file_path}", flush=True)
 
 def submit_bash(file_path, **kwargs):
     """ This should be general for subbing anything and returning:
@@ -156,7 +58,8 @@ def submit_bash(file_path, **kwargs):
     result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
 
     if result.returncode == 0:
-        print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip(), flush=True)
+        print("\t‣ Output:", result.stdout.strip(), flush=True)
+        # print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip(), flush=True)
         successful_sub_flag = True
         job_id = result.stdout.split('job ')[-1].strip()
     else:
@@ -167,7 +70,7 @@ def submit_bash(file_path, **kwargs):
     return successful_sub_flag, job_id
 
 
-def check4job_completion(job_id, check_interval=60, timeout=3600):
+def check4job_completion(job_id, check_interval=60, timeout=3600*1):
     """
     Check for the completion of a job by searching for its output file and scanning for errors.
 
@@ -193,11 +96,11 @@ def check4job_completion(job_id, check_interval=60, timeout=3600):
             with open(output_file, 'r') as file:
                 contents = file.read()
                 # Check for error indicators in the file
-                if "traceback" in contents.lower():
-                    print("Error found in LLM job output.", flush=True)
+                if "traceback" in contents.lower() or "slurmstepd: error: ***" in contents.lower():
+                    print("\t☠ Error Found in LLM Job Output.", flush=True)
                     return False
                 elif "job done" in contents.lower():
-                    print("LLM Job completed successfully.", flush=True)
+                    print("\t☑ LLM Job Completed Successfully.", flush=True)
                     return True
                 else:
                     pass
@@ -238,7 +141,7 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
     if successful_sub_flag:
         print(f'Checking for Job Completion: {job_id} for {gene_id}', flush=True)
         job_done = check4job_completion(job_id)
-        print(f'Model Files for {gene_id} are Loaded') if job_done else print(f'Error Loading Model Files for {gene_id}', flush=True)
+        # print(f'Model Files for {gene_id} are Loaded') if job_done else print(f'Error Loading Model Files for {gene_id}', flush=True)
     # return individual,
     return individual
 
@@ -247,7 +150,7 @@ def submit_run(gene_id):
     def write_bash_script_py(gene_id, train_file='./../sota/ExquisiteNetV2/train.py'):
         tmp = "-data cifar10 -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
         # python_runline = f'python {train_file} -bs 384 -network "models.network_{gene_id}" {tmp}'
-        python_runline = f'python {train_file} -bs 200 -network "models.network_{gene_id}" {tmp}'
+        python_runline = f'python {train_file} -bs 216 -network "models.network_{gene_id}" {tmp}'
         bash_script_content = PYTHON_BASH_SCRIPT_TEMPLATE.format(python_runline)
         return bash_script_content
 
@@ -305,10 +208,10 @@ def check4results(gene_id):
                 # Check for error indicators in the file
                 if "traceback" in contents.lower():
                     # print("Error Found in Job Output.")
-                    print(f'\t‣ The Model for Gene: {gene_id} - {job_id} Failed to Run',flush=True)
+                    print(f'\t☠ The Model for Gene: {gene_id} - {job_id} Failed to Run',flush=True)
                     return False
                 elif "job done" in contents.lower():
-                    print(f'\t‣ The Model for Gene: {gene_id} - {job_id} Completed Successfully!', flush=True)
+                    print(f'\t☑ The Model for Gene: {gene_id} - {job_id} Completed Successfully!', flush=True)
                     return True
                 else:
                     pass
@@ -340,7 +243,7 @@ def check4results(gene_id):
         pass
         
 
-def check_and_update_fitness(population, timeout=3600*20, loop_delay=60*30):
+def check_and_update_fitness(population, timeout=3600*4, loop_delay=60*15):
     """ This function submits jobs and then if submitted it checks for four possibilities.
     
     timeout: (int): seconds until the model run is killed and assigned the max error
@@ -400,7 +303,91 @@ def check_and_update_fitness(population, timeout=3600*20, loop_delay=60*30):
         time.sleep(loop_delay)  # Wait some time before checking again
         count+=1
         
-        
+
+def update_individual(ind, new_gene_id, old_gene_id=None, process_success=True, process_type='Mutation'):
+    """
+    Update an individual based on the success or failure of a process.
+
+    :param ind: The individual to be updated.
+    :param new_gene_id: The new gene ID to be assigned to the individual.
+    :param old_gene_id: The old gene ID to be removed from GLOBAL_DATA. Optional.
+    :param process_success: Flag indicating if the process was successful. Default is True.
+    :param process_type: Type of process ('Mutation', 'Mating', etc.). Default is 'Mutation'.
+    """
+    operation = 'Mutated' if process_type == 'Mutation' else 'Mated'
+
+    if process_success:
+        ind[0] = new_gene_id
+        ind = creator.Individual([new_gene_id])
+        if old_gene_id is not None and old_gene_id in GLOBAL_DATA.keys():
+            del GLOBAL_DATA[old_gene_id]
+        print(f'\t☑ {operation}: {new_gene_id}')
+    else:
+        print(f'\t☠ Failed {operation}: {new_gene_id}')
+        if new_gene_id in GLOBAL_DATA.keys():
+            del GLOBAL_DATA[new_gene_id]
+        if old_gene_id is not None:
+            ind[0] = old_gene_id
+            ind = creator.Individual([old_gene_id])
+
+    return ind
+
+
+# TODO: I need to cycle through by the job id to match the sub order
+def delayed_mate_check(offspring):
+    if DELAYED_CHECK is True:
+        for individual in offspring:
+            k = individual[0]
+            if k in GLOBAL_DATA and GLOBAL_DATA[k]["status"] == "DELAYED_CHECK":
+                GLOBAL_DATA[k]["status"]="subbed file"
+                successful_sub_flag = GLOBAL_DATA[k]["sub_flag"]
+                new_gene_id, job_id = k, GLOBAL_DATA[k]["job_id"]
+                print(f'Delayed Mating Check: {new_gene_id}, LLM Job ID: {job_id}')
+                print(f'\t‣ Checking for Crossover Job Completion: {job_id} for {new_gene_id}')
+                job_done = check4job_completion(job_id)
+
+                if job_done:
+                    print(f'\t‣ Model Files for {new_gene_id} are Loaded', flush=True) 
+                else: 
+                    print(f'\t‣ Error Loading Model Files for {new_gene_id}!!', flush=True)
+
+                failed_process = not (successful_sub_flag and job_done)
+                if failed_process:
+                    new_gene_id = LINKED_GENES[k]
+                    old_gene_id = k
+                else:
+                    new_gene_id = k
+                    old_gene_id = LINKED_GENES[k]
+                individual = update_individual(individual, new_gene_id, old_gene_id=old_gene_id, process_success=not failed_process, process_type='Mating')
+
+    return offspring
+
+
+def delayed_mutate_check(offspring):
+    if DELAYED_CHECK is True:
+        for individual in offspring:
+            k = individual[0]
+            if k in GLOBAL_DATA and GLOBAL_DATA[k]["status"] == "DELAYED_CHECK":
+                GLOBAL_DATA[k]["status"]="subbed file"
+                successful_sub_flag = GLOBAL_DATA[k]["sub_flag"]
+                if successful_sub_flag:
+                    new_gene_id = k
+                    job_id = GLOBAL_DATA[k]["job_id"]
+                    print(f'Delayed Mutation Check: {new_gene_id}, LLM Job ID: {job_id}', flush=True)
+                    print(f'\t‣ Checking for Mutation Job Completion: {job_id} for {new_gene_id}')
+                    job_done = check4job_completion(job_id)
+                    if job_done:
+                        print(f'\t‣ Model Files for {new_gene_id} are Loaded') 
+                    else: 
+                        print(f'\t☠ Error Loading Model Files for {new_gene_id}')
+
+                    failed_process = not (successful_sub_flag and job_done)
+                    old_gene_id = LINKED_GENES[k]
+                    individual = update_individual(individual, new_gene_id, old_gene_id=old_gene_id, process_success=not failed_process, process_type='Mutation')
+                  
+    return offspring
+         
+    
 # Custom crossover function
 def customCrossover(ind1, ind2):
     def combine_elements(ind1, ind2, temp_min=0.05, temp_max=0.4):
@@ -435,42 +422,41 @@ def customCrossover(ind1, ind2):
         GLOBAL_DATA[new_gene_id] = {'sub_flag':successful_sub_flag, 'job_id':job_id, 
                                     'status':'subbed file', 'fitness':None, 'start_time':time.time()}
         
+        if DELAYED_CHECK:
+            GLOBAL_DATA[new_gene_id]['status'] = 'DELAYED_CHECK'
+            return new_gene_id, None
+        
         if successful_sub_flag:
             print(f'\t‣ Checking for Crossover Job Completion: {job_id} for {new_gene_id}')
             job_done = check4job_completion(job_id)
-            print(f'\t‣ Model Files for {new_gene_id} are Loaded') if job_done else print(f'\t‣ Error Loading Model Files for {new_gene_id}!!!\n\n')
+            print(f'\t‣ Model Files for {new_gene_id} are Loaded') if job_done else print(f'\t‣ Error Loading Model Files for {new_gene_id}!!')
 
         failed_process = True if (successful_sub_flag is False) or (job_done is False) else False
         # Return the new gene ID
         return new_gene_id, failed_process
     
     global GLOBAL_DATA
+    global DELAYED_CHECK
     
     new_gene_id1, failed_process1 = combine_elements(ind1, ind2)
     new_gene_id2, failed_process2 = combine_elements(ind2, ind1)
     
-    if failed_process1 is False:
-        if ind1[0] in GLOBAL_DATA.keys():
-            del GLOBAL_DATA[ind1[0]]
+    if DELAYED_CHECK:
+        LINKED_GENES[new_gene_id1] = ind1[0]
+        LINKED_GENES[new_gene_id2] = ind2[0]
         ind1[0] = new_gene_id1
-        offspring1 = creator.Individual([new_gene_id1])
-        print(f'Mated: {new_gene_id1}')
-    else:
-        print(f'Failed Mate: {new_gene_id1}')
-        offspring1 = ind1
-        del GLOBAL_DATA[new_gene_id1]
-        
-    if failed_process2 is False:
-        if ind2[0] in GLOBAL_DATA.keys():
-            del GLOBAL_DATA[ind2[0]]
         ind2[0] = new_gene_id2
-        offspring2 = creator.Individual([new_gene_id2])
-        print(f'Mated: {new_gene_id2}')
-    else:
-        print(f'Failed Mate: {new_gene_id2}')
-        offspring2 = ind2
-        del GLOBAL_DATA[new_gene_id2]
         
+        offspring1 = creator.Individual([new_gene_id1])
+        offspring2 = creator.Individual([new_gene_id2])
+        return offspring1, offspring2
+
+    offspring1 = update_individual(ind1, new_gene_id1, old_gene_id=ind1[0], 
+                                   process_success=(not failed_process1), process_type='Mating')
+    
+    offspring2 = update_individual(ind2, new_gene_id2, old_gene_id=ind2[0], 
+                                   process_success=(not failed_process2), process_type='Mating')
+
     return offspring1, offspring2
 
 
@@ -484,6 +470,7 @@ def customMutation(individual, indpb, temp_min=0.05, temp_max=0.4):
     """
     # Check if mutation occurs (based on the mutation probability)
     # if random.random() < indpb: # TODO: connect this to temp
+    global DELAYED_CHECK
     out_dir = str(GENERATION)
     old_gene_id = individual[0]
     # Generate a new gene ID
@@ -504,23 +491,22 @@ def customMutation(individual, indpb, temp_min=0.05, temp_max=0.4):
     # Update the global data with the new task
     GLOBAL_DATA[new_gene_id] = {'sub_flag':successful_sub_flag, 'job_id':job_id, 
                                 'status':'subbed file', 'fitness':None, 'start_time':time.time()}
-
+    
+    if DELAYED_CHECK:
+        LINKED_GENES[new_gene_id] = individual[0]
+        GLOBAL_DATA[new_gene_id]['status'] = 'DELAYED_CHECK'
+        individual[0] = new_gene_id
+        individual = creator.Individual([new_gene_id])
+        return individual
+    
+    
     if successful_sub_flag:
         print(f'\t‣ Checking for Mutation Job Completion: {job_id} for {new_gene_id}')
         job_done = check4job_completion(job_id)
-        print(f'\t‣ Model Files for {new_gene_id} are Loaded') if job_done else print(f'\t‣ Error Loading Model Files for {new_gene_id}')
+        print(f'\t‣ Model Files for {new_gene_id} are Loaded') if job_done else print(f'\t☠ Error Loading Model Files for {new_gene_id}')
 
-    failed_process = True if (successful_sub_flag is False) or (job_done is False) else False
-    
-    if failed_process is False:
-        individual[0] = new_gene_id
-        individual = creator.Individual([new_gene_id])
-        if old_gene_id in GLOBAL_DATA.keys():
-            del GLOBAL_DATA[old_gene_id]
-        print(f'Mutated: {new_gene_id}')
-    else:
-        print(f'Failed Mutate: {new_gene_id}')
-        del GLOBAL_DATA[new_gene_id]
+    individual = update_individual(individual, new_gene_id, old_gene_id,
+                                   process_success=(not failed_process), process_type='Mutation')
     return individual
 
 
@@ -564,7 +550,9 @@ def load_checkpoint(folder_name="checkpoints", checkpoint_file=None):
         with open(filepath, 'rb') as file:
             checkpoint_data = pickle.load(file)
         print(f"Loaded checkpoint from {filepath}")
-        return checkpoint_data, int(checkpoint_file.split('_')[2].split('.')[0])
+        start_gen = int(checkpoint_file.split('_')[2].split('.')[0])
+        start_gen = start_gen + 1
+        return checkpoint_data, start_gen
     return None, None
 
 
@@ -589,22 +577,21 @@ toolbox.register("select", true_nsga2)
 # TODO: start using percent diff of train acc vs val test acc as an over fitt metric 
 # 40398682
 
-# --- Parameters --- #
-GENERATION = 0
+
+
+LINKED_GENES = {}
 GLOBAL_DATA = {}
 GLOBAL_DATA_HIST = {}
-num_generations = 30  # Number of generations
-start_population_size = 24  # Size of the population
-population_size = 20 # with cx_prob (0.25) and mute_prob (0.7) you get about %50 successful turnover
-crossover_probability = 0.25  # Probability of mating two individuals
-mutation_probability = 0.7   # Probability of mutating an individual
-num_elites = 20
-
-hof_size = 100
-
 # Main Evolution Loop
 if __name__ == "__main__":
-    checkpoint, start_gen = load_checkpoint()
+    parser = argparse.ArgumentParser(description='Run Generation')
+    # Add arguments
+    parser.add_argument('checkpoints', type=str, help='Save Dir')
+    # Parse the arguments
+    args = parser.parse_args()
+    
+    print(DNA_TXT)
+    checkpoint, start_gen = load_checkpoint(folder_name=args.checkpoints)
     if checkpoint:
         box_print("LOADING CHECKPOINT")
         GLOBAL_DATA = checkpoint["GLOBAL_DATA"]
@@ -621,51 +608,66 @@ if __name__ == "__main__":
     # Evaluate the entire population
     for ind in population:
         ind.fitness.values = PLACEHOLDER_FITNESS
+        
     check_and_update_fitness(population)
     # Evolution
     for gen in range(start_gen, num_generations):
         box_print(f"STARTING GENERATION: {gen}", new_line_end=False)
+        print_population(population, GLOBAL_DATA)
+        box_print(f"Invalid Removal", print_bbox_len=60, new_line_end=False)
+        # Remove individuals with placeholder fitness
+        population = [ind for ind in population if ind.fitness.values != INVALID_FITNESS_MAX]
+        print_population(population, GLOBAL_DATA)
         # Select the next generation's parents
-        elites = tools.selSPEA2(population, num_elites) # elites = tools.selBest(population, num_elites)
+        box_print(f"Selection", print_bbox_len=60, new_line_end=False)
+        # These bypass the mutation and cross-over so we dont lose them
+        elites = tools.selSPEA2(population, num_elites)
         # Select the next generation's parents
         offspring = toolbox.select(population, population_size)
+        print_population(offspring, GLOBAL_DATA)
+        
+        print([len(GLOBAL_DATA_HIST), len(GLOBAL_DATA), len(population), len(offspring)])
         # Clone the selected individuals
         offspring = list(map(toolbox.clone, offspring))
         GLOBAL_DATA_HIST.update(GLOBAL_DATA.copy())
-        # Remove individuals with placeholder fitness
-        offspring = [ind for ind in offspring if ind.fitness.values != INVALID_FITNESS_MAX]
 
-
-        # Apply crossover and mutation on the offspring
+        # Apply crossover on the offspring
         box_print("Mating", print_bbox_len=60, new_line_end=False)
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
             if random.random() < crossover_probability:
-                toolbox.mate(child1, child2)
+                child1, child2 = toolbox.mate(child1, child2)
                 del child1.fitness.values
-                del child2.fitness.values
-
+                del child2.fitness.values 
+                
+        box_print("Batch Checking Mated Genes", print_bbox_len=60, new_line_end=False)       
+        offspring = delayed_mate_check(offspring)
+        print_population(offspring, GLOBAL_DATA)
+        
+        # Apply mutation on the offspring
         box_print("Mutating", print_bbox_len=60, new_line_end=False)
-        # Might need to re-init here
         for mutant in offspring:
             if random.random() < mutation_probability:
                 toolbox.mutate(mutant)
                 del mutant.fitness.values
-
+        box_print("Batch Checking Mutated Genes", print_bbox_len=60, new_line_end=False)
+        offspring = delayed_mutate_check(offspring)
+        print_population(offspring, GLOBAL_DATA)
+        
         # Add elites back to offspring. Usually before the mute and cross but in this case we save them
         offspring.extend(elites)
         # After merging the offspring and the elites
         offspring = remove_duplicates(offspring)
         elites_keys = [k[0] for k in elites]
-        
         # Bring back the elite history
-        for k in elites_keys: 
-            GLOBAL_DATA[k] = GLOBAL_DATA_HIST[k]
+        for k in elites_keys:
+            if k in GLOBAL_DATA_HIST.keys():
+                GLOBAL_DATA[k] = GLOBAL_DATA_HIST[k]
             """
             GLOBAL_DATA should have the job information and fitness values
             When it hits the below in check_and_update_fitness it will load the results from the dict 
                 if GLOBAL_DATA[gene_id]['status'] == "completed":
             """
-            
+           
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
         fitnesses = map(toolbox.evaluate, invalid_ind)
@@ -682,9 +684,12 @@ if __name__ == "__main__":
         # Gather all the fitnesses in one list and print the stats
         print_scores(population, FITNESS_WEIGHTS)
         hof.update(population)
-        save_checkpoint(gen)
+        save_checkpoint(gen, folder_name=args.checkpoints)
+        LINKED_GENES = {}
 
     print("-- End of Evolution --")
     best_ind = tools.selBest(population, 1)[0]
     print(f"Best Individual: {best_ind}")
     print(f"Best Fitness: {best_ind.fitness.values}")
+
+    

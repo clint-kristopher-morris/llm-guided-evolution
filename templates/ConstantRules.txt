@@ -1,0 +1,10 @@
+1. Revise the given code to improve the specified focus areas, ensuring not to introduce any features that don't directly enhance this section.
+2. Prioritize brevity in explanations, centering on the alterations made to the code.
+3. The revised code should seamlessly substitute the current code block.
+4. Ensure that it functions properly with default settings upon implementation.
+5. Maintain the existing names for all classes and methods.
+6. Present your enhanced code in Markdown format.
+7. Omit any code pertaining to initial setup or demonstrations.
+8. Confirm that the sizes of the tensor inputs and outputs remain unchanged.
+
+Take a deep breath and let us think step by step!

@@ -1,3 +1,6 @@
+# Parent Prompt: improvement_xm.txt Root Code: ./../sota/ExquisiteNetV2/network.py
+# --PROMPT LOG--
+
 import collections
 import argparse
 
@@ -72,6 +75,12 @@ class SE_LN(nn.Module):
         return x*y
 
 # --OPTION--
+
+# -- NOTE --
+# Note: The classes SE_LN and SE used in this architecture are pre-existing and fully implemented elsewhere. 
+# It is not necessary to create new implementations or modify these classes for this architecture. They should be used as-is. 
+# -- NOTE --
+
 def pad_num_x(k_s):
     pad_per_side = int((k_s-1)*0.5)
     return pad_per_side
@@ -139,14 +148,20 @@ class FCT(nn.Module):
         return x
 
 # --OPTION--
+import torch.nn as nn
+
 class MinPool2d_x(nn.Module):
     def __init__(self, ks, ceil_mode):
         super().__init__()
         self.ks = ks
         self.ceil_mode = ceil_mode
+        
+        # Added the following line to match 'Code Segment 2'
+        self.max_pool = nn.MaxPool2d(ks, ceil_mode=ceil_mode)
 
     def forward(self, x):
-        return -F.max_pool2d(-x, self.ks, ceil_mode=self.ceil_mode)
+        # Modified the following line to match 'Code Segment 2'
+        return -self.max_pool(-x)
 
 class EVE(nn.Module):
     def __init__(self, cin, cout):
@@ -164,7 +179,6 @@ class EVE(nn.Module):
         x = self.pw(x)
         x = self.bn(x)
         return x
-
 # --OPTION--
 class ME(nn.Module):
     def __init__(self, cin, cout):
@@ -180,28 +194,28 @@ class ME(nn.Module):
         return x
 
 # --OPTION--
-import torch.nn as nn
-
 def pad_num_y(k_s):
-    pad_per_side = int((k_s - 1) * 0.5)
+    pad_per_side = int((k_s-1)*0.5)
     return pad_per_side
-
+    
 class DW(nn.Module):
-    def __init__(self, cin, dw_s, p=0.25):
+    def __init__(self, cin, dw_s):
         super().__init__()
         self.dw = nn.Conv2d(cin, cin, dw_s, 1, pad_num_y(dw_s), groups=cin)
-        self.bn = nn.BatchNorm2d(cin)
-        self.dropout = nn.Dropout2d(p)
-        self.relu = nn.ReLU()
+        self.act = nn.Hardswish()
 
     def forward(self, x):
         x = self.dw(x)
-        x = self.bn(x)
-        x = self.dropout(x)
-        x = self.relu(x)
+        x = self.act(x)
         return x
 
 # --OPTION--
+
+# -- NOTE --
+# Note: The classes FCT, EVE, ME, and DFSEBV2 used in this architecture are pre-existing and fully implemented elsewhere. 
+# It is not necessary to create new implementations or modify these classes for this architecture. They should be used as-is. 
+# -- NOTE --
+
 class ExquisiteNetV2(nn.Module):
     def __init__(self, class_num, img_channels):
         super().__init__()

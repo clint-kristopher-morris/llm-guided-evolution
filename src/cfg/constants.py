@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 
-ROOT_DIR = "/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/GuidedEvolution"
+ROOT_DIR = "./"
 SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/ExquisiteNetV2')
 SEED_NETWORK = os.path.join(SOTA_ROOT, "network.py")
 # SEED_PACKAGE_DIR = "./sota/ExquisiteNetV2/divine_seed_module"
@@ -32,7 +32,7 @@ DELAYED_CHECK = True
 QC_CHECK_BOOL = False
 HUGGING_FACE_BOOL = True
 LLM_GPU = 'NVIDIAA100-SXM4-80GB|NVIDIAA10080GBPCIe|TeslaV100-PCIE-32GB|QuadroRTX4000|GeForceGTX1080Ti|GeForceGTX1080|TeslaV100-PCIE-32GB|TeslaV100S-PCIE-32GB'
-SOTA_ROOT = './../sota/ExquisiteNetV2'
+#SOTA_ROOT = './../sota/ExquisiteNetV2'
 
 PYTHON_BASH_SCRIPT_TEMPLATE = """#!/bin/bash
 #SBATCH --job-name=AIsur_x1

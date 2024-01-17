@@ -1,0 +1,6 @@
+Explore ways to reduce parameter count of this existing code snippet, while maintianing or improving accuracy.
+
+The current code block:
+```python
+{} 
+```

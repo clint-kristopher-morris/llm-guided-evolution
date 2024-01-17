@@ -1,4 +1,5 @@
 import os
+import copy
 import glob
 import time
 import string
@@ -12,6 +13,84 @@ from deap.tools import HallOfFame
 from src.utils.print_utils import print_population, print_scores, box_print, print_job_info
 from src.llm_utils import split_file, retrieve_base_code
 from src.cfg.constants import *
+
+
+def print_ancestery(data):
+    for gene in data.keys():
+        print(f'gene: {gene}')
+        print(f"\t{data[gene]['GENES']}")
+        print(f"\t{data[gene]['MUTATE_TYPE']}")
+        
+
+def update_ancestry(gene_id_child, gene_id_parent, ancestery, mutation_type=None, gene_id_parent2=None):
+    """
+    Updates the ancestry data for a given child gene based on its parent(s).
+
+    :param gene_id_child: The ID of the child gene.
+    :param gene_id_parent: The ID of the first parent gene.
+    :param ancestery: The global data structure for ancestry.
+    :param mutation_type: The type of mutation (for the first part of the code). Default is None.
+    :param gene_id_parent2: The ID of the second parent gene (for the second part of the code). Default is None.
+    """
+    # Common part for both functionalities
+    ancestery[gene_id_child] = copy.deepcopy(ancestery[gene_id_parent])
+
+    # Handle the specifics for either part 1 or part 2
+    if gene_id_parent2 is None:
+        # Part 1 functionality
+        ancestery[gene_id_child]['GENES'] = copy.deepcopy(ancestery[gene_id_parent]['GENES']) + [gene_id_child]
+        ancestery[gene_id_child]['MUTATE_TYPE'] = copy.deepcopy(ancestery[gene_id_parent]['MUTATE_TYPE']) + [mutation_type]
+    else:
+        # Part 2 functionality
+        cross_id = f'P:{gene_id_parent2}-C:{gene_id_child}'
+        ancestery[gene_id_child]['GENES'] = copy.deepcopy(ancestery[gene_id_parent]['GENES']) + [cross_id]
+        ancestery[gene_id_child]['MUTATE_TYPE'] = copy.deepcopy(ancestery[gene_id_parent]['MUTATE_TYPE']) + ["CrossOver"]
+
+    return ancestery
+
+
+def generate_template(PROB_EOT, GEN_COUNT, TOP_N_GENES, SOTA_ROOT, SEED_NETWORK, ROOT_DIR):
+    """
+    Generates a template based on given probabilities and gene information.
+
+    :param PROB_EOT: Probability for End of Tree (EoT) operation.
+    :param GEN_COUNT: Current generation count.
+    :param TOP_N_GENES: List of top N genes.
+    :param SOTA_ROOT: Directory path for state-of-the-art root.
+    :param SEED_NETWORK: Seed network file path.
+    :param ROOT_DIR: Root directory for templates.
+    :return: A tuple containing the template text and the mutation type.
+    """
+    if (PROB_EOT > np.random.uniform()) and (GEN_COUNT > 0):
+        print("\t‣ EoT")
+        top_gene = np.random.choice([x[0] for x in TOP_N_GENES])
+        parts_x = split_file(f"{SOTA_ROOT}/models/network_{top_gene}.py")
+        parts_y = split_file(SEED_NETWORK)
+        parts = [(x.strip(), y.strip(), idx) for idx, (x, y) in enumerate(zip(parts_x[1:], parts_y[1:]))]
+        random.shuffle(parts)
+        for x, y, augment_idx in parts:
+            if x.strip() != y.strip():
+                break
+                
+        eot_template_path = os.path.join(ROOT_DIR, 'templates/EoT/EoT.txt')
+        with open(eot_template_path, 'r') as file:
+            eot_template_txt = file.read()
+            
+        template_txt = eot_template_txt.format(x, y, "{}")
+        mute_type = "EoT"
+    else:
+        print("\t‣ FixedPrompts")
+        prompt_templates = glob.glob(f'{ROOT_DIR}/templates/FixedPrompts/*/*.txt')
+        template_path = np.random.choice(prompt_templates)
+        mute_type = os.path.basename(template_path).split('.')[0]  # Assuming the file extension needs to be removed
+        with open(template_path, 'r') as file:
+            template_txt = file.read()
+        with open(f'{ROOT_DIR}/templates/ConstantRules.txt', 'r') as file:
+            rules_txt = file.read()
+        template_txt = f'{template_txt}\n{rules_txt}'
+
+    return template_txt, mute_type
+
 
 
 """
@@ -32,50 +111,13 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
     QC_CHECK_BOOL = PROB_QC > np.random.uniform()
     gene_id_parent = fetch_gene(input_filename_x)
     gene_id_child = fetch_gene(output_filename)
-    print("\n\n")
     if python_file=='src/llm_mutation.py':
-        
-        if (0.5>np.random.uniform()) and (GEN_COUNT>0):
-            print("EoT")
-            top_gene = np.random.choice([x[0] for x in TOP_N_GENES])
-            parts_x = split_file(f"{SOTA_ROOT}/models/network_{top_gene}.py")
-            parts_y = split_file(SEED_NETWORK)
-            # parts_y = retrieve_base_code(SEED_NETWORK)
-            # Create tuples of parts to be augmented
-            parts = [(x.strip(), y.strip(), idx) for idx, (x, y) in enumerate(zip(parts_x[1:], parts_y[1:]))]
-            random.shuffle(parts)
-            # Find differing parts
-            for x, y, augment_idx in parts:
-                if x.strip() != y.strip():
-                    break
-                    
-            eot_template_path = os.path.join(ROOT_DIR, 'templates/EoT/EoT.txt')
-            with open(eot_template_path, 'r') as file:
-                eot_template_txt = file.read()
-                
-            template_txt = eot_template_txt.format(x, y, "{}")
-            mute_type = "EoT"
-
-        else:
-            print("FixedPrompts")
-            prompt_templates = glob.glob(f'{ROOT_DIR}/templates/FixedPrompts/*/*.txt')
-            template_path = np.random.choice(prompt_templates)
-            mute_type = os.path.basename(template_path)
-            with open(template_path, 'r') as file:
-                template_txt = file.read()
-            with open(f'{ROOT_DIR}/templates/ConstantRules.txt', 'r') as file:
-                rules_txt = file.read()
-            template_txt = f'{template_txt}\n{rules_txt}'
-
-        
+        template_txt, mute_type = generate_template(PROB_EOT, GEN_COUNT, TOP_N_GENES, 
+                                                    SOTA_ROOT, SEED_NETWORK, ROOT_DIR)
         if GEN_COUNT >= 0: # this does not need to happen at creation of population
-            box_print("Mute Path GLOBAL_DATA_ANCESTERY", print_bbox_len=60, new_line_end=False)
-            print(gene_id_child); print(GLOBAL_DATA_ANCESTERY[gene_id_parent])
-            GLOBAL_DATA_ANCESTERY[gene_id_child] = GLOBAL_DATA_ANCESTERY[gene_id_parent]
-            GLOBAL_DATA_ANCESTERY[gene_id_child]['GENES'] = GLOBAL_DATA_ANCESTERY[gene_id_parent]['GENES'].copy() + [gene_id_parent]
-            GLOBAL_DATA_ANCESTERY[gene_id_child]['MUTATE_TYPE'] = GLOBAL_DATA_ANCESTERY[gene_id_parent]['MUTATE_TYPE'].copy() + [mute_type]
-            print(gene_id_child); print(GLOBAL_DATA_ANCESTERY[gene_id_parent])
-        
+            GLOBAL_DATA_ANCESTERY = update_ancestry(gene_id_child, gene_id_parent, GLOBAL_DATA_ANCESTERY, 
+                                                    mutation_type=mute_type, gene_id_parent2=None)
+            # print(gene_id_child); print(GLOBAL_DATA_ANCESTERY[gene_id_parent])
         out_dir = str(GENERATION)
         file_path = os.path.join(out_dir, f'{gene_id_child}_model.txt')
         with open(file_path, 'w') as file:
@@ -86,15 +128,8 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
         
     elif python_file=='src/llm_crossover.py':
         gene_id_parent2 = fetch_gene(input_filename_y)
-        
-        box_print("Cross Path GLOBAL_DATA_ANCESTERY", print_bbox_len=60, new_line_end=False)
-        print(gene_id_child); print(GLOBAL_DATA_ANCESTERY[gene_id_parent])
-        
-        # new offspring gets parent_1's ANCESTERY with a link to parent_2 and when it happened
-        GLOBAL_DATA_ANCESTERY[gene_id_child] = GLOBAL_DATA_ANCESTERY[gene_id_parent]
-        idx = len(GLOBAL_DATA_ANCESTERY[gene_id_child]['GENES'])
-        GLOBAL_DATA_ANCESTERY[gene_id_child]['CROSS_OVERS'][idx] = gene_id_parent2
-        print(gene_id_child); print(GLOBAL_DATA_ANCESTERY[gene_id_parent])
+        GLOBAL_DATA_ANCESTERY = update_ancestry(gene_id_child, gene_id_parent, GLOBAL_DATA_ANCESTERY, 
+                                                mutation_type=mute_type, gene_id_parent2=gene_id_parent2)
         
         temp_text = f"{python_file} {input_filename_x} {input_filename_y} {output_filename} --top_p {top_p} --temperature {temperature}"
         python_runline = f"python {temp_text} --apply_quality_control '{QC_CHECK_BOOL}' --hugging_face {HUGGING_FACE_BOOL}"
@@ -137,7 +172,7 @@ def submit_bash(file_path, **kwargs):
     return successful_sub_flag, job_id
 
 
-def check4job_completion(job_id, check_interval=60, timeout=3600*1):
+def check4job_completion(job_id, check_interval=60, timeout=3600*3):
     """
     Check for the completion of a job by searching for its output file and scanning for errors.
 
@@ -203,7 +238,7 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
     # Log data
     GLOBAL_DATA[gene_id] = {'sub_flag':successful_sub_flag, 'job_id':job_id, 
                             'status':'subbed file', 'fitness':None, 'start_time':time.time()}
-    GLOBAL_DATA_ANCESTERY[gene_id] = {'SCORES':[], 'GENES':[], 'CROSS_OVERS':{}, 'MUTATE_TYPE':[]}
+    GLOBAL_DATA_ANCESTERY[gene_id] = {'GENES':[gene_id], 'MUTATE_TYPE':["CREATED"]}
     
     individual = container([gene_id])  # Assign a file ID
     
@@ -224,7 +259,7 @@ def submit_run(gene_id):
     def write_bash_script_py(gene_id, train_file='./../sota/ExquisiteNetV2/train.py'):
         tmp = "-data cifar10 -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
         # python_runline = f'python {train_file} -bs 384 -network "models.network_{gene_id}" {tmp}'
-        python_runline = f'python {train_file} -epoch 2 -bs 216 -network "models.network_{gene_id}" {tmp}'
+        python_runline = f'python {train_file} -bs 216 -network "models.network_{gene_id}" {tmp}'
         bash_script_content = PYTHON_BASH_SCRIPT_TEMPLATE.format(python_runline)
         return bash_script_content
 
@@ -317,7 +352,7 @@ def check4results(gene_id):
         pass
         
 
-def check_and_update_fitness(population, timeout=3600*4, loop_delay=60*5):
+def check_and_update_fitness(population, timeout=3600*30, loop_delay=60*30):
     """ This function submits jobs and then if submitted it checks for four possibilities.
     
     timeout: (int): seconds until the model run is killed and assigned the max error
@@ -402,7 +437,7 @@ def update_individual(ind, new_gene_id, old_gene_id=None, process_success=True, 
         if old_gene_id is not None and old_gene_id in GLOBAL_DATA.keys():
             del GLOBAL_DATA[old_gene_id]
         print(f'\t☑ {operation}: {new_gene_id}')
-        GLOBAL_DATA_ANCESTERY[new_gene_id] = {'SCORES':[], 'GENES':[], 'CROSS_OVERS':{}, 'MUTATE_TYPE':[]}
+        # GLOBAL_DATA_ANCESTERY[new_gene_id] = {'SCORES':[], 'GENES':[], 'CROSS_OVERS':{}, 'MUTATE_TYPE':[]}
     else:
         print(f'\t☠ Failed {operation}: {new_gene_id}')
         if new_gene_id in GLOBAL_DATA.keys():
@@ -717,12 +752,11 @@ if __name__ == "__main__":
         ind.fitness.values = PLACEHOLDER_FITNESS
         
     check_and_update_fitness(population)
-    box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
-    print(GLOBAL_DATA_ANCESTERY)
+    # print_ancestery(GLOBAL_DATA_ANCESTERY)
     # Evolution
     for gen in range(start_gen, num_generations):
         GEN_COUNT = gen
-        TOP_N_GENES = tools.selSPEA2(population, 1)
+        TOP_N_GENES = tools.selSPEA2(population, NUM_EOT_ELITES)
         box_print(f"STARTING GENERATION: {gen}", new_line_end=False)
         print_population(population, GLOBAL_DATA)
         box_print(f"Invalid Removal", print_bbox_len=60, new_line_end=False)
@@ -742,8 +776,8 @@ if __name__ == "__main__":
         offspring = list(map(toolbox.clone, offspring))
         GLOBAL_DATA_HIST.update(GLOBAL_DATA.copy())
 
-        box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
-        print(GLOBAL_DATA_ANCESTERY)
+        # box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
+        # print_ancestery(GLOBAL_DATA_ANCESTERY)
         # Apply crossover on the offspring
         box_print("Mating", print_bbox_len=60, new_line_end=False)
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
@@ -752,8 +786,8 @@ if __name__ == "__main__":
                 del child1.fitness.values
                 del child2.fitness.values 
                 
-        box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
-        print(GLOBAL_DATA_ANCESTERY)
+        # box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
+        # print_ancestery(GLOBAL_DATA_ANCESTERY)
                 
         box_print("Batch Checking Mated Genes", print_bbox_len=60, new_line_end=False)       
         offspring = delayed_mate_check(offspring)
@@ -767,7 +801,7 @@ if __name__ == "__main__":
                 del mutant.fitness.values
                 
         box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
-        print(GLOBAL_DATA_ANCESTERY)
+        print_ancestery(GLOBAL_DATA_ANCESTERY)
                 
         box_print("Batch Checking Mutated Genes", print_bbox_len=60, new_line_end=False)
         offspring = delayed_mutate_check(offspring)

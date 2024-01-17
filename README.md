@@ -10,3 +10,9 @@ _____
 <p align="center">
   <img src="https://i.ibb.co/FhRS6Fg/ezgif-com-animated-gif-maker.gif" alt="">
 </p>
+
+<br>
+
+#### Working Docs for Paper:
+____
+[Google Drive Folder]([/guides/content/editing-an-existing-page](https://drive.google.com/drive/folders/1TtODYzUK9TV8VrnOZOX29rM9WiRLbDv_?usp=sharing)https://drive.google.com/drive/folders/1TtODYzUK9TV8VrnOZOX29rM9WiRLbDv_?usp=sharing)

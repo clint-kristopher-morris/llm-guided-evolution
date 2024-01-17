@@ -24,7 +24,7 @@ def get_args():
     # won't really run 1000 epochs, when lr less than end_lr, training will be stopped
     parser.add_argument('-epoch', type=int, default=1000)
     parser.add_argument('-save_dir', type=str, default="weight", help="path where the weight will be saved")
-    parser.add_argument('-bs', type=int, default=128)
+    parser.add_argument('-bs', type=int, default=192)
     parser.add_argument('-opt', type=str, default="sgd", help="optimizer")
     parser.add_argument('-init_lr', type=float, default=0.1, help="initial learning rate")
     parser.add_argument('-lr_df', type=float, default=0.7, help="learning rate decent factor")
@@ -33,7 +33,7 @@ def get_args():
     parser.add_argument('-imgsz', type=int, default=224, help="image size")
     # parser.add_argument('-imgsz', type=int, default=124, help="image size")
     parser.add_argument('-val_r', type=float, default=0, help="ratio of val dataset accounting for training set")
-    parser.add_argument('-worker', default=4)
+    parser.add_argument('-worker', default=8)
     parser.add_argument('-seed', default=None)
     parser.add_argument('-network', type=str, default="network", help="model file")
     return parser.parse_args()
@@ -224,6 +224,7 @@ def main():
     print(f"Best weight and tensorboard is in", save_dir) 
     print()
     
+    overfit_metric = abs(tr_acc-test_acc)/tr_acc
     total_params = sum(p.numel() for p in model.parameters())
     results_text = f"{test_acc},{total_params},{val_acc},{tr_time}"
     

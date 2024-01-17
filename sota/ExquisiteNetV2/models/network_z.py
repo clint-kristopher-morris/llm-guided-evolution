@@ -1,3 +1,7 @@
+
+====================
+# --PROMPT LOG--
+
 import collections
 import argparse
 
@@ -72,6 +76,12 @@ class SE_LN(nn.Module):
         return x*y
 
 # --OPTION--
+
+# -- NOTE --
+# Note: The classes SE_LN and SE used in this architecture are pre-existing and fully implemented elsewhere. 
+# It is not necessary to create new implementations or modify these classes for this architecture. They should be used as-is. 
+# -- NOTE --
+
 def pad_num_x(k_s):
     pad_per_side = int((k_s-1)*0.5)
     return pad_per_side
@@ -166,41 +176,31 @@ class EVE(nn.Module):
         return x
 
 # --OPTION--
-class ME(nn.Module):
-    def __init__(self, cin, cout):
-        super().__init__()
-        self.maxpool = nn.MaxPool2d(2, ceil_mode=True)
-        self.pw = nn.Conv2d(cin, cout, 1, 1, bias=False)
-        self.bn = nn.BatchNorm2d(cout)
-
-    def forward(self, x):
-        x = self.maxpool(x)
-        x = self.pw(x)
-        x = self.bn(x)
-        return x
-
+if self.wd > 0:
+    x = x + self.wd * x
 # --OPTION--
-import torch.nn as nn
-
 def pad_num_y(k_s):
-    pad_per_side = int((k_s - 1) * 0.5)
+    pad_per_side = int((k_s-1)*0.5)
     return pad_per_side
-
+    
 class DW(nn.Module):
-    def __init__(self, cin, dw_s, p=0.25):
+    def __init__(self, cin, dw_s):
         super().__init__()
         self.dw = nn.Conv2d(cin, cin, dw_s, 1, pad_num_y(dw_s), groups=cin)
-        self.bn = nn.BatchNorm2d(cin)
-        self.dropout = nn.Dropout2d(p)
         self.act = nn.Hardswish()
 
     def forward(self, x):
         x = self.dw(x)
-        x = self.bn(x)
-        x = self.dropout(x)
         x = self.act(x)
         return x
+
 # --OPTION--
+
+# -- NOTE --
+# Note: The classes FCT, EVE, ME, and DFSEBV2 used in this architecture are pre-existing and fully implemented elsewhere. 
+# It is not necessary to create new implementations or modify these classes for this architecture. They should be used as-is. 
+# -- NOTE --
+
 class ExquisiteNetV2(nn.Module):
     def __init__(self, class_num, img_channels):
         super().__init__()

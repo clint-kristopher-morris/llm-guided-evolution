@@ -1,0 +1,6 @@
+As a globally acclaimed AI researcher, celebrated for your innovative and unconventional approaches, you are now assigned the task of developing a new variant of this code snippet. This variants will undergo rapid testing to evaluate any enhancements in accuracy. For this particular snippet, we encourage you to explore significant and complex modifications that could potentially elevate the model's performance. Creating needed helper functions is encouraged!
+
+The current code block:
+```python
+{} 
+```

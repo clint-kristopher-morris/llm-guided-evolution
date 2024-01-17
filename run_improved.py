@@ -29,21 +29,20 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
     def fetch_gene(filepath):
         return os.path.basename(filepath).replace('network_','').replace('.py','')
     
-
-
     QC_CHECK_BOOL = PROB_QC > np.random.uniform()
     gene_id_parent = fetch_gene(input_filename_x)
     gene_id_child = fetch_gene(output_filename)
-    
+    print("\n\n")
     if python_file=='src/llm_mutation.py':
         
         if (0.5>np.random.uniform()) and (GEN_COUNT>0):
             print("EoT")
             top_gene = np.random.choice([x[0] for x in TOP_N_GENES])
             parts_x = split_file(f"{SOTA_ROOT}/models/network_{top_gene}.py")
-            parts_y = retrieve_base_code(SEED_NETWORK)
+            parts_y = split_file(SEED_NETWORK)
+            # parts_y = retrieve_base_code(SEED_NETWORK)
             # Create tuples of parts to be augmented
-            parts = [(x.strip(), y.strip(), idx) for idx, (x, y) in enumerate(zip(parts_x[1:], parts_y))]
+            parts = [(x.strip(), y.strip(), idx) for idx, (x, y) in enumerate(zip(parts_x[1:], parts_y[1:]))]
             random.shuffle(parts)
             # Find differing parts
             for x, y, augment_idx in parts:
@@ -90,6 +89,8 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
         
         box_print("Cross Path GLOBAL_DATA_ANCESTERY", print_bbox_len=60, new_line_end=False)
         print(gene_id_child); print(GLOBAL_DATA_ANCESTERY[gene_id_parent])
+        
+        # new offspring gets parent_1's ANCESTERY with a link to parent_2 and when it happened
         GLOBAL_DATA_ANCESTERY[gene_id_child] = GLOBAL_DATA_ANCESTERY[gene_id_parent]
         idx = len(GLOBAL_DATA_ANCESTERY[gene_id_child]['GENES'])
         GLOBAL_DATA_ANCESTERY[gene_id_child]['CROSS_OVERS'][idx] = gene_id_parent2
@@ -716,6 +717,8 @@ if __name__ == "__main__":
         ind.fitness.values = PLACEHOLDER_FITNESS
         
     check_and_update_fitness(population)
+    box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
+    print(GLOBAL_DATA_ANCESTERY)
     # Evolution
     for gen in range(start_gen, num_generations):
         GEN_COUNT = gen
@@ -739,6 +742,8 @@ if __name__ == "__main__":
         offspring = list(map(toolbox.clone, offspring))
         GLOBAL_DATA_HIST.update(GLOBAL_DATA.copy())
 
+        box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
+        print(GLOBAL_DATA_ANCESTERY)
         # Apply crossover on the offspring
         box_print("Mating", print_bbox_len=60, new_line_end=False)
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
@@ -746,6 +751,9 @@ if __name__ == "__main__":
                 child1, child2 = toolbox.mate(child1, child2)
                 del child1.fitness.values
                 del child2.fitness.values 
+                
+        box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
+        print(GLOBAL_DATA_ANCESTERY)
                 
         box_print("Batch Checking Mated Genes", print_bbox_len=60, new_line_end=False)       
         offspring = delayed_mate_check(offspring)
@@ -757,6 +765,10 @@ if __name__ == "__main__":
             if random.random() < mutation_probability:
                 toolbox.mutate(mutant)
                 del mutant.fitness.values
+                
+        box_print(f"GLOBAL_DATA_ANCESTERY", new_line_end=False)
+        print(GLOBAL_DATA_ANCESTERY)
+                
         box_print("Batch Checking Mutated Genes", print_bbox_len=60, new_line_end=False)
         offspring = delayed_mutate_check(offspring)
         print_population(offspring, GLOBAL_DATA)

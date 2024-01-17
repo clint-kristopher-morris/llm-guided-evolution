@@ -121,7 +121,7 @@ def submit_bash(file_path, **kwargs):
         job_id
     """
     create_bash_file(file_path, **kwargs)
-    result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+    result = subprocess.run(["bash", file_path], capture_output=True, text=True)
 
     if result.returncode == 0:
         print("\t‣ Output:", result.stdout.strip(), flush=True)
@@ -236,7 +236,7 @@ def submit_run(gene_id):
 
     def submit_bash_py(file_path, gene_id, **kwargs):
         create_bash_file_py(file_path, gene_id, **kwargs)
-        result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+        result = subprocess.run(["bash", file_path], capture_output=True, text=True)
         if result.returncode == 0:
             print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip())
             successful_sub_flag = True

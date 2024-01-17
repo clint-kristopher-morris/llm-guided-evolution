@@ -1,4 +1,4 @@
-## Guided Evolution:
+## LLM Guided Evolution: The Automation of Models Advancing Models
 
 <p align="center">
   <img src="https://i.ibb.co/whMScMY/Picture1.png" alt="">

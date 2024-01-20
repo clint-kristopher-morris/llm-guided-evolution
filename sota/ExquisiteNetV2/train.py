@@ -41,7 +41,7 @@ def get_args():
 
 def main():
     # ADDED FOR LLM
-    os.chdir('./../sota/ExquisiteNetV2')
+    os.chdir('./sota/ExquisiteNetV2')
     args = get_args()
     
     # Import the module dynamically
@@ -229,6 +229,10 @@ def main():
     results_text = f"{test_acc},{total_params},{val_acc},{tr_time}"
     
     filename = f'results/{gene_id}_results.txt'
+    
+    dir_path = os.path.dirname(filename)
+    # Create the directory, ignore error if it already exists
+    os.makedirs(dir_path, exist_ok=True)
     # Open the file in write mode and write the text
     with open(filename, 'w') as file:
         file.write(results_text)

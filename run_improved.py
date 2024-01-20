@@ -108,7 +108,15 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
     def fetch_gene(filepath):
         return os.path.basename(filepath).replace('network_','').replace('.py','')
     
+    global GLOBAL_DATA_ANCESTERY
+    
     QC_CHECK_BOOL = PROB_QC > np.random.uniform()
+    
+    # Extract the directory path from the file path
+    dir_path = os.path.dirname(output_filename)
+    # Create the directory, ignore error if it already exists
+    os.makedirs(dir_path, exist_ok=True)
+    
     gene_id_parent = fetch_gene(input_filename_x)
     gene_id_child = fetch_gene(output_filename)
     if python_file=='src/llm_mutation.py':
@@ -120,6 +128,7 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
             # print(gene_id_child); print(GLOBAL_DATA_ANCESTERY[gene_id_parent])
         out_dir = str(GENERATION)
         file_path = os.path.join(out_dir, f'{gene_id_child}_model.txt')
+        os.makedirs(out_dir, exist_ok=True)
         with open(file_path, 'w') as file:
             file.write(template_txt)
             
@@ -129,7 +138,7 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
     elif python_file=='src/llm_crossover.py':
         gene_id_parent2 = fetch_gene(input_filename_y)
         GLOBAL_DATA_ANCESTERY = update_ancestry(gene_id_child, gene_id_parent, GLOBAL_DATA_ANCESTERY, 
-                                                mutation_type=mute_type, gene_id_parent2=gene_id_parent2)
+                                                mutation_type=None, gene_id_parent2=gene_id_parent2)
         
         temp_text = f"{python_file} {input_filename_x} {input_filename_y} {output_filename} --top_p {top_p} --temperature {temperature}"
         python_runline = f"python {temp_text} --apply_quality_control '{QC_CHECK_BOOL}' --hugging_face {HUGGING_FACE_BOOL}"
@@ -256,9 +265,9 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
 
 
 def submit_run(gene_id):
-    def write_bash_script_py(gene_id, train_file='./../sota/ExquisiteNetV2/train.py'):
-        tmp = "-data cifar10 -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
-        # python_runline = f'python {train_file} -bs 384 -network "models.network_{gene_id}" {tmp}'
+    def write_bash_script_py(gene_id, train_file='./sota/ExquisiteNetV2/train.py'):
+        tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
+        # python_runline = f'python {train_file} -bs 216 -epoch 2 -network "models.network_{gene_id}" {tmp}'
         python_runline = f'python {train_file} -bs 216 -network "models.network_{gene_id}" {tmp}'
         bash_script_content = PYTHON_BASH_SCRIPT_TEMPLATE.format(python_runline)
         return bash_script_content
@@ -299,7 +308,8 @@ def evalModel(individual):
 
 def check4model2run(gene_id):
     # model_path = os.path.join(str(GENERATION), f'{gene_id}_model.txt')
-    print(f'Checking for: {SOTA_ROOT}/models/network_{gene_id}.py')
+    
+    print(f'Checking for: SOTA_ROOT ./models/network_{gene_id}.py')
     model_path = f'{SOTA_ROOT}/models/network_{gene_id}.py'
     if os.path.exists(model_path):
         if GLOBAL_DATA[gene_id]['status'] != 'running eval':
@@ -374,6 +384,10 @@ def check_and_update_fitness(population, timeout=3600*30, loop_delay=60*30):
         for ind in population:
             gene_id = ind[0]
             # check if failed job
+            if gene_id not in GLOBAL_DATA:
+                GLOBAL_DATA[gene_id] = {'sub_flag':False, 'job_id':'None', 'status':'completed', 
+                                        'fitness':INVALID_FITNESS_MAX, 'start_time':time.time()}
+            
             if GLOBAL_DATA[gene_id]['sub_flag']==False:
                 ind.fitness.values = INVALID_FITNESS_MAX # Max error
                 GLOBAL_DATA[gene_id]['status'] == "completed"

@@ -14,4 +14,4 @@ source /opt/apps/Module/anaconda3/2021.11/bin/activate
 conda activate AIsurBL
 conda info
 
-python run_improved.py checkpoints_eot
+python run_improved.py checkpoints_no_eot

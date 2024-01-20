@@ -1,3 +1,4 @@
+import os
 import argparse
 import random
 from cfg.constants import *
@@ -40,7 +41,7 @@ def augment_network(input_filename_x, input_filename_y, output_filename,
     parts_x[augment_idx] = f"\n{note_txt}{code_from_llm}\n"
     # Prepare and write the augmented code to output file
     write_augmented_code(output_filename, parts_x, parts_y)
-    box_print(f"Python code saved to {output_filename}", print_bbox_len=120, new_line_end=False)
+    box_print(f"Python code saved to {os.path.basename(output_filename)}", print_bbox_len=120, new_line_end=False)
     print('Job done')
 
 

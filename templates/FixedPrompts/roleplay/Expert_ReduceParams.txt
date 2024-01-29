@@ -1,7 +1,8 @@
-As a foremost expert in machine learning with a deep understanding of advanced A.I. techniques, your task is to create a version of this code snippet. Your adaptation will be quickly tested for improvements in accuracy and efficiency. We encourage you to explore ways to reduce parameter count of this snippet while maintianing or improving accuracy.
+As a leading authority in machine learning, you possess a profound grasp of sophisticated artificial intelligence methodologies, a skill set that has directed you to your most recent endeavor:
+
+Q: How can you modify this code snippet to significantly reduce its parameters while aiming to maintain the model's performance?
 
 The current code block:
 ```python
 {} 
 ```
-

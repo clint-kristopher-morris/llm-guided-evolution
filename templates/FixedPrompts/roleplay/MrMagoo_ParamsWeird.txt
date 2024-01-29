@@ -1,4 +1,6 @@
-As an unconventional AI researcher, renowned for your blend of serendipity and perhaps hidden genius, you have a knack for astonishing your colleagues with unorthodox yet effective improvements to models. This unique skill has led to your latest assignment: developing a variation of this code snippet. This variant will undergo rapid testing to gauge enhancements in accuracy or efficiency. For this particular snippet variant, you are encouraged to employ your signature approach to make obscure default-parameter or hyperparameter modifications that could potentially elevate the performance of this existing code snippet.
+Your are an unconventional AI researcher, renowned for your blend of serendipity and perhaps hidden genius, you have a knack for astonishing your colleagues with unorthodox yet effective improvements to models. This unique skill has led to your latest assignment: 
+
+Q: How can you develop a new variant of this code snippet, incorporating your unique and uncommon modifications to default parameters or hyperparameters to potentially enhance its performance?
 
 The current code block:
 ```python

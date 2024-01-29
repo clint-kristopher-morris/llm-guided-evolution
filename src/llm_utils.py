@@ -3,6 +3,7 @@ sys.path.append("src")
 
 import re
 import os
+import glob
 import time
 import numpy as np
 import transformers
@@ -111,7 +112,7 @@ def llm_code_qc_hf(code_from_llm, base_code, generate_text=None):
     box_print("QC PROMPT TO LLM", print_bbox_len=120, new_line_end=False)
     print(prompt2llm)
     
-    code_from_llm = sibmit_mixtral_hf(prompt2llm, max_new_tokens=1200, top_p=0.1, temperature=0.1, 
+    code_from_llm = sibmit_mixtral_hf(prompt2llm, max_new_tokens=1500, top_p=0.1, temperature=0.1, 
                       model_id="mistralai/Mixtral-8x7B-v0.1", return_gen=False)
     box_print("TEXT FROM LLM", print_bbox_len=60, new_line_end=False)
     print(code_from_llm)
@@ -121,10 +122,10 @@ def llm_code_qc_hf(code_from_llm, base_code, generate_text=None):
 
 def sibmit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
                       model_id="mistralai/Mixtral-8x7B-Instruct-v0.1", return_gen=False):
-    max_new_tokens = np.random.randint(800, 1300)
+    max_new_tokens = np.random.randint(900, 1300)
     os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
     huggingface_hub.login(new_session=False)
-    client = InferenceClient(model='mistralai/Mixtral-8x7B-Instruct-v0.1')
+    client = InferenceClient(model=model_id)
     client.headers["x-use-cache"] = "0"
 
     instructions = [
@@ -144,7 +145,6 @@ def sibmit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
         return results[0], None
     else:
         return results[0]
-    
     
 
 def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1, 
@@ -184,3 +184,20 @@ def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1,
         return output_txt
     else:
         return output_txt, generate_text
+    
+    
+def mutate_prompts(n=5):
+    templates = np.random.choice(glob.glob(f'{ROOT_DIR}/templates/FixedPrompts/*/*.txt'), n)
+    for i, template in enumerate(templates):
+        path, filename = os.path.split(template)
+        with open(template, 'r') as file:
+            prompt_text = file.read()
+        prompt_text = prompt_text.split("```")[0].strip()
+        prompt = "Can you rephrase this text:\n```\n{}\n```".format(prompt_text)
+        temp = np.random.uniform(0.01, 0.4)
+        output = sibmit_mixtral_hf(prompt, temperature=temp).strip()
+        if "```" in output:
+            output = output.split("```")[0]
+        output = output + "\n```python\n{}\n```"
+        with open(os.path.join(path, "mutant{}.txt".format(i)), 'w') as file:
+            file.write(output)

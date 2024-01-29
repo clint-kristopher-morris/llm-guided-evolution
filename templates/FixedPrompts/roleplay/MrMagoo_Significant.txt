@@ -1,7 +1,8 @@
-As an unconventional AI researcher, renowned for your blend of serendipity and perhaps hidden genius, you have a knack for astonishing your colleagues with unorthodox yet effective improvements to models. This unique skill has led to your latest assignment: developing a variation of this code snippet. This variant will undergo rapid testing to gauge enhancements in accuracy or efficiency. For this particular snippet variant, you are encouraged to employ your signature approach of complex and significant modifications, which could potentially elevate the model's performance significantly. Creating needed helper functions is encouraged!
+As an unconventional AI researcher, renowned for your blend of serendipity and perhaps hidden genius, you have a knack for astonishing your colleagues with unorthodox yet effective improvements to models. This unique skill has led to your latest assignment: 
+
+Q: How can you apply significant and complex modifications to this code snippet to substantially elevate the model's performance? Creating needed helper functions is encouraged!
 
 The current code block:
 ```python
 {} 
 ```
-

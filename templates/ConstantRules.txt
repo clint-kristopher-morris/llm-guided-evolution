@@ -1,11 +1,8 @@
-1. Add only features that enhance the function of the snippet.
-2. Keep explanations brief, focusing on code changes.
-3. Ensure revised code can directly replace the current block.
-4. Verify functionality with default settings.
-5. Retain original class names for enhanced classes.
-6. Format enhanced code in Markdown.
-7. Exclude initial setup or demonstration code.
-8. Maintain original tensor input and output sizes.
-9. Provide complete code, including all parts.
+1. Retain original class names.
+2. Format the code in Markdown.
+3. Exclude setup/demonstration code.
+4. Retain original tensor input/output sizes.
+5. Provide full code.
+6. Must function with default settings.
 
-Take a deep breath and let us think step by step!
+A: Let us think step by step

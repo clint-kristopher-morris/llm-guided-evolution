@@ -2,8 +2,8 @@ import os
 import numpy as np
 
 
-ROOT_DIR = "/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/GuidedEvolution/NoEoT"
-DATA_PATH = "/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/GuidedEvolution/sota/ExquisiteNetV2/cifar10"
+ROOT_DIR = "GuidedEvolution"
+DATA_PATH = "GuidedEvolution/sota/ExquisiteNetV2/cifar10"
 SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/ExquisiteNetV2')
 SEED_NETWORK = os.path.join(SOTA_ROOT, "network.py")
 # SEED_PACKAGE_DIR = "./sota/ExquisiteNetV2/divine_seed_module"
@@ -19,13 +19,13 @@ PLACEHOLDER_FITNESS = tuple([int(x*9999999999*-1) for x in FITNESS_WEIGHTS])
 NUM_EOT_ELITES = 10
 GENERATION = 0
 PROB_QC = 0.0
-PROB_EOT = 0.0
+PROB_EOT = 0.25
 num_generations = 30  # Number of generations
-start_population_size = 96   # Size of the population 124=72
-population_size = 36 # with cx_prob (0.25) and mute_prob (0.7) you get about %50 successful turnover
-crossover_probability = 0.45  # Probability of mating two individuals
-mutation_probability = 0.75 # Probability of mutating an individual
-num_elites = 36
+start_population_size = 144   # Size of the population 124=72
+population_size = 44 # with cx_prob (0.25) and mute_prob (0.7) you get about %50 successful turnover
+crossover_probability = 0.35  # Probability of mating two individuals
+mutation_probability = 0.8 # Probability of mutating an individual
+num_elites = 44
 hof_size = 100
 
 
@@ -41,7 +41,7 @@ PYTHON_BASH_SCRIPT_TEMPLATE = """#!/bin/bash
 #SBATCH --job-name=AIsur_x1
 #SBATCH -t 8-00:00
 #SBATCH --gres=gpu:1
-#SBATCH -C "QuadroP4000|QuadroRTX4000|GeForceGTX1080"
+#SBATCH -C "NVIDIAA100-SXM4-80GB|NVIDIAA10080GBPCIe|TeslaV100-PCIE-32GB|TeslaV100S-PCIE-32GB"
 #SBATCH --mem 8G
 #SBATCH -c 32
 echo "Launching AIsurBL"

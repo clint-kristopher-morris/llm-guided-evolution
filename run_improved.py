@@ -11,7 +11,7 @@ import numpy as np
 from deap import base, creator, tools
 from deap.tools import HallOfFame
 from src.utils.print_utils import print_population, print_scores, box_print, print_job_info
-from src.llm_utils import split_file, retrieve_base_code
+from src.llm_utils import split_file, retrieve_base_code, mutate_prompts
 from src.cfg.constants import *
 
 
@@ -854,7 +854,9 @@ if __name__ == "__main__":
         hof.update(population)
         save_checkpoint(gen, folder_name=args.checkpoints)
         LINKED_GENES = {}
-
+        # mutate x prompts
+        mutate_prompts()
+        
     print("-- End of Evolution --")
     best_ind = tools.selBest(population, 1)[0]
     print(f"Best Individual: {best_ind}")

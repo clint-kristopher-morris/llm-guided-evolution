@@ -1,4 +1,4 @@
-Q: What complex modifications can be explored to potentially enhance the performance of this existing code snippet?
+Explore complex modifications that could potentially elevate the performance of this existing code snippet.
 
 The current code block:
 ```python

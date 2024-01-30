@@ -23,5 +23,5 @@ The efficacy of the GE framework is exemplified in the evolution of the Exquisit
 ### Early Results On Small Run:
 _____
 <p align="center">
-  <img src="https://i.ibb.co/CHQtFK6/ezgif-com-animated-gif-maker-2.gif" alt="">
+  <img src="https://i.ibb.co/q0nHpdz/ezgif-com-animated-gif-maker-3.gif" alt="">
 </p>

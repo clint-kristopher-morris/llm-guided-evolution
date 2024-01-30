@@ -1,0 +1,3057 @@
+Launching AIsurBL
+ice176.icehammer.gtri.org
+
+     active environment : mix
+    active env location : /home/cmorris310/.conda/envs/mix
+            shell level : 3
+       user config file : /home/cmorris310/.condarc
+ populated config files : /home/cmorris310/.condarc
+          conda version : 4.10.3
+    conda-build version : 3.21.5
+         python version : 3.9.7.final.0
+       virtual packages : __cuda=11.6=0
+                          __linux=3.10.0=0
+                          __glibc=2.17=0
+                          __unix=0=0
+                          __archspec=1=x86_64
+       base environment : /opt/apps/Module/anaconda3/2021.11  (read only)
+      conda av data dir : /opt/apps/Module/anaconda3/2021.11/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+                          https://conda.anaconda.org/conda-forge/linux-64
+                          https://conda.anaconda.org/conda-forge/noarch
+                          https://conda.anaconda.org/pytorch/linux-64
+                          https://conda.anaconda.org/pytorch/noarch
+          package cache : /opt/apps/Module/anaconda3/2021.11/pkgs
+                          /home/cmorris310/.conda/pkgs
+       envs directories : /home/cmorris310/.conda/envs
+                          /opt/apps/Module/anaconda3/2021.11/envs
+               platform : linux-64
+             user-agent : conda/4.10.3 requests/2.27.1 CPython/3.9.7 Linux/3.10.0-1160.59.1.el7.x86_64 rhel/7.9 glibc/2.17
+                UID:GID : 589015151:589015151
+             netrc file : None
+           offline mode : False
+
+
+==================================================
+You are training the data: cifar10
+Model weight will be saved to: weight/xXxT4ivwfr3gBdc9W11Q1ZYnFSq
+Device: cuda
+num of params: 0.2950 M
+train num: 40000
+val num: 10000
+single data shape: torch.Size([3, 224, 224])
+==================================================
+train with auto mixed precision training!!!
+
+start training...
+
+
+Epoch 1
+----------
+tr set: 186/186tr time: 26
+    tr  loss: 2.0403      tr  acc: 0.2312
+min tr  loss: 2.0403  max tr  acc: 0.2312
+    val loss: 2.0510      val acc: 0.2374
+min val loss: 2.0510  max val acc: 0.2374
+LR in this epoch:  0.100000
+
+Epoch 2
+----------
+tr set: 186/186tr time: 55
+    tr  loss: 1.7933      tr  acc: 0.3267
+min tr  loss: 1.7933  max tr  acc: 0.3267
+    val loss: 2.0429      val acc: 0.2820
+min val loss: 2.0429  max val acc: 0.2820
+LR in this epoch:  0.100000
+
+Epoch 3
+----------
+tr set: 186/186tr time: 83
+    tr  loss: 1.6354      tr  acc: 0.3862
+min tr  loss: 1.6354  max tr  acc: 0.3862
+    val loss: 1.9517      val acc: 0.3351
+min val loss: 1.9517  max val acc: 0.3351
+LR in this epoch:  0.100000
+
+Epoch 4
+----------
+tr set: 186/186tr time: 111
+    tr  loss: 1.5367      tr  acc: 0.4313
+min tr  loss: 1.5367  max tr  acc: 0.4313
+    val loss: 1.7419      val acc: 0.3594
+min val loss: 1.7419  max val acc: 0.3594
+LR in this epoch:  0.100000
+
+Epoch 5
+----------
+tr set: 186/186tr time: 139
+    tr  loss: 1.4366      tr  acc: 0.4712
+min tr  loss: 1.4366  max tr  acc: 0.4712
+    val loss: 1.4402      val acc: 0.4789
+min val loss: 1.4402  max val acc: 0.4789
+LR in this epoch:  0.100000
+
+Epoch 6
+----------
+tr set: 186/186tr time: 167
+    tr  loss: 1.3458      tr  acc: 0.5100
+min tr  loss: 1.3458  max tr  acc: 0.5100
+    val loss: 1.4763      val acc: 0.4730
+min val loss: 1.4402  max val acc: 0.4789
+LR in this epoch:  0.100000
+
+Epoch 7
+----------
+tr set: 186/186tr time: 195
+    tr  loss: 1.2556      tr  acc: 0.5486
+min tr  loss: 1.2556  max tr  acc: 0.5486
+    val loss: 1.1805      val acc: 0.5716
+min val loss: 1.1805  max val acc: 0.5716
+LR in this epoch:  0.100000
+
+Epoch 8
+----------
+tr set: 186/186tr time: 223
+    tr  loss: 1.1641      tr  acc: 0.5825
+min tr  loss: 1.1641  max tr  acc: 0.5825
+    val loss: 1.0495      val acc: 0.6249
+min val loss: 1.0495  max val acc: 0.6249
+LR in this epoch:  0.100000
+
+Epoch 9
+----------
+tr set: 186/186tr time: 251
+    tr  loss: 1.1053      tr  acc: 0.6037
+min tr  loss: 1.1053  max tr  acc: 0.6037
+    val loss: 0.9574      val acc: 0.6588
+min val loss: 0.9574  max val acc: 0.6588
+LR in this epoch:  0.100000
+
+Epoch 10
+----------
+tr set: 186/186tr time: 278
+    tr  loss: 1.0478      tr  acc: 0.6263
+min tr  loss: 1.0478  max tr  acc: 0.6263
+    val loss: 0.9193      val acc: 0.6686
+min val loss: 0.9193  max val acc: 0.6686
+LR in this epoch:  0.100000
+
+Epoch 11
+----------
+tr set: 186/186tr time: 307
+    tr  loss: 0.9961      tr  acc: 0.6444
+min tr  loss: 0.9961  max tr  acc: 0.6444
+    val loss: 0.9482      val acc: 0.6660
+min val loss: 0.9193  max val acc: 0.6686
+LR in this epoch:  0.100000
+
+Epoch 12
+----------
+tr set: 186/186tr time: 335
+    tr  loss: 0.9573      tr  acc: 0.6628
+min tr  loss: 0.9573  max tr  acc: 0.6628
+    val loss: 0.8671      val acc: 0.6911
+min val loss: 0.8671  max val acc: 0.6911
+LR in this epoch:  0.100000
+
+Epoch 13
+----------
+tr set: 186/186tr time: 362
+    tr  loss: 0.9140      tr  acc: 0.6761
+min tr  loss: 0.9140  max tr  acc: 0.6761
+    val loss: 0.9791      val acc: 0.6548
+min val loss: 0.8671  max val acc: 0.6911
+LR in this epoch:  0.100000
+
+Epoch 14
+----------
+tr set: 186/186tr time: 390
+    tr  loss: 0.8785      tr  acc: 0.6892
+min tr  loss: 0.8785  max tr  acc: 0.6892
+    val loss: 0.7572      val acc: 0.7265
+min val loss: 0.7572  max val acc: 0.7265
+LR in this epoch:  0.100000
+
+Epoch 15
+----------
+tr set: 186/186tr time: 418
+    tr  loss: 0.8459      tr  acc: 0.6996
+min tr  loss: 0.8459  max tr  acc: 0.6996
+    val loss: 0.7059      val acc: 0.7538
+min val loss: 0.7059  max val acc: 0.7538
+LR in this epoch:  0.100000
+
+Epoch 16
+----------
+tr set: 186/186tr time: 446
+    tr  loss: 0.8139      tr  acc: 0.7127
+min tr  loss: 0.8139  max tr  acc: 0.7127
+    val loss: 0.7172      val acc: 0.7493
+min val loss: 0.7059  max val acc: 0.7538
+LR in this epoch:  0.100000
+
+Epoch 17
+----------
+tr set: 186/186tr time: 474
+    tr  loss: 0.7806      tr  acc: 0.7262
+min tr  loss: 0.7806  max tr  acc: 0.7262
+    val loss: 0.6890      val acc: 0.7570
+min val loss: 0.6890  max val acc: 0.7570
+LR in this epoch:  0.100000
+
+Epoch 18
+----------
+tr set: 186/186tr time: 502
+    tr  loss: 0.7559      tr  acc: 0.7338
+min tr  loss: 0.7559  max tr  acc: 0.7338
+    val loss: 0.6664      val acc: 0.7602
+min val loss: 0.6664  max val acc: 0.7602
+LR in this epoch:  0.100000
+
+Epoch 19
+----------
+tr set: 186/186tr time: 530
+    tr  loss: 0.7310      tr  acc: 0.7422
+min tr  loss: 0.7310  max tr  acc: 0.7422
+    val loss: 0.7384      val acc: 0.7380
+min val loss: 0.6664  max val acc: 0.7602
+LR in this epoch:  0.100000
+
+Epoch 20
+----------
+tr set: 186/186tr time: 558
+    tr  loss: 0.7108      tr  acc: 0.7514
+min tr  loss: 0.7108  max tr  acc: 0.7514
+    val loss: 0.6460      val acc: 0.7726
+min val loss: 0.6460  max val acc: 0.7726
+LR in this epoch:  0.100000
+
+Epoch 21
+----------
+tr set: 186/186tr time: 586
+    tr  loss: 0.6789      tr  acc: 0.7630
+min tr  loss: 0.6789  max tr  acc: 0.7630
+    val loss: 0.5697      val acc: 0.7993
+min val loss: 0.5697  max val acc: 0.7993
+LR in this epoch:  0.100000
+
+Epoch 22
+----------
+tr set: 186/186tr time: 614
+    tr  loss: 0.6641      tr  acc: 0.7688
+min tr  loss: 0.6641  max tr  acc: 0.7688
+    val loss: 0.5547      val acc: 0.8065
+min val loss: 0.5547  max val acc: 0.8065
+LR in this epoch:  0.100000
+
+Epoch 23
+----------
+tr set: 186/186tr time: 642
+    tr  loss: 0.6395      tr  acc: 0.7763
+min tr  loss: 0.6395  max tr  acc: 0.7763
+    val loss: 0.5734      val acc: 0.8035
+min val loss: 0.5547  max val acc: 0.8065
+LR in this epoch:  0.100000
+
+Epoch 24
+----------
+tr set: 186/186tr time: 670
+    tr  loss: 0.6149      tr  acc: 0.7859
+min tr  loss: 0.6149  max tr  acc: 0.7859
+    val loss: 0.5151      val acc: 0.8238
+min val loss: 0.5151  max val acc: 0.8238
+LR in this epoch:  0.100000
+
+Epoch 25
+----------
+tr set: 186/186tr time: 698
+    tr  loss: 0.5975      tr  acc: 0.7925
+min tr  loss: 0.5975  max tr  acc: 0.7925
+    val loss: 0.4850      val acc: 0.8361
+min val loss: 0.4850  max val acc: 0.8361
+LR in this epoch:  0.100000
+
+Epoch 26
+----------
+tr set: 186/186tr time: 726
+    tr  loss: 0.5824      tr  acc: 0.7967
+min tr  loss: 0.5824  max tr  acc: 0.7967
+    val loss: 0.4925      val acc: 0.8296
+min val loss: 0.4850  max val acc: 0.8361
+LR in this epoch:  0.100000
+
+Epoch 27
+----------
+tr set: 186/186tr time: 753
+    tr  loss: 0.5646      tr  acc: 0.8035
+min tr  loss: 0.5646  max tr  acc: 0.8035
+    val loss: 0.4642      val acc: 0.8391
+min val loss: 0.4642  max val acc: 0.8391
+LR in this epoch:  0.100000
+
+Epoch 28
+----------
+tr set: 186/186tr time: 781
+    tr  loss: 0.5516      tr  acc: 0.8068
+min tr  loss: 0.5516  max tr  acc: 0.8068
+    val loss: 0.4639      val acc: 0.8436
+min val loss: 0.4639  max val acc: 0.8436
+LR in this epoch:  0.100000
+
+Epoch 29
+----------
+tr set: 186/186tr time: 809
+    tr  loss: 0.5430      tr  acc: 0.8131
+min tr  loss: 0.5430  max tr  acc: 0.8131
+    val loss: 0.4902      val acc: 0.8243
+min val loss: 0.4639  max val acc: 0.8436
+LR in this epoch:  0.100000
+
+Epoch 30
+----------
+tr set: 186/186tr time: 837
+    tr  loss: 0.5275      tr  acc: 0.8185
+min tr  loss: 0.5275  max tr  acc: 0.8185
+    val loss: 0.4741      val acc: 0.8372
+min val loss: 0.4639  max val acc: 0.8436
+LR in this epoch:  0.100000
+
+Epoch 31
+----------
+tr set: 186/186tr time: 866
+    tr  loss: 0.5175      tr  acc: 0.8176
+min tr  loss: 0.5175  max tr  acc: 0.8185
+    val loss: 0.4448      val acc: 0.8479
+min val loss: 0.4448  max val acc: 0.8479
+LR in this epoch:  0.100000
+
+Epoch 32
+----------
+tr set: 186/186tr time: 894
+    tr  loss: 0.5025      tr  acc: 0.8241
+min tr  loss: 0.5025  max tr  acc: 0.8241
+    val loss: 0.4188      val acc: 0.8591
+min val loss: 0.4188  max val acc: 0.8591
+LR in this epoch:  0.100000
+
+Epoch 33
+----------
+tr set: 186/186tr time: 922
+    tr  loss: 0.4875      tr  acc: 0.8302
+min tr  loss: 0.4875  max tr  acc: 0.8302
+    val loss: 0.3983      val acc: 0.8618
+min val loss: 0.3983  max val acc: 0.8618
+LR in this epoch:  0.100000
+
+Epoch 34
+----------
+tr set: 186/186tr time: 950
+    tr  loss: 0.4791      tr  acc: 0.8330
+min tr  loss: 0.4791  max tr  acc: 0.8330
+    val loss: 0.4735      val acc: 0.8330
+min val loss: 0.3983  max val acc: 0.8618
+LR in this epoch:  0.100000
+
+Epoch 35
+----------
+tr set: 186/186tr time: 978
+    tr  loss: 0.4735      tr  acc: 0.8358
+min tr  loss: 0.4735  max tr  acc: 0.8358
+    val loss: 0.4333      val acc: 0.8466
+min val loss: 0.3983  max val acc: 0.8618
+LR in this epoch:  0.100000
+
+Epoch 36
+----------
+tr set: 186/186tr time: 1005
+    tr  loss: 0.4682      tr  acc: 0.8384
+min tr  loss: 0.4682  max tr  acc: 0.8384
+    val loss: 0.3999      val acc: 0.8599
+min val loss: 0.3983  max val acc: 0.8618
+LR in this epoch:  0.100000
+
+Epoch 37
+----------
+tr set: 186/186tr time: 1033
+    tr  loss: 0.4501      tr  acc: 0.8428
+min tr  loss: 0.4501  max tr  acc: 0.8428
+    val loss: 0.4260      val acc: 0.8563
+min val loss: 0.3983  max val acc: 0.8618
+LR in this epoch:  0.100000
+
+Epoch 38
+----------
+tr set: 186/186tr time: 1061
+    tr  loss: 0.4406      tr  acc: 0.8465
+min tr  loss: 0.4406  max tr  acc: 0.8465
+    val loss: 0.3910      val acc: 0.8703
+min val loss: 0.3910  max val acc: 0.8703
+LR in this epoch:  0.100000
+
+Epoch 39
+----------
+tr set: 186/186tr time: 1090
+    tr  loss: 0.4415      tr  acc: 0.8462
+min tr  loss: 0.4406  max tr  acc: 0.8465
+    val loss: 0.3954      val acc: 0.8674
+min val loss: 0.3910  max val acc: 0.8703
+LR in this epoch:  0.100000
+
+Epoch 40
+----------
+tr set: 186/186tr time: 1117
+    tr  loss: 0.4352      tr  acc: 0.8501
+min tr  loss: 0.4352  max tr  acc: 0.8501
+    val loss: 0.3724      val acc: 0.8708
+min val loss: 0.3724  max val acc: 0.8708
+LR in this epoch:  0.100000
+
+Epoch 41
+----------
+tr set: 186/186tr time: 1145
+    tr  loss: 0.4218      tr  acc: 0.8532
+min tr  loss: 0.4218  max tr  acc: 0.8532
+    val loss: 0.4396      val acc: 0.8540
+min val loss: 0.3724  max val acc: 0.8708
+LR in this epoch:  0.100000
+
+Epoch 42
+----------
+tr set: 186/186tr time: 1173
+    tr  loss: 0.4269      tr  acc: 0.8512
+min tr  loss: 0.4218  max tr  acc: 0.8532
+    val loss: 0.3563      val acc: 0.8772
+min val loss: 0.3563  max val acc: 0.8772
+LR in this epoch:  0.100000
+
+Epoch 43
+----------
+tr set: 186/186tr time: 1201
+    tr  loss: 0.4162      tr  acc: 0.8569
+min tr  loss: 0.4162  max tr  acc: 0.8569
+    val loss: 0.3993      val acc: 0.8607
+min val loss: 0.3563  max val acc: 0.8772
+LR in this epoch:  0.100000
+
+Epoch 44
+----------
+tr set: 186/186tr time: 1229
+    tr  loss: 0.4096      tr  acc: 0.8555
+min tr  loss: 0.4096  max tr  acc: 0.8569
+    val loss: 0.3529      val acc: 0.8781
+min val loss: 0.3529  max val acc: 0.8781
+LR in this epoch:  0.100000
+
+Epoch 45
+----------
+tr set: 186/186tr time: 1257
+    tr  loss: 0.4036      tr  acc: 0.8599
+min tr  loss: 0.4036  max tr  acc: 0.8599
+    val loss: 0.3467      val acc: 0.8807
+min val loss: 0.3467  max val acc: 0.8807
+LR in this epoch:  0.100000
+
+Epoch 46
+----------
+tr set: 186/186tr time: 1285
+    tr  loss: 0.4031      tr  acc: 0.8599
+min tr  loss: 0.4031  max tr  acc: 0.8599
+    val loss: 0.3664      val acc: 0.8767
+min val loss: 0.3467  max val acc: 0.8807
+LR in this epoch:  0.100000
+
+Epoch 47
+----------
+tr set: 186/186tr time: 1313
+    tr  loss: 0.3967      tr  acc: 0.8613
+min tr  loss: 0.3967  max tr  acc: 0.8613
+    val loss: 0.3583      val acc: 0.8792
+min val loss: 0.3467  max val acc: 0.8807
+LR in this epoch:  0.100000
+
+Epoch 48
+----------
+tr set: 186/186tr time: 1341
+    tr  loss: 0.3885      tr  acc: 0.8642
+min tr  loss: 0.3885  max tr  acc: 0.8642
+    val loss: 0.3322      val acc: 0.8836
+min val loss: 0.3322  max val acc: 0.8836
+LR in this epoch:  0.100000
+
+Epoch 49
+----------
+tr set: 186/186tr time: 1369
+    tr  loss: 0.3874      tr  acc: 0.8651
+min tr  loss: 0.3874  max tr  acc: 0.8651
+    val loss: 0.3262      val acc: 0.8905
+min val loss: 0.3262  max val acc: 0.8905
+LR in this epoch:  0.100000
+
+Epoch 50
+----------
+tr set: 186/186tr time: 1397
+    tr  loss: 0.3828      tr  acc: 0.8698
+min tr  loss: 0.3828  max tr  acc: 0.8698
+    val loss: 0.3568      val acc: 0.8767
+min val loss: 0.3262  max val acc: 0.8905
+LR in this epoch:  0.100000
+
+Epoch 51
+----------
+tr set: 186/186tr time: 1425
+    tr  loss: 0.3830      tr  acc: 0.8670
+min tr  loss: 0.3828  max tr  acc: 0.8698
+    val loss: 0.3263      val acc: 0.8844
+min val loss: 0.3262  max val acc: 0.8905
+LR in this epoch:  0.100000
+
+Epoch 52
+----------
+tr set: 186/186tr time: 1453
+    tr  loss: 0.3737      tr  acc: 0.8695
+min tr  loss: 0.3737  max tr  acc: 0.8698
+    val loss: 0.3442      val acc: 0.8821
+min val loss: 0.3262  max val acc: 0.8905
+LR in this epoch:  0.100000
+
+Epoch 53
+----------
+tr set: 186/186tr time: 1481
+    tr  loss: 0.3668      tr  acc: 0.8729
+min tr  loss: 0.3668  max tr  acc: 0.8729
+    val loss: 0.3510      val acc: 0.8783
+min val loss: 0.3262  max val acc: 0.8905
+LR in this epoch:  0.100000
+
+Epoch 54
+----------
+tr set: 186/186tr time: 1509
+    tr  loss: 0.3698      tr  acc: 0.8714
+min tr  loss: 0.3668  max tr  acc: 0.8729
+    val loss: 0.3393      val acc: 0.8874
+min val loss: 0.3262  max val acc: 0.8905
+LR in this epoch:  0.100000
+
+Epoch 55
+----------
+tr set: 186/186tr time: 1537
+    tr  loss: 0.3671      tr  acc: 0.8722
+min tr  loss: 0.3668  max tr  acc: 0.8729
+    val loss: 0.3126      val acc: 0.8945
+min val loss: 0.3126  max val acc: 0.8945
+LR in this epoch:  0.100000
+
+Epoch 56
+----------
+tr set: 186/186tr time: 1566
+    tr  loss: 0.3557      tr  acc: 0.8763
+min tr  loss: 0.3557  max tr  acc: 0.8763
+    val loss: 0.3427      val acc: 0.8840
+min val loss: 0.3126  max val acc: 0.8945
+LR in this epoch:  0.100000
+
+Epoch 57
+----------
+tr set: 186/186tr time: 1594
+    tr  loss: 0.3521      tr  acc: 0.8763
+min tr  loss: 0.3521  max tr  acc: 0.8763
+    val loss: 0.3104      val acc: 0.8952
+min val loss: 0.3104  max val acc: 0.8952
+LR in this epoch:  0.100000
+
+Epoch 58
+----------
+tr set: 186/186tr time: 1622
+    tr  loss: 0.3506      tr  acc: 0.8785
+min tr  loss: 0.3506  max tr  acc: 0.8785
+    val loss: 0.3372      val acc: 0.8869
+min val loss: 0.3104  max val acc: 0.8952
+LR in this epoch:  0.100000
+
+Epoch 59
+----------
+tr set: 186/186tr time: 1650
+    tr  loss: 0.3520      tr  acc: 0.8781
+min tr  loss: 0.3506  max tr  acc: 0.8785
+    val loss: 0.3186      val acc: 0.8899
+min val loss: 0.3104  max val acc: 0.8952
+LR in this epoch:  0.100000
+
+Epoch 60
+----------
+tr set: 186/186tr time: 1678
+    tr  loss: 0.3489      tr  acc: 0.8794
+min tr  loss: 0.3489  max tr  acc: 0.8794
+    val loss: 0.3207      val acc: 0.8895
+min val loss: 0.3104  max val acc: 0.8952
+LR in this epoch:  0.100000
+
+Epoch 61
+----------
+tr set: 186/186tr time: 1706
+    tr  loss: 0.3445      tr  acc: 0.8805
+min tr  loss: 0.3445  max tr  acc: 0.8805
+    val loss: 0.3077      val acc: 0.8940
+min val loss: 0.3077  max val acc: 0.8952
+LR in this epoch:  0.100000
+
+Epoch 62
+----------
+tr set: 186/186tr time: 1733
+    tr  loss: 0.3330      tr  acc: 0.8834
+min tr  loss: 0.3330  max tr  acc: 0.8834
+    val loss: 0.3156      val acc: 0.8934
+min val loss: 0.3077  max val acc: 0.8952
+LR in this epoch:  0.100000
+
+Epoch 63
+----------
+tr set: 186/186tr time: 1762
+    tr  loss: 0.3387      tr  acc: 0.8824
+min tr  loss: 0.3330  max tr  acc: 0.8834
+    val loss: 0.2942      val acc: 0.9024
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 64
+----------
+tr set: 186/186tr time: 1789
+    tr  loss: 0.3342      tr  acc: 0.8831
+min tr  loss: 0.3330  max tr  acc: 0.8834
+    val loss: 0.3063      val acc: 0.8976
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 65
+----------
+tr set: 186/186tr time: 1818
+    tr  loss: 0.3311      tr  acc: 0.8864
+min tr  loss: 0.3311  max tr  acc: 0.8864
+    val loss: 0.3027      val acc: 0.8985
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 66
+----------
+tr set: 186/186tr time: 1845
+    tr  loss: 0.3311      tr  acc: 0.8854
+min tr  loss: 0.3311  max tr  acc: 0.8864
+    val loss: 0.3058      val acc: 0.8973
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 67
+----------
+tr set: 186/186tr time: 1873
+    tr  loss: 0.3302      tr  acc: 0.8862
+min tr  loss: 0.3302  max tr  acc: 0.8864
+    val loss: 0.3180      val acc: 0.8919
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 68
+----------
+tr set: 186/186tr time: 1901
+    tr  loss: 0.3248      tr  acc: 0.8888
+min tr  loss: 0.3248  max tr  acc: 0.8888
+    val loss: 0.3248      val acc: 0.8900
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 69
+----------
+tr set: 186/186tr time: 1929
+    tr  loss: 0.3215      tr  acc: 0.8888
+min tr  loss: 0.3215  max tr  acc: 0.8888
+    val loss: 0.3286      val acc: 0.8859
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 70
+----------
+tr set: 186/186tr time: 1957
+    tr  loss: 0.3243      tr  acc: 0.8866
+min tr  loss: 0.3215  max tr  acc: 0.8888
+    val loss: 0.3077      val acc: 0.8936
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 71
+----------
+tr set: 186/186tr time: 1985
+    tr  loss: 0.3134      tr  acc: 0.8913
+min tr  loss: 0.3134  max tr  acc: 0.8913
+    val loss: 0.3003      val acc: 0.8977
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 72
+----------
+tr set: 186/186tr time: 2013
+    tr  loss: 0.3150      tr  acc: 0.8912
+min tr  loss: 0.3134  max tr  acc: 0.8913
+    val loss: 0.3115      val acc: 0.8933
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 73
+----------
+tr set: 186/186tr time: 2042
+    tr  loss: 0.3150      tr  acc: 0.8898
+min tr  loss: 0.3134  max tr  acc: 0.8913
+    val loss: 0.2950      val acc: 0.8991
+min val loss: 0.2942  max val acc: 0.9024
+LR in this epoch:  0.100000
+
+Epoch 74
+----------
+tr set: 186/186tr time: 2069
+    tr  loss: 0.3079      tr  acc: 0.8926
+min tr  loss: 0.3079  max tr  acc: 0.8926
+    val loss: 0.2996      val acc: 0.9025
+min val loss: 0.2942  max val acc: 0.9025
+LR in this epoch:  0.100000
+
+Epoch 75
+----------
+tr set: 186/186tr time: 2097
+    tr  loss: 0.3147      tr  acc: 0.8890
+min tr  loss: 0.3079  max tr  acc: 0.8926
+    val loss: 0.2854      val acc: 0.9039
+min val loss: 0.2854  max val acc: 0.9039
+LR in this epoch:  0.100000
+
+Epoch 76
+----------
+tr set: 186/186tr time: 2125
+    tr  loss: 0.2998      tr  acc: 0.8952
+min tr  loss: 0.2998  max tr  acc: 0.8952
+    val loss: 0.2975      val acc: 0.9017
+min val loss: 0.2854  max val acc: 0.9039
+LR in this epoch:  0.100000
+
+Epoch 77
+----------
+tr set: 186/186tr time: 2153
+    tr  loss: 0.3094      tr  acc: 0.8934
+min tr  loss: 0.2998  max tr  acc: 0.8952
+    val loss: 0.3303      val acc: 0.8894
+min val loss: 0.2854  max val acc: 0.9039
+LR in this epoch:  0.100000
+
+Epoch 78
+----------
+tr set: 186/186tr time: 2181
+    tr  loss: 0.3040      tr  acc: 0.8936
+min tr  loss: 0.2998  max tr  acc: 0.8952
+    val loss: 0.2960      val acc: 0.8982
+min val loss: 0.2854  max val acc: 0.9039
+LR in this epoch:  0.100000
+
+Epoch 79
+----------
+tr set: 186/186tr time: 2209
+    tr  loss: 0.3009      tr  acc: 0.8951
+min tr  loss: 0.2998  max tr  acc: 0.8952
+    val loss: 0.3028      val acc: 0.8958
+min val loss: 0.2854  max val acc: 0.9039
+LR in this epoch:  0.100000
+
+Epoch 80
+----------
+tr set: 186/186tr time: 2237
+    tr  loss: 0.2979      tr  acc: 0.8955
+min tr  loss: 0.2979  max tr  acc: 0.8955
+    val loss: 0.2827      val acc: 0.9041
+min val loss: 0.2827  max val acc: 0.9041
+LR in this epoch:  0.100000
+
+Epoch 81
+----------
+tr set: 186/186tr time: 2265
+    tr  loss: 0.2956      tr  acc: 0.8975
+min tr  loss: 0.2956  max tr  acc: 0.8975
+    val loss: 0.2784      val acc: 0.9052
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 82
+----------
+tr set: 186/186tr time: 2293
+    tr  loss: 0.2973      tr  acc: 0.8970
+min tr  loss: 0.2956  max tr  acc: 0.8975
+    val loss: 0.3048      val acc: 0.8967
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 83
+----------
+tr set: 186/186tr time: 2321
+    tr  loss: 0.2937      tr  acc: 0.8977
+min tr  loss: 0.2937  max tr  acc: 0.8977
+    val loss: 0.3110      val acc: 0.8930
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 84
+----------
+tr set: 186/186tr time: 2349
+    tr  loss: 0.2981      tr  acc: 0.8943
+min tr  loss: 0.2937  max tr  acc: 0.8977
+    val loss: 0.2929      val acc: 0.9007
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 85
+----------
+tr set: 186/186tr time: 2377
+    tr  loss: 0.2852      tr  acc: 0.9001
+min tr  loss: 0.2852  max tr  acc: 0.9001
+    val loss: 0.2973      val acc: 0.8981
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 86
+----------
+tr set: 186/186tr time: 2405
+    tr  loss: 0.2899      tr  acc: 0.8999
+min tr  loss: 0.2852  max tr  acc: 0.9001
+    val loss: 0.2944      val acc: 0.9052
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 87
+----------
+tr set: 186/186tr time: 2433
+    tr  loss: 0.2851      tr  acc: 0.8992
+min tr  loss: 0.2851  max tr  acc: 0.9001
+    val loss: 0.2929      val acc: 0.9033
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 88
+----------
+tr set: 186/186tr time: 2461
+    tr  loss: 0.2849      tr  acc: 0.9005
+min tr  loss: 0.2849  max tr  acc: 0.9005
+    val loss: 0.3129      val acc: 0.8942
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 89
+----------
+tr set: 186/186tr time: 2489
+    tr  loss: 0.2842      tr  acc: 0.9018
+min tr  loss: 0.2842  max tr  acc: 0.9018
+    val loss: 0.2951      val acc: 0.8999
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 90
+----------
+tr set: 186/186tr time: 2517
+    tr  loss: 0.2777      tr  acc: 0.9028
+min tr  loss: 0.2777  max tr  acc: 0.9028
+    val loss: 0.3116      val acc: 0.8962
+min val loss: 0.2784  max val acc: 0.9052
+LR in this epoch:  0.100000
+
+Epoch 91
+----------
+tr set: 186/186tr time: 2545
+    tr  loss: 0.2801      tr  acc: 0.9028
+min tr  loss: 0.2777  max tr  acc: 0.9028
+    val loss: 0.2782      val acc: 0.9057
+min val loss: 0.2782  max val acc: 0.9057
+LR in this epoch:  0.100000
+
+Epoch 92
+----------
+tr set: 186/186tr time: 2572
+    tr  loss: 0.2776      tr  acc: 0.9031
+min tr  loss: 0.2776  max tr  acc: 0.9031
+    val loss: 0.2753      val acc: 0.9052
+min val loss: 0.2753  max val acc: 0.9057
+LR in this epoch:  0.100000
+
+Epoch 93
+----------
+tr set: 186/186tr time: 2601
+    tr  loss: 0.2780      tr  acc: 0.9025
+min tr  loss: 0.2776  max tr  acc: 0.9031
+    val loss: 0.2752      val acc: 0.9096
+min val loss: 0.2752  max val acc: 0.9096
+LR in this epoch:  0.100000
+
+Epoch 94
+----------
+tr set: 186/186tr time: 2628
+    tr  loss: 0.2759      tr  acc: 0.9032
+min tr  loss: 0.2759  max tr  acc: 0.9032
+    val loss: 0.2710      val acc: 0.9110
+min val loss: 0.2710  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 95
+----------
+tr set: 186/186tr time: 2656
+    tr  loss: 0.2748      tr  acc: 0.9040
+min tr  loss: 0.2748  max tr  acc: 0.9040
+    val loss: 0.2929      val acc: 0.9033
+min val loss: 0.2710  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 96
+----------
+tr set: 186/186tr time: 2684
+    tr  loss: 0.2715      tr  acc: 0.9052
+min tr  loss: 0.2715  max tr  acc: 0.9052
+    val loss: 0.2800      val acc: 0.9057
+min val loss: 0.2710  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 97
+----------
+tr set: 186/186tr time: 2712
+    tr  loss: 0.2745      tr  acc: 0.9036
+min tr  loss: 0.2715  max tr  acc: 0.9052
+    val loss: 0.2690      val acc: 0.9082
+min val loss: 0.2690  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 98
+----------
+tr set: 186/186tr time: 2740
+    tr  loss: 0.2675      tr  acc: 0.9068
+min tr  loss: 0.2675  max tr  acc: 0.9068
+    val loss: 0.2846      val acc: 0.9059
+min val loss: 0.2690  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 99
+----------
+tr set: 186/186tr time: 2768
+    tr  loss: 0.2732      tr  acc: 0.9052
+min tr  loss: 0.2675  max tr  acc: 0.9068
+    val loss: 0.2724      val acc: 0.9066
+min val loss: 0.2690  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 100
+----------
+tr set: 186/186tr time: 2796
+    tr  loss: 0.2681      tr  acc: 0.9049
+min tr  loss: 0.2675  max tr  acc: 0.9068
+    val loss: 0.2884      val acc: 0.9018
+min val loss: 0.2690  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 101
+----------
+tr set: 186/186tr time: 2824
+    tr  loss: 0.2660      tr  acc: 0.9052
+min tr  loss: 0.2660  max tr  acc: 0.9068
+    val loss: 0.2898      val acc: 0.9019
+min val loss: 0.2690  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 102
+----------
+tr set: 186/186tr time: 2852
+    tr  loss: 0.2680      tr  acc: 0.9076
+min tr  loss: 0.2660  max tr  acc: 0.9076
+    val loss: 0.3105      val acc: 0.8932
+min val loss: 0.2690  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 103
+----------
+tr set: 186/186tr time: 2880
+    tr  loss: 0.2680      tr  acc: 0.9062
+min tr  loss: 0.2660  max tr  acc: 0.9076
+    val loss: 0.2736      val acc: 0.9083
+min val loss: 0.2690  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 104
+----------
+tr set: 186/186tr time: 2908
+    tr  loss: 0.2634      tr  acc: 0.9065
+min tr  loss: 0.2634  max tr  acc: 0.9076
+    val loss: 0.2689      val acc: 0.9082
+min val loss: 0.2689  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 105
+----------
+tr set: 186/186tr time: 2936
+    tr  loss: 0.2573      tr  acc: 0.9107
+min tr  loss: 0.2573  max tr  acc: 0.9107
+    val loss: 0.2887      val acc: 0.9031
+min val loss: 0.2689  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 106
+----------
+tr set: 186/186tr time: 2964
+    tr  loss: 0.2607      tr  acc: 0.9084
+min tr  loss: 0.2573  max tr  acc: 0.9107
+    val loss: 0.2799      val acc: 0.9067
+min val loss: 0.2689  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 107
+----------
+tr set: 186/186tr time: 2992
+    tr  loss: 0.2637      tr  acc: 0.9090
+min tr  loss: 0.2573  max tr  acc: 0.9107
+    val loss: 0.3182      val acc: 0.8936
+min val loss: 0.2689  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 108
+----------
+tr set: 186/186tr time: 3020
+    tr  loss: 0.2619      tr  acc: 0.9094
+min tr  loss: 0.2573  max tr  acc: 0.9107
+    val loss: 0.2698      val acc: 0.9083
+min val loss: 0.2689  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 109
+----------
+tr set: 186/186tr time: 3048
+    tr  loss: 0.2571      tr  acc: 0.9098
+min tr  loss: 0.2571  max tr  acc: 0.9107
+    val loss: 0.2764      val acc: 0.9080
+min val loss: 0.2689  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 110
+----------
+tr set: 186/186tr time: 3075
+    tr  loss: 0.2561      tr  acc: 0.9110
+min tr  loss: 0.2561  max tr  acc: 0.9110
+    val loss: 0.2678      val acc: 0.9062
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 111
+----------
+tr set: 186/186tr time: 3103
+    tr  loss: 0.2567      tr  acc: 0.9100
+min tr  loss: 0.2561  max tr  acc: 0.9110
+    val loss: 0.2781      val acc: 0.9050
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 112
+----------
+tr set: 186/186tr time: 3131
+    tr  loss: 0.2589      tr  acc: 0.9085
+min tr  loss: 0.2561  max tr  acc: 0.9110
+    val loss: 0.2977      val acc: 0.9010
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 113
+----------
+tr set: 186/186tr time: 3159
+    tr  loss: 0.2489      tr  acc: 0.9141
+min tr  loss: 0.2489  max tr  acc: 0.9141
+    val loss: 0.3184      val acc: 0.8950
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 114
+----------
+tr set: 186/186tr time: 3187
+    tr  loss: 0.2581      tr  acc: 0.9100
+min tr  loss: 0.2489  max tr  acc: 0.9141
+    val loss: 0.2909      val acc: 0.9024
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 115
+----------
+tr set: 186/186tr time: 3215
+    tr  loss: 0.2549      tr  acc: 0.9122
+min tr  loss: 0.2489  max tr  acc: 0.9141
+    val loss: 0.2883      val acc: 0.9048
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 116
+----------
+tr set: 186/186tr time: 3243
+    tr  loss: 0.2547      tr  acc: 0.9099
+min tr  loss: 0.2489  max tr  acc: 0.9141
+    val loss: 0.2966      val acc: 0.9007
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 117
+----------
+tr set: 186/186tr time: 3271
+    tr  loss: 0.2511      tr  acc: 0.9119
+min tr  loss: 0.2489  max tr  acc: 0.9141
+    val loss: 0.2715      val acc: 0.9057
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+
+Epoch 118
+----------
+tr set: 186/186tr time: 3299
+    tr  loss: 0.2498      tr  acc: 0.9120
+min tr  loss: 0.2489  max tr  acc: 0.9141
+    val loss: 0.2845      val acc: 0.9010
+min val loss: 0.2678  max val acc: 0.9110
+LR in this epoch:  0.100000
+Epoch 00118: reducing learning rate of group 0 to 7.0000e-02.
+Epoch 00118: reducing learning rate of group 1 to 7.0000e-02.
+Epoch 00118: reducing learning rate of group 2 to 7.0000e-02.
+
+Epoch 119
+----------
+tr set: 186/186tr time: 3327
+    tr  loss: 0.2201      tr  acc: 0.9236
+min tr  loss: 0.2201  max tr  acc: 0.9236
+    val loss: 0.2445      val acc: 0.9177
+min val loss: 0.2445  max val acc: 0.9177
+LR in this epoch:  0.070000
+
+Epoch 120
+----------
+tr set: 186/186tr time: 3355
+    tr  loss: 0.2071      tr  acc: 0.9281
+min tr  loss: 0.2071  max tr  acc: 0.9281
+    val loss: 0.2505      val acc: 0.9170
+min val loss: 0.2445  max val acc: 0.9177
+LR in this epoch:  0.070000
+
+Epoch 121
+----------
+tr set: 186/186tr time: 3383
+    tr  loss: 0.2074      tr  acc: 0.9271
+min tr  loss: 0.2071  max tr  acc: 0.9281
+    val loss: 0.2500      val acc: 0.9189
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 122
+----------
+tr set: 186/186tr time: 3411
+    tr  loss: 0.2024      tr  acc: 0.9296
+min tr  loss: 0.2024  max tr  acc: 0.9296
+    val loss: 0.2527      val acc: 0.9156
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 123
+----------
+tr set: 186/186tr time: 3439
+    tr  loss: 0.2038      tr  acc: 0.9278
+min tr  loss: 0.2024  max tr  acc: 0.9296
+    val loss: 0.2580      val acc: 0.9135
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 124
+----------
+tr set: 186/186tr time: 3467
+    tr  loss: 0.2007      tr  acc: 0.9307
+min tr  loss: 0.2007  max tr  acc: 0.9307
+    val loss: 0.2548      val acc: 0.9139
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 125
+----------
+tr set: 186/186tr time: 3495
+    tr  loss: 0.2008      tr  acc: 0.9300
+min tr  loss: 0.2007  max tr  acc: 0.9307
+    val loss: 0.2512      val acc: 0.9151
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 126
+----------
+tr set: 186/186tr time: 3523
+    tr  loss: 0.2067      tr  acc: 0.9280
+min tr  loss: 0.2007  max tr  acc: 0.9307
+    val loss: 0.2587      val acc: 0.9142
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 127
+----------
+tr set: 186/186tr time: 3551
+    tr  loss: 0.2004      tr  acc: 0.9286
+min tr  loss: 0.2004  max tr  acc: 0.9307
+    val loss: 0.2511      val acc: 0.9151
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 128
+----------
+tr set: 186/186tr time: 3579
+    tr  loss: 0.1969      tr  acc: 0.9304
+min tr  loss: 0.1969  max tr  acc: 0.9307
+    val loss: 0.2510      val acc: 0.9169
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 129
+----------
+tr set: 186/186tr time: 3608
+    tr  loss: 0.1983      tr  acc: 0.9322
+min tr  loss: 0.1969  max tr  acc: 0.9322
+    val loss: 0.2648      val acc: 0.9127
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 130
+----------
+tr set: 186/186tr time: 3635
+    tr  loss: 0.1984      tr  acc: 0.9322
+min tr  loss: 0.1969  max tr  acc: 0.9322
+    val loss: 0.2649      val acc: 0.9108
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 131
+----------
+tr set: 186/186tr time: 3663
+    tr  loss: 0.1988      tr  acc: 0.9299
+min tr  loss: 0.1969  max tr  acc: 0.9322
+    val loss: 0.2457      val acc: 0.9153
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 132
+----------
+tr set: 186/186tr time: 3691
+    tr  loss: 0.2002      tr  acc: 0.9295
+min tr  loss: 0.1969  max tr  acc: 0.9322
+    val loss: 0.2498      val acc: 0.9186
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 133
+----------
+tr set: 186/186tr time: 3719
+    tr  loss: 0.1967      tr  acc: 0.9306
+min tr  loss: 0.1967  max tr  acc: 0.9322
+    val loss: 0.2493      val acc: 0.9158
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 134
+----------
+tr set: 186/186tr time: 3747
+    tr  loss: 0.2004      tr  acc: 0.9296
+min tr  loss: 0.1967  max tr  acc: 0.9322
+    val loss: 0.2571      val acc: 0.9164
+min val loss: 0.2445  max val acc: 0.9189
+LR in this epoch:  0.070000
+
+Epoch 135
+----------
+tr set: 186/186tr time: 3775
+    tr  loss: 0.1967      tr  acc: 0.9291
+min tr  loss: 0.1967  max tr  acc: 0.9322
+    val loss: 0.2393      val acc: 0.9207
+min val loss: 0.2393  max val acc: 0.9207
+LR in this epoch:  0.070000
+
+Epoch 136
+----------
+tr set: 186/186tr time: 3804
+    tr  loss: 0.1948      tr  acc: 0.9322
+min tr  loss: 0.1948  max tr  acc: 0.9322
+    val loss: 0.2826      val acc: 0.9055
+min val loss: 0.2393  max val acc: 0.9207
+LR in this epoch:  0.070000
+
+Epoch 137
+----------
+tr set: 186/186tr time: 3832
+    tr  loss: 0.1975      tr  acc: 0.9286
+min tr  loss: 0.1948  max tr  acc: 0.9322
+    val loss: 0.2393      val acc: 0.9215
+min val loss: 0.2393  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 138
+----------
+tr set: 186/186tr time: 3860
+    tr  loss: 0.1944      tr  acc: 0.9319
+min tr  loss: 0.1944  max tr  acc: 0.9322
+    val loss: 0.2646      val acc: 0.9148
+min val loss: 0.2393  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 139
+----------
+tr set: 186/186tr time: 3888
+    tr  loss: 0.1943      tr  acc: 0.9315
+min tr  loss: 0.1943  max tr  acc: 0.9322
+    val loss: 0.2688      val acc: 0.9120
+min val loss: 0.2393  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 140
+----------
+tr set: 186/186tr time: 3916
+    tr  loss: 0.1957      tr  acc: 0.9311
+min tr  loss: 0.1943  max tr  acc: 0.9322
+    val loss: 0.2471      val acc: 0.9184
+min val loss: 0.2393  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 141
+----------
+tr set: 186/186tr time: 3944
+    tr  loss: 0.2011      tr  acc: 0.9289
+min tr  loss: 0.1943  max tr  acc: 0.9322
+    val loss: 0.2386      val acc: 0.9212
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 142
+----------
+tr set: 186/186tr time: 3971
+    tr  loss: 0.1947      tr  acc: 0.9324
+min tr  loss: 0.1943  max tr  acc: 0.9324
+    val loss: 0.2489      val acc: 0.9168
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 143
+----------
+tr set: 186/186tr time: 4000
+    tr  loss: 0.1947      tr  acc: 0.9314
+min tr  loss: 0.1943  max tr  acc: 0.9324
+    val loss: 0.2480      val acc: 0.9180
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 144
+----------
+tr set: 186/186tr time: 4027
+    tr  loss: 0.1925      tr  acc: 0.9327
+min tr  loss: 0.1925  max tr  acc: 0.9327
+    val loss: 0.2604      val acc: 0.9132
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 145
+----------
+tr set: 186/186tr time: 4055
+    tr  loss: 0.1983      tr  acc: 0.9304
+min tr  loss: 0.1925  max tr  acc: 0.9327
+    val loss: 0.2475      val acc: 0.9214
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 146
+----------
+tr set: 186/186tr time: 4083
+    tr  loss: 0.1897      tr  acc: 0.9325
+min tr  loss: 0.1897  max tr  acc: 0.9327
+    val loss: 0.2437      val acc: 0.9173
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 147
+----------
+tr set: 186/186tr time: 4111
+    tr  loss: 0.1899      tr  acc: 0.9341
+min tr  loss: 0.1897  max tr  acc: 0.9341
+    val loss: 0.2511      val acc: 0.9174
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 148
+----------
+tr set: 186/186tr time: 4140
+    tr  loss: 0.1922      tr  acc: 0.9323
+min tr  loss: 0.1897  max tr  acc: 0.9341
+    val loss: 0.2485      val acc: 0.9162
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 149
+----------
+tr set: 186/186tr time: 4168
+    tr  loss: 0.1902      tr  acc: 0.9335
+min tr  loss: 0.1897  max tr  acc: 0.9341
+    val loss: 0.2435      val acc: 0.9183
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 150
+----------
+tr set: 186/186tr time: 4196
+    tr  loss: 0.1932      tr  acc: 0.9314
+min tr  loss: 0.1897  max tr  acc: 0.9341
+    val loss: 0.2506      val acc: 0.9177
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+
+Epoch 151
+----------
+tr set: 186/186tr time: 4223
+    tr  loss: 0.1928      tr  acc: 0.9303
+min tr  loss: 0.1897  max tr  acc: 0.9341
+    val loss: 0.2501      val acc: 0.9175
+min val loss: 0.2386  max val acc: 0.9215
+LR in this epoch:  0.070000
+Epoch 00151: reducing learning rate of group 0 to 4.9000e-02.
+Epoch 00151: reducing learning rate of group 1 to 4.9000e-02.
+Epoch 00151: reducing learning rate of group 2 to 4.9000e-02.
+
+Epoch 152
+----------
+tr set: 186/186tr time: 4251
+    tr  loss: 0.1663      tr  acc: 0.9419
+min tr  loss: 0.1663  max tr  acc: 0.9419
+    val loss: 0.2292      val acc: 0.9249
+min val loss: 0.2292  max val acc: 0.9249
+LR in this epoch:  0.049000
+
+Epoch 153
+----------
+tr set: 186/186tr time: 4279
+    tr  loss: 0.1573      tr  acc: 0.9456
+min tr  loss: 0.1573  max tr  acc: 0.9456
+    val loss: 0.2314      val acc: 0.9246
+min val loss: 0.2292  max val acc: 0.9249
+LR in this epoch:  0.049000
+
+Epoch 154
+----------
+tr set: 186/186tr time: 4307
+    tr  loss: 0.1544      tr  acc: 0.9458
+min tr  loss: 0.1544  max tr  acc: 0.9458
+    val loss: 0.2344      val acc: 0.9222
+min val loss: 0.2292  max val acc: 0.9249
+LR in this epoch:  0.049000
+
+Epoch 155
+----------
+tr set: 186/186tr time: 4335
+    tr  loss: 0.1509      tr  acc: 0.9470
+min tr  loss: 0.1509  max tr  acc: 0.9470
+    val loss: 0.2276      val acc: 0.9250
+min val loss: 0.2276  max val acc: 0.9250
+LR in this epoch:  0.049000
+
+Epoch 156
+----------
+tr set: 186/186tr time: 4363
+    tr  loss: 0.1512      tr  acc: 0.9477
+min tr  loss: 0.1509  max tr  acc: 0.9477
+    val loss: 0.2367      val acc: 0.9230
+min val loss: 0.2276  max val acc: 0.9250
+LR in this epoch:  0.049000
+
+Epoch 157
+----------
+tr set: 186/186tr time: 4391
+    tr  loss: 0.1545      tr  acc: 0.9458
+min tr  loss: 0.1509  max tr  acc: 0.9477
+    val loss: 0.2357      val acc: 0.9238
+min val loss: 0.2276  max val acc: 0.9250
+LR in this epoch:  0.049000
+
+Epoch 158
+----------
+tr set: 186/186tr time: 4419
+    tr  loss: 0.1534      tr  acc: 0.9462
+min tr  loss: 0.1509  max tr  acc: 0.9477
+    val loss: 0.2435      val acc: 0.9191
+min val loss: 0.2276  max val acc: 0.9250
+LR in this epoch:  0.049000
+
+Epoch 159
+----------
+tr set: 186/186tr time: 4448
+    tr  loss: 0.1539      tr  acc: 0.9456
+min tr  loss: 0.1509  max tr  acc: 0.9477
+    val loss: 0.2392      val acc: 0.9225
+min val loss: 0.2276  max val acc: 0.9250
+LR in this epoch:  0.049000
+
+Epoch 160
+----------
+tr set: 186/186tr time: 4475
+    tr  loss: 0.1503      tr  acc: 0.9480
+min tr  loss: 0.1503  max tr  acc: 0.9480
+    val loss: 0.2337      val acc: 0.9262
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 161
+----------
+tr set: 186/186tr time: 4503
+    tr  loss: 0.1499      tr  acc: 0.9473
+min tr  loss: 0.1499  max tr  acc: 0.9480
+    val loss: 0.2407      val acc: 0.9226
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 162
+----------
+tr set: 186/186tr time: 4531
+    tr  loss: 0.1491      tr  acc: 0.9482
+min tr  loss: 0.1491  max tr  acc: 0.9482
+    val loss: 0.2309      val acc: 0.9242
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 163
+----------
+tr set: 186/186tr time: 4559
+    tr  loss: 0.1512      tr  acc: 0.9471
+min tr  loss: 0.1491  max tr  acc: 0.9482
+    val loss: 0.2341      val acc: 0.9239
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 164
+----------
+tr set: 186/186tr time: 4587
+    tr  loss: 0.1511      tr  acc: 0.9470
+min tr  loss: 0.1491  max tr  acc: 0.9482
+    val loss: 0.2492      val acc: 0.9162
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 165
+----------
+tr set: 186/186tr time: 4615
+    tr  loss: 0.1540      tr  acc: 0.9458
+min tr  loss: 0.1491  max tr  acc: 0.9482
+    val loss: 0.2424      val acc: 0.9244
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 166
+----------
+tr set: 186/186tr time: 4643
+    tr  loss: 0.1491      tr  acc: 0.9473
+min tr  loss: 0.1491  max tr  acc: 0.9482
+    val loss: 0.2405      val acc: 0.9253
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 167
+----------
+tr set: 186/186tr time: 4670
+    tr  loss: 0.1471      tr  acc: 0.9482
+min tr  loss: 0.1471  max tr  acc: 0.9482
+    val loss: 0.2477      val acc: 0.9237
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 168
+----------
+tr set: 186/186tr time: 4698
+    tr  loss: 0.1471      tr  acc: 0.9473
+min tr  loss: 0.1471  max tr  acc: 0.9482
+    val loss: 0.2442      val acc: 0.9211
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 169
+----------
+tr set: 186/186tr time: 4726
+    tr  loss: 0.1495      tr  acc: 0.9481
+min tr  loss: 0.1471  max tr  acc: 0.9482
+    val loss: 0.2560      val acc: 0.9167
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 170
+----------
+tr set: 186/186tr time: 4754
+    tr  loss: 0.1570      tr  acc: 0.9451
+min tr  loss: 0.1471  max tr  acc: 0.9482
+    val loss: 0.2368      val acc: 0.9240
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 171
+----------
+tr set: 186/186tr time: 4782
+    tr  loss: 0.1508      tr  acc: 0.9473
+min tr  loss: 0.1471  max tr  acc: 0.9482
+    val loss: 0.2394      val acc: 0.9214
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 172
+----------
+tr set: 186/186tr time: 4810
+    tr  loss: 0.1512      tr  acc: 0.9480
+min tr  loss: 0.1471  max tr  acc: 0.9482
+    val loss: 0.2397      val acc: 0.9212
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+
+Epoch 173
+----------
+tr set: 186/186tr time: 4838
+    tr  loss: 0.1486      tr  acc: 0.9479
+min tr  loss: 0.1471  max tr  acc: 0.9482
+    val loss: 0.2374      val acc: 0.9230
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.049000
+Epoch 00173: reducing learning rate of group 0 to 3.4300e-02.
+Epoch 00173: reducing learning rate of group 1 to 3.4300e-02.
+Epoch 00173: reducing learning rate of group 2 to 3.4300e-02.
+
+Epoch 174
+----------
+tr set: 186/186tr time: 4866
+    tr  loss: 0.1315      tr  acc: 0.9544
+min tr  loss: 0.1315  max tr  acc: 0.9544
+    val loss: 0.2312      val acc: 0.9252
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.034300
+
+Epoch 175
+----------
+tr set: 186/186tr time: 4894
+    tr  loss: 0.1249      tr  acc: 0.9573
+min tr  loss: 0.1249  max tr  acc: 0.9573
+    val loss: 0.2450      val acc: 0.9228
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.034300
+
+Epoch 176
+----------
+tr set: 186/186tr time: 4922
+    tr  loss: 0.1223      tr  acc: 0.9581
+min tr  loss: 0.1223  max tr  acc: 0.9581
+    val loss: 0.2398      val acc: 0.9235
+min val loss: 0.2276  max val acc: 0.9262
+LR in this epoch:  0.034300
+
+Epoch 177
+----------
+tr set: 186/186tr time: 4950
+    tr  loss: 0.1211      tr  acc: 0.9576
+min tr  loss: 0.1211  max tr  acc: 0.9581
+    val loss: 0.2344      val acc: 0.9265
+min val loss: 0.2276  max val acc: 0.9265
+LR in this epoch:  0.034300
+
+Epoch 178
+----------
+tr set: 186/186tr time: 4978
+    tr  loss: 0.1177      tr  acc: 0.9597
+min tr  loss: 0.1177  max tr  acc: 0.9597
+    val loss: 0.2392      val acc: 0.9256
+min val loss: 0.2276  max val acc: 0.9265
+LR in this epoch:  0.034300
+
+Epoch 179
+----------
+tr set: 186/186tr time: 5006
+    tr  loss: 0.1192      tr  acc: 0.9587
+min tr  loss: 0.1177  max tr  acc: 0.9597
+    val loss: 0.2362      val acc: 0.9280
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 180
+----------
+tr set: 186/186tr time: 5034
+    tr  loss: 0.1216      tr  acc: 0.9572
+min tr  loss: 0.1177  max tr  acc: 0.9597
+    val loss: 0.2395      val acc: 0.9238
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 181
+----------
+tr set: 186/186tr time: 5062
+    tr  loss: 0.1195      tr  acc: 0.9581
+min tr  loss: 0.1177  max tr  acc: 0.9597
+    val loss: 0.2289      val acc: 0.9268
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 182
+----------
+tr set: 186/186tr time: 5090
+    tr  loss: 0.1200      tr  acc: 0.9577
+min tr  loss: 0.1177  max tr  acc: 0.9597
+    val loss: 0.2411      val acc: 0.9257
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 183
+----------
+tr set: 186/186tr time: 5118
+    tr  loss: 0.1159      tr  acc: 0.9603
+min tr  loss: 0.1159  max tr  acc: 0.9603
+    val loss: 0.2420      val acc: 0.9243
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 184
+----------
+tr set: 186/186tr time: 5146
+    tr  loss: 0.1143      tr  acc: 0.9613
+min tr  loss: 0.1143  max tr  acc: 0.9613
+    val loss: 0.2477      val acc: 0.9248
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 185
+----------
+tr set: 186/186tr time: 5174
+    tr  loss: 0.1208      tr  acc: 0.9566
+min tr  loss: 0.1143  max tr  acc: 0.9613
+    val loss: 0.2351      val acc: 0.9273
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 186
+----------
+tr set: 186/186tr time: 5202
+    tr  loss: 0.1198      tr  acc: 0.9589
+min tr  loss: 0.1143  max tr  acc: 0.9613
+    val loss: 0.2420      val acc: 0.9263
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 187
+----------
+tr set: 186/186tr time: 5230
+    tr  loss: 0.1158      tr  acc: 0.9608
+min tr  loss: 0.1143  max tr  acc: 0.9613
+    val loss: 0.2311      val acc: 0.9261
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 188
+----------
+tr set: 186/186tr time: 5258
+    tr  loss: 0.1195      tr  acc: 0.9576
+min tr  loss: 0.1143  max tr  acc: 0.9613
+    val loss: 0.2306      val acc: 0.9271
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+
+Epoch 189
+----------
+tr set: 186/186tr time: 5286
+    tr  loss: 0.1216      tr  acc: 0.9575
+min tr  loss: 0.1143  max tr  acc: 0.9613
+    val loss: 0.2402      val acc: 0.9242
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.034300
+Epoch 00189: reducing learning rate of group 0 to 2.4010e-02.
+Epoch 00189: reducing learning rate of group 1 to 2.4010e-02.
+Epoch 00189: reducing learning rate of group 2 to 2.4010e-02.
+
+Epoch 190
+----------
+tr set: 186/186tr time: 5314
+    tr  loss: 0.1064      tr  acc: 0.9627
+min tr  loss: 0.1064  max tr  acc: 0.9627
+    val loss: 0.2280      val acc: 0.9277
+min val loss: 0.2276  max val acc: 0.9280
+LR in this epoch:  0.024010
+
+Epoch 191
+----------
+tr set: 186/186tr time: 5342
+    tr  loss: 0.1009      tr  acc: 0.9657
+min tr  loss: 0.1009  max tr  acc: 0.9657
+    val loss: 0.2247      val acc: 0.9309
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 192
+----------
+tr set: 186/186tr time: 5370
+    tr  loss: 0.0968      tr  acc: 0.9680
+min tr  loss: 0.0968  max tr  acc: 0.9680
+    val loss: 0.2247      val acc: 0.9301
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 193
+----------
+tr set: 186/186tr time: 5398
+    tr  loss: 0.1005      tr  acc: 0.9660
+min tr  loss: 0.0968  max tr  acc: 0.9680
+    val loss: 0.2300      val acc: 0.9297
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 194
+----------
+tr set: 186/186tr time: 5426
+    tr  loss: 0.0997      tr  acc: 0.9657
+min tr  loss: 0.0968  max tr  acc: 0.9680
+    val loss: 0.2313      val acc: 0.9262
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 195
+----------
+tr set: 186/186tr time: 5454
+    tr  loss: 0.0990      tr  acc: 0.9663
+min tr  loss: 0.0968  max tr  acc: 0.9680
+    val loss: 0.2267      val acc: 0.9302
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 196
+----------
+tr set: 186/186tr time: 5482
+    tr  loss: 0.0949      tr  acc: 0.9675
+min tr  loss: 0.0949  max tr  acc: 0.9680
+    val loss: 0.2305      val acc: 0.9293
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 197
+----------
+tr set: 186/186tr time: 5510
+    tr  loss: 0.0966      tr  acc: 0.9673
+min tr  loss: 0.0949  max tr  acc: 0.9680
+    val loss: 0.2298      val acc: 0.9293
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 198
+----------
+tr set: 186/186tr time: 5538
+    tr  loss: 0.1000      tr  acc: 0.9661
+min tr  loss: 0.0949  max tr  acc: 0.9680
+    val loss: 0.2303      val acc: 0.9299
+min val loss: 0.2247  max val acc: 0.9309
+LR in this epoch:  0.024010
+
+Epoch 199
+----------
+tr set: 186/186tr time: 5566
+    tr  loss: 0.0949      tr  acc: 0.9674
+min tr  loss: 0.0949  max tr  acc: 0.9680
+    val loss: 0.2235      val acc: 0.9338
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 200
+----------
+tr set: 186/186tr time: 5594
+    tr  loss: 0.0942      tr  acc: 0.9676
+min tr  loss: 0.0942  max tr  acc: 0.9680
+    val loss: 0.2352      val acc: 0.9286
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 201
+----------
+tr set: 186/186tr time: 5622
+    tr  loss: 0.0978      tr  acc: 0.9663
+min tr  loss: 0.0942  max tr  acc: 0.9680
+    val loss: 0.2269      val acc: 0.9299
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 202
+----------
+tr set: 186/186tr time: 5650
+    tr  loss: 0.0958      tr  acc: 0.9666
+min tr  loss: 0.0942  max tr  acc: 0.9680
+    val loss: 0.2346      val acc: 0.9297
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 203
+----------
+tr set: 186/186tr time: 5678
+    tr  loss: 0.0941      tr  acc: 0.9667
+min tr  loss: 0.0941  max tr  acc: 0.9680
+    val loss: 0.2261      val acc: 0.9325
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 204
+----------
+tr set: 186/186tr time: 5706
+    tr  loss: 0.0971      tr  acc: 0.9668
+min tr  loss: 0.0941  max tr  acc: 0.9680
+    val loss: 0.2324      val acc: 0.9287
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 205
+----------
+tr set: 186/186tr time: 5734
+    tr  loss: 0.0974      tr  acc: 0.9658
+min tr  loss: 0.0941  max tr  acc: 0.9680
+    val loss: 0.2329      val acc: 0.9279
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 206
+----------
+tr set: 186/186tr time: 5762
+    tr  loss: 0.0953      tr  acc: 0.9668
+min tr  loss: 0.0941  max tr  acc: 0.9680
+    val loss: 0.2288      val acc: 0.9297
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 207
+----------
+tr set: 186/186tr time: 5790
+    tr  loss: 0.0942      tr  acc: 0.9672
+min tr  loss: 0.0941  max tr  acc: 0.9680
+    val loss: 0.2279      val acc: 0.9302
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 208
+----------
+tr set: 186/186tr time: 5818
+    tr  loss: 0.0937      tr  acc: 0.9690
+min tr  loss: 0.0937  max tr  acc: 0.9690
+    val loss: 0.2253      val acc: 0.9331
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 209
+----------
+tr set: 186/186tr time: 5846
+    tr  loss: 0.0951      tr  acc: 0.9667
+min tr  loss: 0.0937  max tr  acc: 0.9690
+    val loss: 0.2298      val acc: 0.9283
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 210
+----------
+tr set: 186/186tr time: 5874
+    tr  loss: 0.0955      tr  acc: 0.9679
+min tr  loss: 0.0937  max tr  acc: 0.9690
+    val loss: 0.2247      val acc: 0.9316
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 211
+----------
+tr set: 186/186tr time: 5902
+    tr  loss: 0.0925      tr  acc: 0.9682
+min tr  loss: 0.0925  max tr  acc: 0.9690
+    val loss: 0.2330      val acc: 0.9304
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 212
+----------
+tr set: 186/186tr time: 5930
+    tr  loss: 0.0937      tr  acc: 0.9676
+min tr  loss: 0.0925  max tr  acc: 0.9690
+    val loss: 0.2286      val acc: 0.9318
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 213
+----------
+tr set: 186/186tr time: 5958
+    tr  loss: 0.0923      tr  acc: 0.9694
+min tr  loss: 0.0923  max tr  acc: 0.9694
+    val loss: 0.2301      val acc: 0.9309
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 214
+----------
+tr set: 186/186tr time: 5986
+    tr  loss: 0.0914      tr  acc: 0.9691
+min tr  loss: 0.0914  max tr  acc: 0.9694
+    val loss: 0.2344      val acc: 0.9305
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 215
+----------
+tr set: 186/186tr time: 6014
+    tr  loss: 0.0925      tr  acc: 0.9689
+min tr  loss: 0.0914  max tr  acc: 0.9694
+    val loss: 0.2284      val acc: 0.9297
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 216
+----------
+tr set: 186/186tr time: 6042
+    tr  loss: 0.0937      tr  acc: 0.9682
+min tr  loss: 0.0914  max tr  acc: 0.9694
+    val loss: 0.2318      val acc: 0.9307
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 217
+----------
+tr set: 186/186tr time: 6070
+    tr  loss: 0.0910      tr  acc: 0.9687
+min tr  loss: 0.0910  max tr  acc: 0.9694
+    val loss: 0.2339      val acc: 0.9308
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 218
+----------
+tr set: 186/186tr time: 6098
+    tr  loss: 0.0933      tr  acc: 0.9680
+min tr  loss: 0.0910  max tr  acc: 0.9694
+    val loss: 0.2286      val acc: 0.9296
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 219
+----------
+tr set: 186/186tr time: 6126
+    tr  loss: 0.0938      tr  acc: 0.9687
+min tr  loss: 0.0910  max tr  acc: 0.9694
+    val loss: 0.2260      val acc: 0.9300
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 220
+----------
+tr set: 186/186tr time: 6154
+    tr  loss: 0.0946      tr  acc: 0.9678
+min tr  loss: 0.0910  max tr  acc: 0.9694
+    val loss: 0.2388      val acc: 0.9269
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 221
+----------
+tr set: 186/186tr time: 6182
+    tr  loss: 0.0922      tr  acc: 0.9672
+min tr  loss: 0.0910  max tr  acc: 0.9694
+    val loss: 0.2267      val acc: 0.9313
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+
+Epoch 222
+----------
+tr set: 186/186tr time: 6210
+    tr  loss: 0.0956      tr  acc: 0.9662
+min tr  loss: 0.0910  max tr  acc: 0.9694
+    val loss: 0.2293      val acc: 0.9323
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.024010
+Epoch 00222: reducing learning rate of group 0 to 1.6807e-02.
+Epoch 00222: reducing learning rate of group 1 to 1.6807e-02.
+Epoch 00222: reducing learning rate of group 2 to 1.6807e-02.
+
+Epoch 223
+----------
+tr set: 186/186tr time: 6238
+    tr  loss: 0.0875      tr  acc: 0.9704
+min tr  loss: 0.0875  max tr  acc: 0.9704
+    val loss: 0.2236      val acc: 0.9330
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 224
+----------
+tr set: 186/186tr time: 6266
+    tr  loss: 0.0803      tr  acc: 0.9727
+min tr  loss: 0.0803  max tr  acc: 0.9727
+    val loss: 0.2236      val acc: 0.9327
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 225
+----------
+tr set: 186/186tr time: 6294
+    tr  loss: 0.0807      tr  acc: 0.9722
+min tr  loss: 0.0803  max tr  acc: 0.9727
+    val loss: 0.2275      val acc: 0.9323
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 226
+----------
+tr set: 186/186tr time: 6321
+    tr  loss: 0.0797      tr  acc: 0.9735
+min tr  loss: 0.0797  max tr  acc: 0.9735
+    val loss: 0.2259      val acc: 0.9338
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 227
+----------
+tr set: 186/186tr time: 6349
+    tr  loss: 0.0780      tr  acc: 0.9740
+min tr  loss: 0.0780  max tr  acc: 0.9740
+    val loss: 0.2266      val acc: 0.9321
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 228
+----------
+tr set: 186/186tr time: 6377
+    tr  loss: 0.0795      tr  acc: 0.9736
+min tr  loss: 0.0780  max tr  acc: 0.9740
+    val loss: 0.2282      val acc: 0.9328
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 229
+----------
+tr set: 186/186tr time: 6405
+    tr  loss: 0.0788      tr  acc: 0.9738
+min tr  loss: 0.0780  max tr  acc: 0.9740
+    val loss: 0.2290      val acc: 0.9318
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 230
+----------
+tr set: 186/186tr time: 6433
+    tr  loss: 0.0784      tr  acc: 0.9727
+min tr  loss: 0.0780  max tr  acc: 0.9740
+    val loss: 0.2319      val acc: 0.9334
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 231
+----------
+tr set: 186/186tr time: 6461
+    tr  loss: 0.0781      tr  acc: 0.9746
+min tr  loss: 0.0780  max tr  acc: 0.9746
+    val loss: 0.2262      val acc: 0.9320
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+
+Epoch 232
+----------
+tr set: 186/186tr time: 6489
+    tr  loss: 0.0784      tr  acc: 0.9743
+min tr  loss: 0.0780  max tr  acc: 0.9746
+    val loss: 0.2279      val acc: 0.9323
+min val loss: 0.2235  max val acc: 0.9338
+LR in this epoch:  0.016807
+Epoch 00232: reducing learning rate of group 0 to 1.1765e-02.
+Epoch 00232: reducing learning rate of group 1 to 1.1765e-02.
+Epoch 00232: reducing learning rate of group 2 to 1.1765e-02.
+
+Epoch 233
+----------
+tr set: 186/186tr time: 6517
+    tr  loss: 0.0724      tr  acc: 0.9757
+min tr  loss: 0.0724  max tr  acc: 0.9757
+    val loss: 0.2189      val acc: 0.9345
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 234
+----------
+tr set: 186/186tr time: 6545
+    tr  loss: 0.0692      tr  acc: 0.9770
+min tr  loss: 0.0692  max tr  acc: 0.9770
+    val loss: 0.2267      val acc: 0.9323
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 235
+----------
+tr set: 186/186tr time: 6573
+    tr  loss: 0.0680      tr  acc: 0.9767
+min tr  loss: 0.0680  max tr  acc: 0.9770
+    val loss: 0.2198      val acc: 0.9344
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 236
+----------
+tr set: 186/186tr time: 6601
+    tr  loss: 0.0681      tr  acc: 0.9773
+min tr  loss: 0.0680  max tr  acc: 0.9773
+    val loss: 0.2232      val acc: 0.9323
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 237
+----------
+tr set: 186/186tr time: 6629
+    tr  loss: 0.0685      tr  acc: 0.9778
+min tr  loss: 0.0680  max tr  acc: 0.9778
+    val loss: 0.2206      val acc: 0.9326
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 238
+----------
+tr set: 186/186tr time: 6657
+    tr  loss: 0.0655      tr  acc: 0.9782
+min tr  loss: 0.0655  max tr  acc: 0.9782
+    val loss: 0.2285      val acc: 0.9336
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 239
+----------
+tr set: 186/186tr time: 6685
+    tr  loss: 0.0654      tr  acc: 0.9780
+min tr  loss: 0.0654  max tr  acc: 0.9782
+    val loss: 0.2253      val acc: 0.9334
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 240
+----------
+tr set: 186/186tr time: 6713
+    tr  loss: 0.0674      tr  acc: 0.9777
+min tr  loss: 0.0654  max tr  acc: 0.9782
+    val loss: 0.2284      val acc: 0.9320
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 241
+----------
+tr set: 186/186tr time: 6741
+    tr  loss: 0.0662      tr  acc: 0.9776
+min tr  loss: 0.0654  max tr  acc: 0.9782
+    val loss: 0.2240      val acc: 0.9338
+min val loss: 0.2189  max val acc: 0.9345
+LR in this epoch:  0.011765
+
+Epoch 242
+----------
+tr set: 186/186tr time: 6769
+    tr  loss: 0.0626      tr  acc: 0.9796
+min tr  loss: 0.0626  max tr  acc: 0.9796
+    val loss: 0.2241      val acc: 0.9347
+min val loss: 0.2189  max val acc: 0.9347
+LR in this epoch:  0.011765
+
+Epoch 243
+----------
+tr set: 186/186tr time: 6797
+    tr  loss: 0.0640      tr  acc: 0.9795
+min tr  loss: 0.0626  max tr  acc: 0.9796
+    val loss: 0.2216      val acc: 0.9348
+min val loss: 0.2189  max val acc: 0.9348
+LR in this epoch:  0.011765
+
+Epoch 244
+----------
+tr set: 186/186tr time: 6825
+    tr  loss: 0.0644      tr  acc: 0.9788
+min tr  loss: 0.0626  max tr  acc: 0.9796
+    val loss: 0.2263      val acc: 0.9319
+min val loss: 0.2189  max val acc: 0.9348
+LR in this epoch:  0.011765
+
+Epoch 245
+----------
+tr set: 186/186tr time: 6853
+    tr  loss: 0.0656      tr  acc: 0.9781
+min tr  loss: 0.0626  max tr  acc: 0.9796
+    val loss: 0.2225      val acc: 0.9355
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 246
+----------
+tr set: 186/186tr time: 6881
+    tr  loss: 0.0625      tr  acc: 0.9787
+min tr  loss: 0.0625  max tr  acc: 0.9796
+    val loss: 0.2276      val acc: 0.9322
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 247
+----------
+tr set: 186/186tr time: 6909
+    tr  loss: 0.0625      tr  acc: 0.9789
+min tr  loss: 0.0625  max tr  acc: 0.9796
+    val loss: 0.2235      val acc: 0.9342
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 248
+----------
+tr set: 186/186tr time: 6937
+    tr  loss: 0.0621      tr  acc: 0.9792
+min tr  loss: 0.0621  max tr  acc: 0.9796
+    val loss: 0.2218      val acc: 0.9347
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 249
+----------
+tr set: 186/186tr time: 6965
+    tr  loss: 0.0614      tr  acc: 0.9794
+min tr  loss: 0.0614  max tr  acc: 0.9796
+    val loss: 0.2288      val acc: 0.9331
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 250
+----------
+tr set: 186/186tr time: 6993
+    tr  loss: 0.0623      tr  acc: 0.9794
+min tr  loss: 0.0614  max tr  acc: 0.9796
+    val loss: 0.2260      val acc: 0.9336
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 251
+----------
+tr set: 186/186tr time: 7021
+    tr  loss: 0.0650      tr  acc: 0.9786
+min tr  loss: 0.0614  max tr  acc: 0.9796
+    val loss: 0.2330      val acc: 0.9322
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 252
+----------
+tr set: 186/186tr time: 7049
+    tr  loss: 0.0645      tr  acc: 0.9779
+min tr  loss: 0.0614  max tr  acc: 0.9796
+    val loss: 0.2242      val acc: 0.9332
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 253
+----------
+tr set: 186/186tr time: 7077
+    tr  loss: 0.0631      tr  acc: 0.9797
+min tr  loss: 0.0614  max tr  acc: 0.9797
+    val loss: 0.2314      val acc: 0.9311
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+
+Epoch 254
+----------
+tr set: 186/186tr time: 7105
+    tr  loss: 0.0618      tr  acc: 0.9801
+min tr  loss: 0.0614  max tr  acc: 0.9801
+    val loss: 0.2248      val acc: 0.9325
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.011765
+Epoch 00254: reducing learning rate of group 0 to 8.2354e-03.
+Epoch 00254: reducing learning rate of group 1 to 8.2354e-03.
+Epoch 00254: reducing learning rate of group 2 to 8.2354e-03.
+
+Epoch 255
+----------
+tr set: 186/186tr time: 7133
+    tr  loss: 0.0623      tr  acc: 0.9792
+min tr  loss: 0.0614  max tr  acc: 0.9801
+    val loss: 0.2251      val acc: 0.9347
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 256
+----------
+tr set: 186/186tr time: 7160
+    tr  loss: 0.0576      tr  acc: 0.9810
+min tr  loss: 0.0576  max tr  acc: 0.9810
+    val loss: 0.2228      val acc: 0.9354
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 257
+----------
+tr set: 186/186tr time: 7188
+    tr  loss: 0.0584      tr  acc: 0.9817
+min tr  loss: 0.0576  max tr  acc: 0.9817
+    val loss: 0.2332      val acc: 0.9325
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 258
+----------
+tr set: 186/186tr time: 7216
+    tr  loss: 0.0571      tr  acc: 0.9811
+min tr  loss: 0.0571  max tr  acc: 0.9817
+    val loss: 0.2260      val acc: 0.9352
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 259
+----------
+tr set: 186/186tr time: 7244
+    tr  loss: 0.0563      tr  acc: 0.9818
+min tr  loss: 0.0563  max tr  acc: 0.9818
+    val loss: 0.2272      val acc: 0.9349
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 260
+----------
+tr set: 186/186tr time: 7272
+    tr  loss: 0.0556      tr  acc: 0.9830
+min tr  loss: 0.0556  max tr  acc: 0.9830
+    val loss: 0.2290      val acc: 0.9342
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 261
+----------
+tr set: 186/186tr time: 7300
+    tr  loss: 0.0586      tr  acc: 0.9811
+min tr  loss: 0.0556  max tr  acc: 0.9830
+    val loss: 0.2228      val acc: 0.9348
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 262
+----------
+tr set: 186/186tr time: 7328
+    tr  loss: 0.0567      tr  acc: 0.9824
+min tr  loss: 0.0556  max tr  acc: 0.9830
+    val loss: 0.2261      val acc: 0.9344
+min val loss: 0.2189  max val acc: 0.9355
+LR in this epoch:  0.008235
+
+Epoch 263
+----------
+tr set: 186/186tr time: 7356
+    tr  loss: 0.0570      tr  acc: 0.9814
+min tr  loss: 0.0556  max tr  acc: 0.9830
+    val loss: 0.2253      val acc: 0.9374
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 264
+----------
+tr set: 186/186tr time: 7384
+    tr  loss: 0.0560      tr  acc: 0.9819
+min tr  loss: 0.0556  max tr  acc: 0.9830
+    val loss: 0.2266      val acc: 0.9347
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 265
+----------
+tr set: 186/186tr time: 7412
+    tr  loss: 0.0539      tr  acc: 0.9827
+min tr  loss: 0.0539  max tr  acc: 0.9830
+    val loss: 0.2290      val acc: 0.9339
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 266
+----------
+tr set: 186/186tr time: 7440
+    tr  loss: 0.0547      tr  acc: 0.9822
+min tr  loss: 0.0539  max tr  acc: 0.9830
+    val loss: 0.2269      val acc: 0.9358
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 267
+----------
+tr set: 186/186tr time: 7468
+    tr  loss: 0.0535      tr  acc: 0.9826
+min tr  loss: 0.0535  max tr  acc: 0.9830
+    val loss: 0.2301      val acc: 0.9347
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 268
+----------
+tr set: 186/186tr time: 7496
+    tr  loss: 0.0548      tr  acc: 0.9824
+min tr  loss: 0.0535  max tr  acc: 0.9830
+    val loss: 0.2288      val acc: 0.9340
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 269
+----------
+tr set: 186/186tr time: 7524
+    tr  loss: 0.0558      tr  acc: 0.9820
+min tr  loss: 0.0535  max tr  acc: 0.9830
+    val loss: 0.2249      val acc: 0.9352
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 270
+----------
+tr set: 186/186tr time: 7552
+    tr  loss: 0.0558      tr  acc: 0.9811
+min tr  loss: 0.0535  max tr  acc: 0.9830
+    val loss: 0.2253      val acc: 0.9346
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 271
+----------
+tr set: 186/186tr time: 7580
+    tr  loss: 0.0517      tr  acc: 0.9836
+min tr  loss: 0.0517  max tr  acc: 0.9836
+    val loss: 0.2311      val acc: 0.9347
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 272
+----------
+tr set: 186/186tr time: 7608
+    tr  loss: 0.0557      tr  acc: 0.9819
+min tr  loss: 0.0517  max tr  acc: 0.9836
+    val loss: 0.2289      val acc: 0.9351
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 273
+----------
+tr set: 186/186tr time: 7636
+    tr  loss: 0.0531      tr  acc: 0.9835
+min tr  loss: 0.0517  max tr  acc: 0.9836
+    val loss: 0.2297      val acc: 0.9331
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 274
+----------
+tr set: 186/186tr time: 7664
+    tr  loss: 0.0549      tr  acc: 0.9822
+min tr  loss: 0.0517  max tr  acc: 0.9836
+    val loss: 0.2309      val acc: 0.9340
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 275
+----------
+tr set: 186/186tr time: 7692
+    tr  loss: 0.0543      tr  acc: 0.9824
+min tr  loss: 0.0517  max tr  acc: 0.9836
+    val loss: 0.2270      val acc: 0.9337
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+
+Epoch 276
+----------
+tr set: 186/186tr time: 7720
+    tr  loss: 0.0534      tr  acc: 0.9820
+min tr  loss: 0.0517  max tr  acc: 0.9836
+    val loss: 0.2293      val acc: 0.9339
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.008235
+Epoch 00276: reducing learning rate of group 0 to 5.7648e-03.
+Epoch 00276: reducing learning rate of group 1 to 5.7648e-03.
+Epoch 00276: reducing learning rate of group 2 to 5.7648e-03.
+
+Epoch 277
+----------
+tr set: 186/186tr time: 7748
+    tr  loss: 0.0493      tr  acc: 0.9842
+min tr  loss: 0.0493  max tr  acc: 0.9842
+    val loss: 0.2271      val acc: 0.9352
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 278
+----------
+tr set: 186/186tr time: 7775
+    tr  loss: 0.0508      tr  acc: 0.9834
+min tr  loss: 0.0493  max tr  acc: 0.9842
+    val loss: 0.2228      val acc: 0.9368
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 279
+----------
+tr set: 186/186tr time: 7804
+    tr  loss: 0.0516      tr  acc: 0.9829
+min tr  loss: 0.0493  max tr  acc: 0.9842
+    val loss: 0.2241      val acc: 0.9365
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 280
+----------
+tr set: 186/186tr time: 7831
+    tr  loss: 0.0488      tr  acc: 0.9850
+min tr  loss: 0.0488  max tr  acc: 0.9850
+    val loss: 0.2255      val acc: 0.9354
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 281
+----------
+tr set: 186/186tr time: 7859
+    tr  loss: 0.0489      tr  acc: 0.9846
+min tr  loss: 0.0488  max tr  acc: 0.9850
+    val loss: 0.2239      val acc: 0.9348
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 282
+----------
+tr set: 186/186tr time: 7887
+    tr  loss: 0.0495      tr  acc: 0.9842
+min tr  loss: 0.0488  max tr  acc: 0.9850
+    val loss: 0.2256      val acc: 0.9353
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 283
+----------
+tr set: 186/186tr time: 7915
+    tr  loss: 0.0529      tr  acc: 0.9827
+min tr  loss: 0.0488  max tr  acc: 0.9850
+    val loss: 0.2200      val acc: 0.9359
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 284
+----------
+tr set: 186/186tr time: 7943
+    tr  loss: 0.0492      tr  acc: 0.9844
+min tr  loss: 0.0488  max tr  acc: 0.9850
+    val loss: 0.2225      val acc: 0.9348
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+
+Epoch 285
+----------
+tr set: 186/186tr time: 7971
+    tr  loss: 0.0494      tr  acc: 0.9841
+min tr  loss: 0.0488  max tr  acc: 0.9850
+    val loss: 0.2242      val acc: 0.9360
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.005765
+Epoch 00285: reducing learning rate of group 0 to 4.0354e-03.
+Epoch 00285: reducing learning rate of group 1 to 4.0354e-03.
+Epoch 00285: reducing learning rate of group 2 to 4.0354e-03.
+
+Epoch 286
+----------
+tr set: 186/186tr time: 7999
+    tr  loss: 0.0484      tr  acc: 0.9847
+min tr  loss: 0.0484  max tr  acc: 0.9850
+    val loss: 0.2248      val acc: 0.9360
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 287
+----------
+tr set: 186/186tr time: 8027
+    tr  loss: 0.0462      tr  acc: 0.9854
+min tr  loss: 0.0462  max tr  acc: 0.9854
+    val loss: 0.2252      val acc: 0.9355
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 288
+----------
+tr set: 186/186tr time: 8055
+    tr  loss: 0.0472      tr  acc: 0.9846
+min tr  loss: 0.0462  max tr  acc: 0.9854
+    val loss: 0.2262      val acc: 0.9362
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 289
+----------
+tr set: 186/186tr time: 8083
+    tr  loss: 0.0459      tr  acc: 0.9858
+min tr  loss: 0.0459  max tr  acc: 0.9858
+    val loss: 0.2215      val acc: 0.9359
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 290
+----------
+tr set: 186/186tr time: 8111
+    tr  loss: 0.0485      tr  acc: 0.9844
+min tr  loss: 0.0459  max tr  acc: 0.9858
+    val loss: 0.2246      val acc: 0.9346
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 291
+----------
+tr set: 186/186tr time: 8139
+    tr  loss: 0.0467      tr  acc: 0.9851
+min tr  loss: 0.0459  max tr  acc: 0.9858
+    val loss: 0.2206      val acc: 0.9366
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 292
+----------
+tr set: 186/186tr time: 8167
+    tr  loss: 0.0472      tr  acc: 0.9850
+min tr  loss: 0.0459  max tr  acc: 0.9858
+    val loss: 0.2235      val acc: 0.9369
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 293
+----------
+tr set: 186/186tr time: 8195
+    tr  loss: 0.0453      tr  acc: 0.9855
+min tr  loss: 0.0453  max tr  acc: 0.9858
+    val loss: 0.2271      val acc: 0.9358
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 294
+----------
+tr set: 186/186tr time: 8223
+    tr  loss: 0.0456      tr  acc: 0.9852
+min tr  loss: 0.0453  max tr  acc: 0.9858
+    val loss: 0.2241      val acc: 0.9373
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 295
+----------
+tr set: 186/186tr time: 8251
+    tr  loss: 0.0499      tr  acc: 0.9830
+min tr  loss: 0.0453  max tr  acc: 0.9858
+    val loss: 0.2266      val acc: 0.9356
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 296
+----------
+tr set: 186/186tr time: 8279
+    tr  loss: 0.0464      tr  acc: 0.9851
+min tr  loss: 0.0453  max tr  acc: 0.9858
+    val loss: 0.2259      val acc: 0.9364
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 297
+----------
+tr set: 186/186tr time: 8306
+    tr  loss: 0.0458      tr  acc: 0.9855
+min tr  loss: 0.0453  max tr  acc: 0.9858
+    val loss: 0.2232      val acc: 0.9364
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+
+Epoch 298
+----------
+tr set: 186/186tr time: 8334
+    tr  loss: 0.0455      tr  acc: 0.9854
+min tr  loss: 0.0453  max tr  acc: 0.9858
+    val loss: 0.2246      val acc: 0.9363
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.004035
+Epoch 00298: reducing learning rate of group 0 to 2.8248e-03.
+Epoch 00298: reducing learning rate of group 1 to 2.8248e-03.
+Epoch 00298: reducing learning rate of group 2 to 2.8248e-03.
+
+Epoch 299
+----------
+tr set: 186/186tr time: 8362
+    tr  loss: 0.0445      tr  acc: 0.9860
+min tr  loss: 0.0445  max tr  acc: 0.9860
+    val loss: 0.2253      val acc: 0.9362
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.002825
+
+Epoch 300
+----------
+tr set: 186/186tr time: 8390
+    tr  loss: 0.0458      tr  acc: 0.9852
+min tr  loss: 0.0445  max tr  acc: 0.9860
+    val loss: 0.2259      val acc: 0.9364
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.002825
+
+Epoch 301
+----------
+tr set: 186/186tr time: 8418
+    tr  loss: 0.0440      tr  acc: 0.9865
+min tr  loss: 0.0440  max tr  acc: 0.9865
+    val loss: 0.2259      val acc: 0.9364
+min val loss: 0.2189  max val acc: 0.9374
+LR in this epoch:  0.002825
+
+Epoch 302
+----------
+tr set: 186/186tr time: 8446
+    tr  loss: 0.0433      tr  acc: 0.9863
+min tr  loss: 0.0433  max tr  acc: 0.9865
+    val loss: 0.2239      val acc: 0.9376
+min val loss: 0.2189  max val acc: 0.9376
+LR in this epoch:  0.002825
+
+Epoch 303
+----------
+tr set: 186/186tr time: 8474
+    tr  loss: 0.0438      tr  acc: 0.9860
+min tr  loss: 0.0433  max tr  acc: 0.9865
+    val loss: 0.2261      val acc: 0.9361
+min val loss: 0.2189  max val acc: 0.9376
+LR in this epoch:  0.002825
+
+Epoch 304
+----------
+tr set: 186/186tr time: 8502
+    tr  loss: 0.0412      tr  acc: 0.9874
+min tr  loss: 0.0412  max tr  acc: 0.9874
+    val loss: 0.2264      val acc: 0.9362
+min val loss: 0.2189  max val acc: 0.9376
+LR in this epoch:  0.002825
+
+Epoch 305
+----------
+tr set: 186/186tr time: 8530
+    tr  loss: 0.0423      tr  acc: 0.9871
+min tr  loss: 0.0412  max tr  acc: 0.9874
+    val loss: 0.2241      val acc: 0.9380
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 306
+----------
+tr set: 186/186tr time: 8558
+    tr  loss: 0.0429      tr  acc: 0.9866
+min tr  loss: 0.0412  max tr  acc: 0.9874
+    val loss: 0.2246      val acc: 0.9374
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 307
+----------
+tr set: 186/186tr time: 8586
+    tr  loss: 0.0433      tr  acc: 0.9869
+min tr  loss: 0.0412  max tr  acc: 0.9874
+    val loss: 0.2250      val acc: 0.9366
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 308
+----------
+tr set: 186/186tr time: 8614
+    tr  loss: 0.0428      tr  acc: 0.9863
+min tr  loss: 0.0412  max tr  acc: 0.9874
+    val loss: 0.2246      val acc: 0.9375
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 309
+----------
+tr set: 186/186tr time: 8642
+    tr  loss: 0.0408      tr  acc: 0.9872
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2268      val acc: 0.9368
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 310
+----------
+tr set: 186/186tr time: 8670
+    tr  loss: 0.0411      tr  acc: 0.9873
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2258      val acc: 0.9360
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 311
+----------
+tr set: 186/186tr time: 8698
+    tr  loss: 0.0421      tr  acc: 0.9870
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2252      val acc: 0.9351
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 312
+----------
+tr set: 186/186tr time: 8726
+    tr  loss: 0.0430      tr  acc: 0.9863
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2245      val acc: 0.9373
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 313
+----------
+tr set: 186/186tr time: 8754
+    tr  loss: 0.0421      tr  acc: 0.9866
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2240      val acc: 0.9377
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+
+Epoch 314
+----------
+tr set: 186/186tr time: 8782
+    tr  loss: 0.0447      tr  acc: 0.9859
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2258      val acc: 0.9374
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.002825
+Epoch 00314: reducing learning rate of group 0 to 1.9773e-03.
+Epoch 00314: reducing learning rate of group 1 to 1.9773e-03.
+Epoch 00314: reducing learning rate of group 2 to 1.9773e-03.
+
+Epoch 315
+----------
+tr set: 186/186tr time: 8811
+    tr  loss: 0.0420      tr  acc: 0.9865
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2250      val acc: 0.9375
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.001977
+
+Epoch 316
+----------
+tr set: 186/186tr time: 8838
+    tr  loss: 0.0411      tr  acc: 0.9873
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2281      val acc: 0.9371
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.001977
+
+Epoch 317
+----------
+tr set: 186/186tr time: 8866
+    tr  loss: 0.0418      tr  acc: 0.9864
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2246      val acc: 0.9368
+min val loss: 0.2189  max val acc: 0.9380
+LR in this epoch:  0.001977
+
+Epoch 318
+----------
+tr set: 186/186tr time: 8895
+    tr  loss: 0.0432      tr  acc: 0.9862
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2217      val acc: 0.9391
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001977
+
+Epoch 319
+----------
+tr set: 186/186tr time: 8923
+    tr  loss: 0.0430      tr  acc: 0.9862
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2247      val acc: 0.9373
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001977
+Epoch 00319: reducing learning rate of group 0 to 1.3841e-03.
+Epoch 00319: reducing learning rate of group 1 to 1.3841e-03.
+Epoch 00319: reducing learning rate of group 2 to 1.3841e-03.
+
+Epoch 320
+----------
+tr set: 186/186tr time: 8951
+    tr  loss: 0.0429      tr  acc: 0.9859
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2222      val acc: 0.9373
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+
+Epoch 321
+----------
+tr set: 186/186tr time: 8979
+    tr  loss: 0.0415      tr  acc: 0.9873
+min tr  loss: 0.0408  max tr  acc: 0.9874
+    val loss: 0.2212      val acc: 0.9381
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+
+Epoch 322
+----------
+tr set: 186/186tr time: 9007
+    tr  loss: 0.0397      tr  acc: 0.9876
+min tr  loss: 0.0397  max tr  acc: 0.9876
+    val loss: 0.2223      val acc: 0.9375
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+
+Epoch 323
+----------
+tr set: 186/186tr time: 9035
+    tr  loss: 0.0398      tr  acc: 0.9873
+min tr  loss: 0.0397  max tr  acc: 0.9876
+    val loss: 0.2224      val acc: 0.9370
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+
+Epoch 324
+----------
+tr set: 186/186tr time: 9063
+    tr  loss: 0.0408      tr  acc: 0.9872
+min tr  loss: 0.0397  max tr  acc: 0.9876
+    val loss: 0.2239      val acc: 0.9364
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+
+Epoch 325
+----------
+tr set: 186/186tr time: 9091
+    tr  loss: 0.0417      tr  acc: 0.9868
+min tr  loss: 0.0397  max tr  acc: 0.9876
+    val loss: 0.2258      val acc: 0.9365
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+
+Epoch 326
+----------
+tr set: 186/186tr time: 9119
+    tr  loss: 0.0397      tr  acc: 0.9880
+min tr  loss: 0.0397  max tr  acc: 0.9880
+    val loss: 0.2248      val acc: 0.9368
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+
+Epoch 327
+----------
+tr set: 186/186tr time: 9147
+    tr  loss: 0.0418      tr  acc: 0.9873
+min tr  loss: 0.0397  max tr  acc: 0.9880
+    val loss: 0.2224      val acc: 0.9373
+min val loss: 0.2189  max val acc: 0.9391
+LR in this epoch:  0.001384
+Epoch 00327: reducing learning rate of group 0 to 9.6889e-04.
+Epoch 00327: reducing learning rate of group 1 to 9.6889e-04.
+Epoch 00327: reducing learning rate of group 2 to 9.6889e-04.
+early stop!
+End training
+
+Has loaded the best weight
+
+ --------------------------------------------------
+                     Evaluate:
+Train loss: 0.0022
+Train Acc: 0.9999
+--------------------
+Val loss: 0.2217
+Val Acc: 0.9391
+--------------------
+Test loss: 0.2608
+Test Acc: 0.9259
+--------------------
+Training time: 9150.54 seconds
+Total epochs: 327
+Best weight and tensorboard is in weight/xXxT4ivwfr3gBdc9W11Q1ZYnFSq
+
+results have been written to results/xXxT4ivwfr3gBdc9W11Q1ZYnFSq_results.txt
+========================================================================================================================
+job done
+========================================================================================================================

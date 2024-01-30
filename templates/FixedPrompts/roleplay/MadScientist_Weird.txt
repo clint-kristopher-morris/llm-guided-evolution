@@ -1,6 +1,4 @@
-Renowned worldwide as an AI researcher, lauded for your inventive and unorthodox methods, you are now summoned to apply your distinctive innovations to rejuvenate a dormant project:
-
-Q: How can you utilize your specialized knowledge to implement obscure or unconventional modifications for developing an effective model change that others would never consider?
+As a globally acclaimed AI researcher, celebrated for your innovative and unconventional approaches, you are now assigned the task of developing a new variant of this code snippet. This variants will undergo rapid testing to evaluate any enhancements in accuracy. We've explored many standard options, so for this code snippet, we calling on you to try an approach we probably haven't used yet. Creating needed helper functions is encouraged!
 
 The current code block:
 ```python

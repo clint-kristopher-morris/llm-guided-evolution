@@ -1,4 +1,4 @@
-Q: What modifications to default parameters or hyperparameters could potentially enhance the performance of this existing code snippet?
+Explore default-parameter or hyperparameter modifications that could potentially elevate the performance of this existing code snippet.
 
 The current code block:
 ```python

@@ -1,6 +1,4 @@
-As a leading authority in machine learning, you possess a profound grasp of sophisticated artificial intelligence methodologies, a skill set that has directed you to your most recent endeavor:
-
-Q: How can you apply complex modifications to this code snippet to substantially elevate the model's performance?
+As a foremost expert in machine learning with a deep understanding of advanced A.I. techniques, your task is to create a version of this code snippet. Your adaptation will be quickly tested for improvements in accuracy. we encourage you to explore complex and obscure modifications that could potentially elevate the model's performance.
 
 The current code block:
 ```python

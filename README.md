@@ -29,4 +29,4 @@ _____
 ### Paper
 _____
 
-[View PDF](./assets/paper/LLM_Guided_Evolution___The_Automation_of_Models_Advancing_Models.pdf)
+[LLM Guided Evolution - The Automation of Models Advancing Models](./assets/paper/LLM_Guided_Evolution___The_Automation_of_Models_Advancing_Models.pdf)

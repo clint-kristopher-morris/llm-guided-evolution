@@ -25,3 +25,8 @@ _____
 <p align="center">
   <img src="./assets/ge_run1.gif" alt="">
 </p>
+
+### Paper
+_____
+
+[View PDF]([https://github.com/username/repository/blob/branch/path/to/your/file.pdf](https://github.com/clint-kristopher-morris/llm-guided-evolution/blob/main/assets/paper/LLM_Guided_Evolution___The_Automation_of_Models_Advancing_Models.pdf)https://github.com/clint-kristopher-morris/llm-guided-evolution/blob/main/assets/paper/LLM_Guided_Evolution___The_Automation_of_Models_Advancing_Models.pdf)

@@ -3,7 +3,7 @@ import argparse
 import random
 from cfg.constants import *
 from utils.print_utils import box_print
-from llm_utils import (split_file, submit_mixtral, sibmit_mixtral_hf, 
+from llm_utils import (split_file, submit_mixtral, submit_mixtral_hf, 
                        llm_code_qc, str2bool, extract_note, generate_augmented_code, 
                        clean_code_from_llm, retrieve_base_code)
 

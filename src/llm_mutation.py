@@ -7,7 +7,7 @@ from torch import bfloat16
 import argparse
 from cfg.constants import *
 from utils.print_utils import box_print
-from llm_utils import (split_file, submit_mixtral, sibmit_mixtral_hf, 
+from llm_utils import (split_file, submit_mixtral, submit_mixtral_hf, 
                        llm_code_qc, str2bool, generate_augmented_code, 
                        extract_note, clean_code_from_llm, retrieve_base_code)
 

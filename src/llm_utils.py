@@ -13,7 +13,7 @@ from cfg.constants import *
 from utils.print_utils import box_print
 
 from typing import Optional
-import fire
+#import fire
 # from llama import Llama
 import requests
 import huggingface_hub

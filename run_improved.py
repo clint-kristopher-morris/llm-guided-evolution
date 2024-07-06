@@ -166,9 +166,14 @@ def submit_bash(file_path, **kwargs):
         job_id
     """
     create_bash_file(file_path, **kwargs)
-    result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+    result = subprocess.run([RUN_COMMAND, file_path], capture_output=True, text=True)
 
-    if result.returncode == 0:
+    if result.returncode == 0 and LOCAL:
+        local_output = result.stdout.strip()
+        print("\t‣ Output:", result.stdout.strip(), flush=True)
+        job_id = None
+        successful_sub_flag = True
+    elif result.returncode == 0:
         print("\t‣ Output:", result.stdout.strip(), flush=True)
         # print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip(), flush=True)
         successful_sub_flag = True
@@ -178,10 +183,31 @@ def submit_bash(file_path, **kwargs):
         successful_sub_flag = False
         job_id = None
 
-    return successful_sub_flag, job_id
+    return successful_sub_flag, job_id, local_output
 
 
-def check4job_completion(job_id, check_interval=60, timeout=3600*3):
+def check_contents_for_error(contents):
+    """
+    Checks the output of a job for any signs of error.
+
+    Parameters:
+    contents (str): output of job to check for error
+
+    Returns:
+    bool: True if job completed successfully, False if error, None if neither.  
+    """
+
+    # Check for error indicators in the file
+    if "traceback" in contents.lower() or "slurmstepd: error" in contents.lower():
+        print("\t☠ Error Found in LLM Job Output.", flush=True)
+        return False
+    elif "job done" in contents.lower():
+        print("\t☑ LLM Job Completed Successfully.", flush=True)
+        return True
+    else:
+        return None
+
+def check4job_completion(job_id, local_output=None, check_interval=60, timeout=3600*3):
     """
     Check for the completion of a job by searching for its output file and scanning for errors.
 
@@ -193,6 +219,14 @@ def check4job_completion(job_id, check_interval=60, timeout=3600*3):
     Returns:
     bool: True if job completed successfully, False otherwise.
     """
+
+    if local_output is not None:
+        state = check_contents_for_error(local_output)
+        if state is None:
+            raise Exception('Unexpected output from job')
+        else:
+            return state
+
     start_time = time.time()
     output_file = f'slurm-{job_id}.out'
 
@@ -206,15 +240,11 @@ def check4job_completion(job_id, check_interval=60, timeout=3600*3):
         if os.path.exists(output_file):
             with open(output_file, 'r') as file:
                 contents = file.read()
-                # Check for error indicators in the file
-                if "traceback" in contents.lower() or "slurmstepd: error" in contents.lower():
-                    print("\t☠ Error Found in LLM Job Output.", flush=True)
-                    return False
-                elif "job done" in contents.lower():
-                    print("\t☑ LLM Job Completed Successfully.", flush=True)
-                    return True
-                else:
+                state = check_contents_for_error(contents)
+                if state is None:
                     pass
+                else:
+                    return state
 
         # Wait for some time before checking again
         time.sleep(check_interval)
@@ -238,7 +268,7 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
     temperature = round(random.uniform(temp_min, temp_max), 2)
     # Assign a file path and name for the model creation bash
     file_path = os.path.join(out_dir, f'{gene_id}.sh')
-    successful_sub_flag, job_id = submit_bash(file_path, 
+    successful_sub_flag, job_id, local_output = submit_bash(file_path, 
                                               input_filename_x=f'{SOTA_ROOT}/network.py',
                                               output_filename =f'{SOTA_ROOT}/models/network_{gene_id}.py',
                                               gpu=LLM_GPU,
@@ -257,8 +287,11 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
         return individual
     
     if successful_sub_flag:
-        print(f'Checking for Job Completion: {job_id} for {gene_id}', flush=True)
-        job_done = check4job_completion(job_id)
+        if job_id is not None:
+            print(f'Checking for Job Completion: {job_id} for {gene_id}', flush=True)
+        else:
+            print(f'Checking completion for {gene_id}', flush=True)
+        job_done = check4job_completion(job_id=job_id, local_output=local_output)
         # print(f'Model Files for {gene_id} are Loaded') if job_done else print(f'Error Loading Model Files for {gene_id}', flush=True)
         
     return individual
@@ -281,7 +314,7 @@ def submit_run(gene_id):
 
     def submit_bash_py(file_path, gene_id, **kwargs):
         create_bash_file_py(file_path, gene_id, **kwargs)
-        result = subprocess.run(["sbatch", file_path], capture_output=True, text=True)
+        result = subprocess.run([RUN_COMMAND, file_path], capture_output=True, text=True)
         if result.returncode == 0:
             print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip())
             successful_sub_flag = True
@@ -630,7 +663,7 @@ def customMutation(individual, indpb, temp_min=0.02, temp_max=0.35):
     # Name of the sh bash file
     file_path = os.path.join(str(GENERATION), f'{new_gene_id}.sh')
     temperature = round(random.uniform(temp_min, temp_max), 2)
-    successful_sub_flag, job_id = submit_bash(file_path, 
+    successful_sub_flag, job_id, local_output = submit_bash(file_path, 
                                               input_filename_x= f'{SOTA_ROOT}/models/network_{old_gene_id}.py',
                                               output_filename = f'{SOTA_ROOT}/models/network_{new_gene_id}.py',
                                               gpu=LLM_GPU,
@@ -652,7 +685,7 @@ def customMutation(individual, indpb, temp_min=0.02, temp_max=0.35):
     
     if successful_sub_flag:
         print(f'\t‣ Checking for Mutation Job Completion: {job_id} for {new_gene_id}')
-        job_done = check4job_completion(job_id)
+        job_done = check4job_completion(job_id, local_output)
         if job_done:
             print(f'\t‣ Model Files for {new_gene_id} are Loaded')
         else: 

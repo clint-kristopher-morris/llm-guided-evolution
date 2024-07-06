@@ -14,7 +14,11 @@ from dataset import My_Dataset, My_Sampler
 # from network import get_optimizer, ExquisiteNetV2
 from tool import train_acc, eval_acc, del_ipynb_ckps, create_save_dir
 from img import *
-
+import sys
+import os
+src_path = os.path.dirname(os.path.abspath(__file__)) + '/../../src'
+sys.path.append(src_path)
+from cfg.constants import *
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -117,8 +121,9 @@ def main():
         )
     }
                 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    
+    #device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = DEVICE
+
     if args.weight is None:
         model = ExquisiteNetV2(class_num, tr_set[0][0].shape[0]).to(device)
     else:

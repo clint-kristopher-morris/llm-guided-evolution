@@ -3,7 +3,8 @@ import numpy as np
 
 
 ROOT_DIR = "./"
-DATA_PATH = "GuidedEvolution/sota/ExquisiteNetV2/cifar10"
+# DATA_PATH absolute or relative to ExquisiteNetV2
+DATA_PATH = "./cifar10"
 SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/ExquisiteNetV2')
 SEED_NETWORK = os.path.join(SOTA_ROOT, "network.py")
 LOCAL = True

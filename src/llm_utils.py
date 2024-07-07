@@ -224,7 +224,11 @@ def mutate_prompts(n=5):
         prompt_text = prompt_text.split("```")[0].strip()
         prompt = "Can you rephrase this text:\n```\n{}\n```".format(prompt_text)
         temp = np.random.uniform(0.01, 0.4)
-        output = submit_mixtral_hf(prompt, temperature=temp).strip()
+        if LLM_MODEL == 'mixtral':
+            llm_code_generator = submit_mixtral_hf
+        elif LLM_MODEL == 'llama3':
+            llm_code_generator = submit_llama3_hf
+        output = llm_code_generator(prompt, temperature=temp).strip()
         if "```" in output:
             output = output.split("```")[0]
         output = output + "\n```python\n{}\n```"

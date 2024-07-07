@@ -324,7 +324,7 @@ def submit_run(gene_id):
         result = subprocess.run([RUN_COMMAND, file_path], capture_output=True, text=True)
         if LOCAL:
             local_output = result.stdout.strip() + '\n' + result.stderr.strip()
-            print("\t‣ Output:", result.stdout.strip(), flush=True)
+            print("\t‣ Output:", local_output, flush=True)
             job_id = None
             successful_sub_flag = True
         elif result.returncode == 0:
@@ -706,6 +706,8 @@ def customMutation(individual, indpb, temp_min=0.02, temp_max=0.35):
             print(f'\t‣ Model Files for {new_gene_id} are Loaded')
         else: 
             print(f'\t☠ Error Loading Model Files for {new_gene_id}')
+    
+    failed_process = not (successful_sub_flag and job_done)
 
     individual = update_individual(individual, new_gene_id, old_gene_id,
                                    process_success=(not failed_process), process_type='Mutation')

@@ -8,6 +8,7 @@ import torch.nn as nn
 from torch.nn import functional as F
 from torchvision.models import *
 from torch.optim import SGD
+import random
 
 # https://github.com/lessw2020/Ranger-Deep-Learning-Optimizer
 #from ranger import RangerQH  

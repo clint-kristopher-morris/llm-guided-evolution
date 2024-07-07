@@ -167,7 +167,7 @@ def submit_bash(file_path, **kwargs):
     """
     create_bash_file(file_path, **kwargs)
     result = subprocess.run([RUN_COMMAND, file_path], capture_output=True, text=True)
-
+    local_output = None
     if result.returncode == 0 and LOCAL:
         local_output = result.stdout.strip()
         print("\t‣ Output:", result.stdout.strip(), flush=True)
@@ -302,8 +302,8 @@ def submit_run(gene_id):
         if not MACOS:
             tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
         else:
-            tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2"
-            
+            tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2 -epoch 2"
+
         # python_runline = f'python {train_file} -bs 216 -epoch 2 -network "models.network_{gene_id}" {tmp}'
         python_runline = f'python {train_file} -bs 216 -network "models.network_{gene_id}" {tmp}'
         bash_script_content = PYTHON_BASH_SCRIPT_TEMPLATE.format(python_runline)
@@ -318,8 +318,16 @@ def submit_run(gene_id):
 
     def submit_bash_py(file_path, gene_id, **kwargs):
         create_bash_file_py(file_path, gene_id, **kwargs)
+        job_id = None
+        successful_sub_flag = False
+        local_output = None
         result = subprocess.run([RUN_COMMAND, file_path], capture_output=True, text=True)
-        if result.returncode == 0:
+        if LOCAL:
+            local_output = result.stdout.strip() + '\n' + result.stderr.strip()
+            print("\t‣ Output:", result.stdout.strip(), flush=True)
+            job_id = None
+            successful_sub_flag = True
+        elif result.returncode == 0:
             print("\t‣ Script Submitted Successfully.\n\t‣ Output:", result.stdout.strip())
             successful_sub_flag = True
             job_id = result.stdout.split('job ')[-1].strip()
@@ -327,13 +335,14 @@ def submit_run(gene_id):
             print("\t‣ Failed to Submit script.\n\t‣ Error:", result.stderr.strip())
             successful_sub_flag = False
             job_id = None
-        return successful_sub_flag, job_id
+        return successful_sub_flag, job_id, local_output
     
     out_dir = str(GENERATION)
     file_path = os.path.join(out_dir, f'{gene_id}_model.sh')
-    successful_sub_flag, job_id = submit_bash_py(file_path, gene_id)
+    successful_sub_flag, job_id, local_output = submit_bash_py(file_path, gene_id)
     GLOBAL_DATA[gene_id]['status'] = 'running eval'
     GLOBAL_DATA[gene_id]['results_job'] = job_id
+    GLOBAL_DATA[gene_id]['local_output'] = local_output
     print(f'\t‣ Running py File for {gene_id}, {job_id}')
 
     
@@ -356,21 +365,24 @@ def check4model2run(gene_id):
 def check4results(gene_id):
     def check4error(gene_id):
         job_id = GLOBAL_DATA[gene_id]['results_job']
+        if GLOBAL_DATA[gene_id]['local_output'] is not None:
+            state = check_contents_for_error(GLOBAL_DATA[gene_id]['local_output'])
+            if state is None:
+                print(GLOBAL_DATA[gene_id]['local_output'], flush=True) 
+                raise Exception('Unexpected output from job')
+            else:
+                return state
+        # there is no local output, so process with slurm
         output_file = f'slurm-{job_id}.out'
         # Check if the output file exists
         if os.path.exists(output_file):
             with open(output_file, 'r') as file:
                 contents = file.read()
-                # Check for error indicators in the file
-                if "traceback" in contents.lower() or "slurmstepd: error" in contents.lower():
-                    # print("Error Found in Job Output.")
-                    print(f'\t☠ The Model for Gene: {gene_id} - {job_id} Failed to Run',flush=True)
-                    return False
-                elif "job done" in contents.lower():
-                    print(f'\t☑ The Model for Gene: {gene_id} - {job_id} Completed Successfully!', flush=True)
-                    return True
-                else:
+                state = check_contents_for_error(contents)
+                if state is None:
                     pass
+                else:
+                    return state
         return None
                 
     job_done = check4error(gene_id)
@@ -595,7 +607,7 @@ def customCrossover(ind1, ind2):
         new_gene_id = generate_random_string(length=24)
         # Create the bash file for the new job
         file_path = os.path.join(out_dir, f'{new_gene_id}.sh')
-        successful_sub_flag, job_id = successful_sub_flag, job_id = submit_bash(file_path, 
+        successful_sub_flag, job_id, local_output = successful_sub_flag, job_id = submit_bash(file_path, 
                                           input_filename_x=f'{SOTA_ROOT}/models/network_{gene_id_1}.py',
                                           input_filename_y=f'{SOTA_ROOT}/models/network_{gene_id_2}.py',
                                           output_filename=f'{SOTA_ROOT}/models/network_{new_gene_id}.py',
@@ -613,7 +625,7 @@ def customCrossover(ind1, ind2):
         
         if successful_sub_flag:
             print(f'\t‣ Checking for Crossover Job Completion: {job_id} for {new_gene_id}')
-            job_done = check4job_completion(job_id)
+            job_done = check4job_completion(job_id, local_output)
             if job_done:
                 print(f'\t‣ Model Files for {new_gene_id} are Loaded')
             else: 

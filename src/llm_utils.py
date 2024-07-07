@@ -42,7 +42,10 @@ def generate_augmented_code(txt2llm, augment_idx, apply_quality_control, top_p, 
         llm_code_generator = submit_mixtral
         qc_func = llm_code_qc
     else:
-        llm_code_generator = submit_mixtral_hf
+        if LLM_MODEL == 'mixtral':
+            llm_code_generator = submit_mixtral_hf
+        elif LLM_MODEL == 'llama3':
+            llm_code_generator = submit_llama3_hf
         qc_func = llm_code_qc_hf
     
     if apply_quality_control:
@@ -146,6 +149,32 @@ def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
     else:
         return results[0]
     
+def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
+                      model_id="meta-llama/Meta-Llama-3-70B-Instruct", return_gen=False):
+    max_new_tokens = np.random.randint(900, 1300)
+    os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
+    huggingface_hub.login(new_session=False)
+    client = InferenceClient(model=model_id)
+    client.headers["x-use-cache"] = "0"
+
+    instructions = [
+
+            {
+                "role": "user",
+                "content": "Provide code in Python\n" + txt2llama,
+            },     
+    ]
+
+    tokenizer_converter = AutoTokenizer.from_pretrained(model_id)
+    prompt = tokenizer_converter.apply_chat_template(instructions, tokenize=False)
+    results = [client.text_generation(prompt, max_new_tokens=max_new_tokens, 
+                                      return_full_text=False, 
+                                      temperature=temperature, seed=101)]
+    if return_gen:
+        return results[0], None
+    else:
+        return results[0]
+
 
 def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1, 
                    model_id="mistralai/Mixtral-8x7B-Instruct-v0.1", return_gen=False):

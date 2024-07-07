@@ -607,7 +607,7 @@ def customCrossover(ind1, ind2):
         new_gene_id = generate_random_string(length=24)
         # Create the bash file for the new job
         file_path = os.path.join(out_dir, f'{new_gene_id}.sh')
-        successful_sub_flag, job_id, local_output = successful_sub_flag, job_id = submit_bash(file_path, 
+        successful_sub_flag, job_id, local_output = submit_bash(file_path, 
                                           input_filename_x=f'{SOTA_ROOT}/models/network_{gene_id_1}.py',
                                           input_filename_y=f'{SOTA_ROOT}/models/network_{gene_id_2}.py',
                                           output_filename=f'{SOTA_ROOT}/models/network_{new_gene_id}.py',

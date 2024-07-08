@@ -7,11 +7,11 @@
 echo "launching AIsurBL"
 hostname
 # module load anaconda3/2020.07 2021.11
-module load cuda/11.0
+module load cuda/11
 export CUDA_VISIBLE_DEVICES=0
 
 source /opt/apps/Module/anaconda3/2021.11/bin/activate
-conda activate AIsurBL
+conda activate llm_guided_evolution
 conda info
 
-python run_improved.py checkpoints_no_eot
+python run_improved.py first_test

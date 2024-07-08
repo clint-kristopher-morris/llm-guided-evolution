@@ -2,19 +2,19 @@ import os
 import numpy as np
 
 
-ROOT_DIR = "./"
+ROOT_DIR = "/home/jzutty3/llm-guided-evolution"
 # DATA_PATH absolute or relative to ExquisiteNetV2
 DATA_PATH = "./cifar10"
 SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/ExquisiteNetV2')
 SEED_NETWORK = os.path.join(SOTA_ROOT, "network.py")
-LOCAL = True
+LOCAL = False
 if LOCAL:
 	RUN_COMMAND = 'bash'
 	DELAYED_CHECK = False
 else: 
 	RUN_COMMAND = 'sbatch'
 	DELAYED_CHECK = True
-MACOS = True
+MACOS = False
 if MACOS:
 	DEVICE = 'mps'
 else:
@@ -37,10 +37,10 @@ GENERATION = 0
 PROB_QC = 0.0
 PROB_EOT = 0.25
 num_generations = 30  # Number of generations
-start_population_size = 8
+start_population_size = 32
 # start_population_size = 144   # Size of the population 124=72
 #population_size = 44 # with cx_prob (0.25) and mute_prob (0.7) you get about %50 successful turnover
-population_size = 4 # with cx_prob (0.25) and mute_prob (0.7) you get about %50 successful turnover
+population_size = 8 # with cx_prob (0.25) and mute_prob (0.7) you get about %50 successful turnover
 crossover_probability = 0.35  # Probability of mating two individuals
 mutation_probability = 0.8 # Probability of mutating an individual
 num_elites = 44
@@ -66,10 +66,10 @@ hostname
 
 # Load GCC version 9.2.0
 # module load gcc/13.2.0
-# module load cuda/11.8
+module load cuda/12
 
 # Activate Conda environment
-# source /opt/apps/Module/anaconda3/2021.11/bin/activate mix
+source /opt/apps/Module/anaconda3/2021.11/bin/activate llm_guided_evolution
 # conda info
 
 # Set the TOKENIZERS_PARALLELISM environment variable if needed
@@ -94,7 +94,7 @@ hostname
 # module load cuda/11.8
 
 # Activate Conda environment
-# source /opt/apps/Module/anaconda3/2021.11/bin/activate mix
+source /opt/apps/Module/anaconda3/2021.11/bin/activate llm_guided_evolution
 # conda info
 
 # Set the TOKENIZERS_PARALLELISM environment variable if needed

@@ -13,7 +13,7 @@ from cfg.constants import *
 from utils.print_utils import box_print
 
 from typing import Optional
-import fire
+#import fire
 # from llama import Llama
 import requests
 import huggingface_hub
@@ -42,7 +42,10 @@ def generate_augmented_code(txt2llm, augment_idx, apply_quality_control, top_p, 
         llm_code_generator = submit_mixtral
         qc_func = llm_code_qc
     else:
-        llm_code_generator = sibmit_mixtral_hf
+        if LLM_MODEL == 'mixtral':
+            llm_code_generator = submit_mixtral_hf
+        elif LLM_MODEL == 'llama3':
+            llm_code_generator = submit_llama3_hf
         qc_func = llm_code_qc_hf
     
     if apply_quality_control:
@@ -112,7 +115,7 @@ def llm_code_qc_hf(code_from_llm, base_code, generate_text=None):
     box_print("QC PROMPT TO LLM", print_bbox_len=120, new_line_end=False)
     print(prompt2llm)
     
-    code_from_llm = sibmit_mixtral_hf(prompt2llm, max_new_tokens=1500, top_p=0.1, temperature=0.1, 
+    code_from_llm = submit_mixtral_hf(prompt2llm, max_new_tokens=1500, top_p=0.1, temperature=0.1, 
                       model_id="mistralai/Mixtral-8x7B-v0.1", return_gen=False)
     box_print("TEXT FROM LLM", print_bbox_len=60, new_line_end=False)
     print(code_from_llm)
@@ -120,7 +123,7 @@ def llm_code_qc_hf(code_from_llm, base_code, generate_text=None):
     return code_from_llm
 
 
-def sibmit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
+def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
                       model_id="mistralai/Mixtral-8x7B-Instruct-v0.1", return_gen=False):
     max_new_tokens = np.random.randint(900, 1300)
     os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
@@ -146,6 +149,32 @@ def sibmit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
     else:
         return results[0]
     
+def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
+                      model_id="meta-llama/Meta-Llama-3-70B-Instruct", return_gen=False):
+    max_new_tokens = np.random.randint(900, 1300)
+    os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
+    huggingface_hub.login(new_session=False)
+    client = InferenceClient(model=model_id)
+    client.headers["x-use-cache"] = "0"
+
+    instructions = [
+
+            {
+                "role": "user",
+                "content": "Provide code in Python\n" + txt2llama,
+            },     
+    ]
+
+    tokenizer_converter = AutoTokenizer.from_pretrained(model_id)
+    prompt = tokenizer_converter.apply_chat_template(instructions, tokenize=False)
+    results = [client.text_generation(prompt, max_new_tokens=max_new_tokens, 
+                                      return_full_text=False, 
+                                      temperature=temperature, seed=101)]
+    if return_gen:
+        return results[0], None
+    else:
+        return results[0]
+
 
 def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1, 
                    model_id="mistralai/Mixtral-8x7B-Instruct-v0.1", return_gen=False):
@@ -195,7 +224,11 @@ def mutate_prompts(n=5):
         prompt_text = prompt_text.split("```")[0].strip()
         prompt = "Can you rephrase this text:\n```\n{}\n```".format(prompt_text)
         temp = np.random.uniform(0.01, 0.4)
-        output = sibmit_mixtral_hf(prompt, temperature=temp).strip()
+        if LLM_MODEL == 'mixtral':
+            llm_code_generator = submit_mixtral_hf
+        elif LLM_MODEL == 'llama3':
+            llm_code_generator = submit_llama3_hf
+        output = llm_code_generator(prompt, temperature=temp).strip()
         if "```" in output:
             output = output.split("```")[0]
         output = output + "\n```python\n{}\n```"

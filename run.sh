@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=llm_opt
-#SBATCH -t 8-00:00              		# Runtime in D-HH:MM
+#SBATCH -t 8:00:00              		# Runtime in D-HH:MM
 #SBATCH --mem-per-gpu 16G
 #SBATCH -n 1                          # number of CPU cores
 #SBATCH -N 1

@@ -819,7 +819,7 @@ if __name__ == "__main__":
     check_and_update_fitness(population)
     # print_ancestery(GLOBAL_DATA_ANCESTERY)
     # Evolution
-    for gen in range(start_gen, num_generations):
+    for gen in range(start_gen, num_generations): # Runs For 30 Generations
         GEN_COUNT = gen
         TOP_N_GENES = tools.selSPEA2(population, NUM_EOT_ELITES)
         box_print(f"STARTING GENERATION: {gen}", new_line_end=False)

@@ -16,7 +16,8 @@ from tool import train_acc, eval_acc, del_ipynb_ckps, create_save_dir
 from img import *
 import sys
 import os
-src_path = os.path.dirname(os.path.abspath(__file__)) + '/../../src'
+# src_path = os.path.dirname(os.path.abspath(__file__)) + '/../../src'
+src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src'))
 sys.path.append(src_path)
 from cfg.constants import *
 
@@ -45,19 +46,25 @@ def get_args():
 
 def main():
     # ADDED FOR LLM
-    os.chdir('./sota/ExquisiteNetV2')
+    # os.chdir('./sota/ExquisiteNetV2')
+
+    # I used the absolute path Instead
+    os.chdir('C:/Users/Moses/OneDrive/Desktop/LLM_PointNet/LLM-Guided-PointCloud-Class/sota/ExquisiteNetV2')
+
     args = get_args()
-    
+
+    # This is LLM Guided Code
     # Import the module dynamically
     networks_module = importlib.import_module(args.network)
     # Now you can use `networks_module` to access the contents of `networks`
     ExquisiteNetV2 = getattr(networks_module, 'ExquisiteNetV2')
     get_optimizer = getattr(networks_module, 'get_optimizer')
     # this will get the gene id value 
-    gene_id = args.network.split('network_')[1]
+    gene_id = args.network.split('network_')[1] # Causing an error
+    save_dir = f'{args.save_dir}/{gene_id}' 
     
-    save_dir = f'{args.save_dir}/{gene_id}'
-    
+
+    # ExquisiteNetV2 Code
     create_save_dir(save_dir)
     # for jupyter notebook
     del_ipynb_ckps(args.data)
@@ -122,6 +129,7 @@ def main():
     }
                 
     #device = "cuda" if torch.cuda.is_available() else "cpu"
+    # Changes in LLM Guided Code
     device = DEVICE
 
     if args.weight is None:
@@ -229,19 +237,65 @@ def main():
     print(f"Best weight and tensorboard is in", save_dir) 
     print()
     
+    # Change's in LLM Guided Code
     overfit_metric = abs(tr_acc-test_acc)/tr_acc
-    total_params = sum(p.numel() for p in model.parameters())
-    results_text = f"{test_acc},{total_params},{val_acc},{tr_time}"
     
+    """
+    This line calculates the overfitting metrix
+    Which is a measure of how well the model generalizes to 
+    unseen data (test data) compared to the training data.
+
+    tr_acc = Training Accuracy
+    test_acc = Testing Accuracy
+
+    calculates absolute difference between training accuracy and testing accuracy
+    """
+    total_params = sum(p.numel() for p in model.parameters())
+
+    """
+    Count Total parameters in the Model
+    model.parameters() returns an iterable of all the model's parameter
+    """
+    results_text = f"{test_acc},{total_params},{val_acc},{tr_time}"
+
+    """
+    This line formats the results into comma-separated string
+    test_acc: Testing accuracy.
+    total_params: Total number of model parameters.
+    val_acc: Validation accuracy.
+    tr_time: Training time (assumed to be defined earlier in the code).
+    """
+
+    # Define Output Filename
+    """
+    Defines an Output Filename
+    gene_id is a unique identifier for the experiment or model.
+    """
     filename = f'results/{gene_id}_results.txt'
     
     dir_path = os.path.dirname(filename)
+
     # Create the directory, ignore error if it already exists
     os.makedirs(dir_path, exist_ok=True)
+
+    """
+    os.path.dirname(filename) extracts the directory path from the filename.
+    os.makedirs(dir_path, exist_ok=True) creates the directory if it does not already exist. 
+    The exist_ok=True parameter ensures that no error is raised if the directory already exists.
+    """
+
     # Open the file in write mode and write the text
     with open(filename, 'w') as file:
         file.write(results_text)
+    """
+    This block opens the specified file in write mode ('w').
+    If the file does not exist, it will be created.
+    The results_text string is written to the file.
+    """
+    
+
     print(f"results have been written to {filename}")
+
     print('='*120);print('job done');print('='*120)
     
 if __name__ == '__main__':

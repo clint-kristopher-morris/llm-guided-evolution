@@ -1,0 +1,3 @@
+[submodule "sota/ultralytics"]
+    path = sota/ultralytics
+    url = ssh://git@gitlab.gtri.gatech.edu:2222/yyu448/ultralytics.git

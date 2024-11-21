@@ -64,7 +64,11 @@ def generate_template(PROB_EOT, GEN_COUNT, TOP_N_GENES, SOTA_ROOT, SEED_NETWORK,
     if (PROB_EOT > np.random.uniform()) and (GEN_COUNT > 0):
         print("\t‣ EoT")
         top_gene = np.random.choice([x[0] for x in TOP_N_GENES])
-        parts_x = split_file(f"{SOTA_ROOT}/models/network_{top_gene}.py")
+        if FILE_TYPE == 'py':
+            temp_file_name = f"{SOTA_ROOT}/models/network_{top_gene}.py"
+        elif FILE_TYPE == 'yaml':
+            temp_file_name = f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{top_gene}.yaml'
+        parts_x = split_file(temp_file_name)
         parts_y = split_file(SEED_NETWORK)
         parts = [(x.strip(), y.strip(), idx) for idx, (x, y) in enumerate(zip(parts_x[1:], parts_y[1:]))]
         random.shuffle(parts)
@@ -104,9 +108,9 @@ def write_bash_script(input_filename_x=f'{SOTA_ROOT}/network.py',
                       top_p=0.1, temperature=0.2,
                      
                      ):
-    
     def fetch_gene(filepath):
-        return os.path.basename(filepath).replace('network_','').replace('.py','')
+        file_type = f'.{FILE_TYPE}'
+        return os.path.basename(filepath).replace('network_','').replace(file_type,'')
     
     global GLOBAL_DATA_ANCESTERY
     
@@ -266,11 +270,18 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
     gene_id = generate_random_string(length=24)
     # Select prompte and temp
     temperature = round(random.uniform(temp_min, temp_max), 2)
+    # Determine names for input and output files
+    if FILE_TYPE == 'py':
+        input_filename_x=f'{SOTA_ROOT}/network.py'
+        output_filename =f'{SOTA_ROOT}/models/network_{gene_id}.py'
+    elif FILE_TYPE == 'yaml':
+        input_filename_x=f'{SOTA_ROOT}/ultralytics/cfg/models/v3/network.yaml'
+        output_filename =f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{gene_id}.yaml'   
     # Assign a file path and name for the model creation bash
     file_path = os.path.join(out_dir, f'{gene_id}.sh')
     successful_sub_flag, job_id, local_output = submit_bash(file_path, 
-                                              input_filename_x=f'{SOTA_ROOT}/network.py',
-                                              output_filename =f'{SOTA_ROOT}/models/network_{gene_id}.py',
+                                              input_filename_x=input_filename_x,
+                                              output_filename =output_filename,
                                               gpu=LLM_GPU,
                                               python_file='src/llm_mutation.py', 
                                               top_p=0.1, temperature=temperature)
@@ -299,13 +310,17 @@ def create_individual(container, temp_min=0.05, temp_max=0.4):
 
 def submit_run(gene_id):
     def write_bash_script_py(gene_id, train_file='./sota/ExquisiteNetV2/train.py'):
-        if not MACOS:
-            tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
-        else:
-            tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2 -epoch 2"
+        if FILE_TYPE == 'py':
+            if not MACOS:
+                tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2 -amp"
+            else:
+                tmp = f"-data {DATA_PATH} -end_lr 0.001 -seed 21 -val_r 0.2 -epoch 2"
 
-        # python_runline = f'python {train_file} -bs 216 -epoch 2 -network "models.network_{gene_id}" {tmp}'
-        python_runline = f'python {train_file} -bs 216 -network "models.network_{gene_id}" {tmp}'
+            # python_runline = f'python {train_file} -bs 216 -epoch 2 -network "models.network_{gene_id}" {tmp}'
+            python_runline = f'python {train_file} -bs 216 -network "models.network_{gene_id}" {tmp}'
+        elif FILE_TYPE == 'yaml':
+            train_file = './sota/ultralytics/test.py'
+            python_runline = f'python {train_file} -network "network_{gene_id}.yaml"'
         bash_script_content = PYTHON_BASH_SCRIPT_TEMPLATE.format(python_runline)
         return bash_script_content
 
@@ -336,7 +351,6 @@ def submit_run(gene_id):
             successful_sub_flag = False
             job_id = None
         return successful_sub_flag, job_id, local_output
-    
     out_dir = str(GENERATION)
     file_path = os.path.join(out_dir, f'{gene_id}_model.sh')
     successful_sub_flag, job_id, local_output = submit_bash_py(file_path, gene_id)
@@ -354,9 +368,12 @@ def evalModel(individual):
 
 def check4model2run(gene_id):
     # model_path = os.path.join(str(GENERATION), f'{gene_id}_model.txt')
-    
-    print(f'Checking for: SOTA_ROOT ./models/network_{gene_id}.py')
-    model_path = f'{SOTA_ROOT}/models/network_{gene_id}.py'
+    if FILE_TYPE=='py':
+        print(f'Checking for: SOTA_ROOT ./models/network_{gene_id}.py')
+        model_path = f'{SOTA_ROOT}/models/network_{gene_id}.py'
+    elif FILE_TYPE == 'yaml':
+        print(f'Checking for: SOTA_ROOT /ultralytics/cfg/models/llm/network_{gene_id}.yaml')
+        model_path = f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{gene_id}.yaml'      
     if os.path.exists(model_path):
         if GLOBAL_DATA[gene_id]['status'] != 'running eval':
             submit_run(gene_id)
@@ -411,7 +428,7 @@ def check4results(gene_id):
         pass
         
 
-def check_and_update_fitness(population, timeout=3600*30, loop_delay=60*30):
+def check_and_update_fitness(population, timeout=3600*30, loop_delay=30):
     """ This function submits jobs and then if submitted it checks for four possibilities.
     
     timeout: (int): seconds until the model run is killed and assigned the max error
@@ -605,12 +622,21 @@ def customCrossover(ind1, ind2):
         temperature = round(random.uniform(temp_min, temp_max), 2)
         # Generate a new gene ID for the offspring
         new_gene_id = generate_random_string(length=24)
+        # Determine names for input and output files
+        if FILE_TYPE == 'py':
+            input_filename_x=f'{SOTA_ROOT}/models/network_{gene_id_1}.py'
+            input_filename_y=f'{SOTA_ROOT}/models/network_{gene_id_2}.py'
+            output_filename=f'{SOTA_ROOT}/models/network_{new_gene_id}.py'
+        elif FILE_TYPE == 'yaml':
+            input_filename_x=f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{gene_id_1}.yaml'
+            input_filename_y=f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{gene_id_2}.yaml'
+            output_filename=f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{new_gene_id}.yaml'
         # Create the bash file for the new job
         file_path = os.path.join(out_dir, f'{new_gene_id}.sh')
         successful_sub_flag, job_id, local_output = submit_bash(file_path, 
-                                          input_filename_x=f'{SOTA_ROOT}/models/network_{gene_id_1}.py',
-                                          input_filename_y=f'{SOTA_ROOT}/models/network_{gene_id_2}.py',
-                                          output_filename=f'{SOTA_ROOT}/models/network_{new_gene_id}.py',
+                                          input_filename_x=input_filename_x,
+                                          input_filename_y=input_filename_y,
+                                          output_filename=output_filename,
                                           gpu=LLM_GPU,
                                           python_file='src/llm_crossover.py', 
                                           top_p=0.1, temperature=temperature)
@@ -676,12 +702,19 @@ def customMutation(individual, indpb, temp_min=0.02, temp_max=0.35):
     # Generate a new gene ID
     new_gene_id = generate_random_string(length=24)
     print(f'Mutating: {old_gene_id} and Replaceing with: {new_gene_id}')
+    # Determine the name for files
+    if FILE_TYPE == 'py':
+        input_filename_x=f'{SOTA_ROOT}/models/network_{old_gene_id}.py'
+        output_filename=f'{SOTA_ROOT}/models/network_{new_gene_id}.py'
+    elif FILE_TYPE == 'yaml':
+        input_filename_x=f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{old_gene_id}.yaml'
+        output_filename=f'{SOTA_ROOT}/ultralytics/cfg/models/llm/network_{new_gene_id}.yaml'
     # Name of the sh bash file
     file_path = os.path.join(str(GENERATION), f'{new_gene_id}.sh')
     temperature = round(random.uniform(temp_min, temp_max), 2)
     successful_sub_flag, job_id, local_output = submit_bash(file_path, 
-                                              input_filename_x= f'{SOTA_ROOT}/models/network_{old_gene_id}.py',
-                                              output_filename = f'{SOTA_ROOT}/models/network_{new_gene_id}.py',
+                                              input_filename_x=input_filename_x,
+                                              output_filename=output_filename,
                                               gpu=LLM_GPU,
                                               python_file='src/llm_mutation.py', 
                                               top_p=0.1, temperature=temperature)
@@ -763,6 +796,8 @@ def load_checkpoint(folder_name="checkpoints", checkpoint_file=None):
 
 def true_nsga2(pop, k):
     pop = tools.selNSGA2(pop, len(pop)) # 10 diff
+    if len(pop) < k:
+        k = (len(pop) // 4) * 4
     new_pop = tools.selTournamentDCD(pop, k) # mults of 4
     return new_pop
 
@@ -815,7 +850,6 @@ if __name__ == "__main__":
     # Evaluate the entire population
     for ind in population:
         ind.fitness.values = PLACEHOLDER_FITNESS
-        
     check_and_update_fitness(population)
     # print_ancestery(GLOBAL_DATA_ANCESTERY)
     # Evolution

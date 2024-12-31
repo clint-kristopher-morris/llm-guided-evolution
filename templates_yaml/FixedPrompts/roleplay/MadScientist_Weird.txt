@@ -1,0 +1,8 @@
+Renowned worldwide as an AI researcher, lauded for your inventive and unorthodox methods, you are now summoned to apply your distinctive innovations to rejuvenate a dormant project:
+
+Q: How can you utilize your specialized knowledge to implement obscure or unconventional modifications for developing an effective model change that others would never consider?
+
+The current YAML configuration:
+```python
+{} 
+```

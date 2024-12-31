@@ -76,7 +76,7 @@ def generate_template(PROB_EOT, GEN_COUNT, TOP_N_GENES, SOTA_ROOT, SEED_NETWORK,
             if x.strip() != y.strip():
                 break
                 
-        eot_template_path = os.path.join(ROOT_DIR, 'templates/EoT/EoT.txt')
+        eot_template_path = os.path.join(ROOT_DIR, F'{TEMPLATE}/EoT/EoT.txt')
         with open(eot_template_path, 'r') as file:
             eot_template_txt = file.read()
             
@@ -84,15 +84,14 @@ def generate_template(PROB_EOT, GEN_COUNT, TOP_N_GENES, SOTA_ROOT, SEED_NETWORK,
         mute_type = "EoT"
     else:
         print("\t‣ FixedPrompts")
-        prompt_templates = glob.glob(f'{ROOT_DIR}/templates/FixedPrompts/*/*.txt')
+        prompt_templates = glob.glob(f'{ROOT_DIR}/{TEMPLATE}/FixedPrompts/*/*.txt')
         template_path = np.random.choice(prompt_templates)
         mute_type = os.path.basename(template_path).split('.')[0]  # Assuming the file extension needs to be removed
         with open(template_path, 'r') as file:
             template_txt = file.read()
-        with open(f'{ROOT_DIR}/templates/ConstantRules.txt', 'r') as file:
+        with open(f'{ROOT_DIR}/{TEMPLATE}/ConstantRules.txt', 'r') as file:
             rules_txt = file.read()
         template_txt = f'{template_txt}\n{rules_txt}'
-
     return template_txt, mute_type
 
 
@@ -413,7 +412,9 @@ def check4results(gene_id):
         results = results.split(',')
         fitness = [float(r.strip()) for r in results]
         # TODO: get all features later
-        fitness = [fitness[0], fitness[1]]
+        assert len(fitness) >= len(FITNESS_WEIGHTS)
+        fitness = [fitness[item] for item in range(len(FITNESS_WEIGHTS))]
+
         fitness = tuple(fitness)
         
         GLOBAL_DATA[gene_id]['status'] = 'completed'

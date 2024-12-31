@@ -91,7 +91,7 @@ def str2bool(v):
 
 def llm_code_qc(code_from_llm, base_code, generate_text):
     # TODO: make parameter
-    template_path = os.path.join(ROOT_DIR, 'templates/llm_quality_control.txt')
+    template_path = os.path.join(ROOT_DIR, f'{TEMPLATE}/llm_quality_control.txt')
     with open(template_path, 'r') as file:
         template_txt = file.read()
     # add code to be augmented
@@ -107,7 +107,7 @@ def llm_code_qc(code_from_llm, base_code, generate_text):
 def llm_code_qc_hf(code_from_llm, base_code, generate_text=None):
     # TODO: make parameter
     fname = np.random.choice(['llm_quality_control_p.txt', 'llm_quality_control_p.txt'])
-    template_path = os.path.join(ROOT_DIR, f'templates/{fname}')
+    template_path = os.path.join(ROOT_DIR, f'{TEMPLATE}/{fname}')
     with open(template_path, 'r') as file:
         template_txt = file.read()
     # add code to be augmented
@@ -150,7 +150,9 @@ def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
         return results[0]
     
 def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
-                      model_id="meta-llama/Meta-Llama-3-70B-Instruct", return_gen=False):
+                      model_id="meta-llama/Llama-3.3-70B-Instruct", return_gen=False):
+    #"meta-llama/Llama-3.1-70B-Instruct"
+    #"meta-llama/Llama-3.3-70B-Instruct"
     max_new_tokens = np.random.randint(900, 1300)
     os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
     huggingface_hub.login(new_session=False)
@@ -216,7 +218,7 @@ def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1,
     
     
 def mutate_prompts(n=5):
-    templates = np.random.choice(glob.glob(f'{ROOT_DIR}/templates/FixedPrompts/*/*.txt'), n)
+    templates = np.random.choice(glob.glob(f'{ROOT_DIR}/{TEMPLATE}/FixedPrompts/*/*.txt'), n)
     for i, template in enumerate(templates):
         path, filename = os.path.split(template)
         with open(template, 'r') as file:

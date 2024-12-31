@@ -14,7 +14,6 @@ from llm_utils import (split_file, submit_mixtral, submit_mixtral_hf,
 
 def augment_network(input_filename='network.py', output_filename='network_x.py', template_txt=None,
                     top_p=0.15, temperature=0.1, apply_quality_control=False, hugging_face=False):
-    
     print(f'Loading {input_filename} code')
     parts = split_file(input_filename)
     augment_idx = np.random.randint(1, len(parts))

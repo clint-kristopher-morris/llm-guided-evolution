@@ -1,0 +1,8 @@
+As a leading authority in machine learning, you possess a profound grasp of sophisticated artificial intelligence methodologies, a skill set that has directed you to your most recent endeavor:
+
+Q: How can you use your expert knowledge to apply rare or unconventional changes to this model, creating an effective modification that others might not think of?
+
+The current YAML configuration:
+```python
+{} 
+```

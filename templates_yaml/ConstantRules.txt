@@ -1,0 +1,8 @@
+1. Modify the Parameters, Backbone or the Head of YOLO detection model defined in Ultralytics YOLO.
+2. Retrain the same YAML format.
+3. Exclude setup/demonstration.
+4. Retain original tensor input/output sizes.
+5. Resulting YAML Configurations should have all the parts of Parameters, YOLO Backbone, and the YOLO Head.
+6. Must function with default settings.
+
+A: Let us think step by step

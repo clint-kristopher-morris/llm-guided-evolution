@@ -25,7 +25,7 @@ def augment_network(input_filename_x, input_filename_y, output_filename,
 
     # Select a template file
     template_fname = random.choice(['crossover.txt', 'crossover_s.txt'])
-    template_path = f'{ROOT_DIR}/templates/CrossOver/{template_fname}'
+    template_path = f'{ROOT_DIR}/{TEMPLATE}/CrossOver/{template_fname}'
     with open(template_path, 'r') as file:
         template_txt = file.read()
 

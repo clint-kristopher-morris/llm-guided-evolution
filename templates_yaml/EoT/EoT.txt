@@ -1,0 +1,18 @@
+Example of the modified YAML configuration: 
+```python
+{} 
+```
+Example of the initial YAML configuration:
+```python
+{} 
+```
+
+Q1: Very concisely, let's explore step by step how modifying this YAML configuration enhanced its scoring metrics performance.
+Q2: With the insights from Q1 in mind, can we apply the same principles in a concise manner to update the YAML configuration below, ensuring the input and output tensor sizes remain unchanged?
+
+Snippet to be augmented:
+```python
+{} 
+```
+
+A1: Let us think step by step

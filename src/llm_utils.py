@@ -150,20 +150,6 @@ def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
     else:
         return results[0]
     
-
-"""
-█▀▀ █──█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █▀▀ 
-█── █▀▀█ █▄▄█ █──█ █─▀█ █▀▀ ▀▀█ 
-▀▀▀ ▀──▀ ▀──▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀
-"""
-#________________________________________________________________________
-# Instead of using Code Llama's for the LLM Query we're using Mixtral
-# Too many "model too busy error"'s with Code Llama via Hugging Face API
-#________________________________________________________________________
-
-
-## We're using google/gemma-2-27b-it LLM Instead of codeLLMA3
-
 def submit_llama3_hf(txt2llama, 
                      max_new_tokens=1024, 
                      top_p=0.15, 
@@ -250,19 +236,6 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
         return results[0], None
     else:
         return results[0]
-
-
-
-"""
-█▀▀ █──█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █▀▀ 
-█── █▀▀█ █▄▄█ █──█ █─▀█ █▀▀ ▀▀█ 
-▀▀▀ ▀──▀ ▀──▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀
-"""
-#________________________________________________________________________
-# For the model_id in the submit_mixtral method make sure to login to your
-# hugging face account and place your own specific modeL_id after agreeing 
-# to the terms and conditions.
-#________________________________________________________________________
 
 def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1, 
                    model_id="mistralai/Mixtral-8x7B-Instruct-v0.1", return_gen=False):

@@ -1,8 +1,3 @@
-"""
-█▀▀ █──█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █▀▀ 
-█── █▀▀█ █▄▄█ █──█ █─▀█ █▀▀ ▀▀█ 
-▀▀▀ ▀──▀ ▀──▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀
-"""
 #________________________________________________________________________
 # Changed indivudal configrations like path for main model in Point Transformers #1
 #________________________________________________________________________
@@ -29,13 +24,6 @@ conda info
 # Set the TOKENIZERS_PARALLELISM environment variable if needed
 export TOKENIZERS_PARALLELISM=false
 
-
-
-"""
-█▀▀ █──█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █▀▀ 
-█── █▀▀█ █▄▄█ █──█ █─▀█ █▀▀ ▀▀█ 
-▀▀▀ ▀──▀ ▀──▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀
-"""
 #________________________________________________________________________
 # Added Run Scripts Commands to run PointNet++ using PyTorch it reflects my Path update yours as well
 # Added Run Scripts COmmands to run Point Transformers using 

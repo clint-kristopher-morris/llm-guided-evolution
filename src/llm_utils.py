@@ -28,6 +28,7 @@ def retrieve_base_code(idx):
     return split_file(base_network)[1:][idx].strip()
 
 
+# This Methid is causing the Issues
 def clean_code_from_llm(code_from_llm):
     """Cleans the code received from LLM."""
     return '\n'.join(code_from_llm.strip().split("```")[1].split('\n')[1:]).strip()
@@ -149,13 +150,25 @@ def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
     else:
         return results[0]
     
-## We're using google/gemma-2-27b-it LLM Instead of codeLLMA3
+
 """
+█▀▀ █──█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █▀▀ 
+█── █▀▀█ █▄▄█ █──█ █─▀█ █▀▀ ▀▀█ 
+▀▀▀ ▀──▀ ▀──▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀
+"""
+#________________________________________________________________________
+# Instead of using Code Llama's for the LLM Query we're using Mixtral
+# Too many "model too busy error"'s with Code Llama via Hugging Face API
+#________________________________________________________________________
+
+
+## We're using google/gemma-2-27b-it LLM Instead of codeLLMA3
+
 def submit_llama3_hf(txt2llama, 
                      max_new_tokens=1024, 
                      top_p=0.15, 
                      temperature=0.1,                   
-                     model_id="bigcode/starcoder",
+                     model_id="google/gemma-2-27b-it",
                      return_gen=False):
     # Randomly set max_new_tokens between 900 and 1300
     max_new_tokens = np.random.randint(900, 1300)
@@ -207,7 +220,7 @@ def submit_llama3_hf(txt2llama,
         return results[0], None
     else:
         return results[0]
-"""
+
 
 def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1,                   # google/gemma-2-27b-it
                      # EleutherAI/gpt-neox-20b
@@ -237,6 +250,19 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
         return results[0], None
     else:
         return results[0]
+
+
+
+"""
+█▀▀ █──█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █▀▀ 
+█── █▀▀█ █▄▄█ █──█ █─▀█ █▀▀ ▀▀█ 
+▀▀▀ ▀──▀ ▀──▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀
+"""
+#________________________________________________________________________
+# For the model_id in the submit_mixtral method make sure to login to your
+# hugging face account and place your own specific modeL_id after agreeing 
+# to the terms and conditions.
+#________________________________________________________________________
 
 def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1, 
                    model_id="mistralai/Mixtral-8x7B-Instruct-v0.1", return_gen=False):

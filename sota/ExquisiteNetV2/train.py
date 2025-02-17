@@ -27,7 +27,7 @@ def get_args():
     parser.add_argument('-weight', type=str, default=None, help="path of pretrained weight")
     parser.add_argument('-amp', action="store_true", help="auto mixed precision training")
     # won't really run 1000 epochs, when lr less than end_lr, training will be stopped
-    parser.add_argument('-epoch', type=int, default=1000)
+    parser.add_argument('-epoch', type=int, default=2)
     parser.add_argument('-save_dir', type=str, default="weight", help="path where the weight will be saved")
     parser.add_argument('-bs', type=int, default=192)
     parser.add_argument('-opt', type=str, default="sgd", help="optimizer")
@@ -49,7 +49,7 @@ def main():
     # os.chdir('./sota/ExquisiteNetV2')
 
     # I used the absolute path Instead
-    os.chdir('C:/Users/Moses/OneDrive/Desktop/LLM_PointNet/LLM-Guided-PointCloud-Class/sota/ExquisiteNetV2')
+    os.chdir('/storage/ice1/2/6/madewolu9/LLM_PointNet/LLM-Guided-PointCloud-Class/sota/ExquisiteNetV2')
 
     args = get_args()
 
@@ -138,7 +138,8 @@ def main():
         model = torch.load(args.weight, device)
         model.fc = nn.Linear(384, class_num).to(device)
 
-    opt = get_optimizer(model, args.init_lr, args.wd)
+    #opt = get_optimizer(model, args.init_lr, args.wd)
+    opt = torch.optim.SGD(model.parameters(), lr=args.init_lr, weight_decay=args.wd, momentum=0.9, nesterov=True)
     # loss function  
     lf = nn.CrossEntropyLoss()
     # lr scheduler     
@@ -183,7 +184,9 @@ def main():
     print(' '*20, "Evaluate:")
 
     #load best weight & model
-    model = torch.load(pj(save_dir, "md.pt"), device)
+    
+    model = torch.load(pj(save_dir, "md.pt"), device, weights_only=False)
+    
     model.eval()
 
     tr_loss, tr_acc = eval_acc(

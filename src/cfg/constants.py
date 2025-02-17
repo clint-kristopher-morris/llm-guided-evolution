@@ -1,8 +1,26 @@
 import os
 import numpy as np
 
+"""
+█▀▀ █──█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █▀▀ 
+█── █▀▀█ █▄▄█ █──█ █─▀█ █▀▀ ▀▀█ 
+▀▀▀ ▀──▀ ▀──▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀
+"""
+#________________________________________________________________________
+# Changed Root Directory so it reflects my perosnal path, along with the SOTA_ROOT for the Point-Transformers Model #1
+# Changed SEED_NETWORK to reflect the "main" piece of code for the respective model in this case Point Transformers #2
+# We were having problems "model too busy errors" when using CodeLLama so in this case we switched to mixtral #3
+#________________________________________________________________________
 
-ROOT_DIR = "/storage/ice1/2/6/madewolu9/LLM_PointNet/LLM-Guided-PointCloud-Class/"
+#POINT_TRANSFORMERS
+# ROOT_DIR = "/home/hice1/madewolu9/scratch/madewolu9/LLM_PointNet/LLM-Guided-PointCloud-Class/" #1
+# DATA_PATH = "./modelnet40_normal_resampled"
+# SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/Point-Transformers') #1
+# SEED_NETWORK = os.path.join(SOTA_ROOT, "models/Menghao/model.py") #2
+
+# PointNet++
+#ExquisiteNetV2
+ROOT_DIR = "/home/hice1/madewolu9/scratch/madewolu9/LLM_PointNet/LLM-Guided-PointCloud-Class/" #1
 # DATA_PATH absolute or relative to ExquisiteNetV2
 DATA_PATH = "./cifar10"
 SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/ExquisiteNetV2')
@@ -21,8 +39,8 @@ if MACOS:
 else:
 	DEVICE = 'cuda'
 	# DEVICE = 'cpu'
-#LLM_MODEL = 'mixtral'
-LLM_MODEL = 'llama3'
+LLM_MODEL = 'mixtral' # Mixtral the GOAT #3
+#LLM_MODEL = 'llama3' # llma3 is wackkkkk  #3
 # SEED_PACKAGE_DIR = "./sota/ExquisiteNetV2/divine_seed_module"
 
 """

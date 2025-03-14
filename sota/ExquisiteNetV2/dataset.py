@@ -57,13 +57,15 @@ class My_Dataset:
 
 class My_Sampler(torch.utils.data.Sampler):
     def __init__(self, my_dset, init_seed):
-        self.ds_num = len(my_dset)
+        self.img_paths = my_dset.img_paths # Initialize img_paths this as causing an error
+        self.ds_num = len(self.img_paths)
         self.seed = init_seed
-        
+        7
     def __iter__(self):
         order = torch.randperm(self.ds_num)
         return iter(order)
 
     def __len__(self):
         return self.ds_num
+        
 

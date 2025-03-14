@@ -6,6 +6,7 @@
 #SBATCH -N 1
 #SBATCH --gres=gpu:1
 #SBATCH -C "A100-40GB|A100-80GB|H100|V100-16GB|V100-32GB|RTX6000|A40|L40S"
+
 echo "launching LLM Guided Evolution"
 hostname
 # module load anaconda3/2020.07 2021.11

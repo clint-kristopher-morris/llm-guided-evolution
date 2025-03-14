@@ -28,7 +28,6 @@ def retrieve_base_code(idx):
     return split_file(base_network)[1:][idx].strip()
 
 
-# This Methid is causing the Issues
 def clean_code_from_llm(code_from_llm):
     """Cleans the code received from LLM."""
     return '\n'.join(code_from_llm.strip().split("```")[1].split('\n')[1:]).strip()
@@ -150,70 +149,8 @@ def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
     else:
         return results[0]
     
-def submit_llama3_hf(txt2llama, 
-                     max_new_tokens=1024, 
-                     top_p=0.15, 
-                     temperature=0.1,                   
-                     model_id="google/gemma-2-27b-it",
-                     return_gen=False):
-    # Randomly set max_new_tokens between 900 and 1300
-    max_new_tokens = np.random.randint(900, 1300)
-    
-    # Set up Hugging Face API key and login
-    os.environ['HF_API_KEY'] = "DONT_SCRAPE_ME"  # Replace with your actual key or a method to retrieve it securely
-    huggingface_hub.login(new_session=False)
-    
-    # Create an inference client for the model
-    client = InferenceClient(model=model_id)
-    client.headers["x-use-cache"] = "0"
-
-    # Prepare the instructions for the model
-    instructions = [
-        {
-            "role": "user",
-            "content": "Provide code in Python\n" + txt2llama,
-        },
-    ]
-
-    # Load the tokenizer for the model
-    tokenizer_converter = AutoTokenizer.from_pretrained(model_id)
-
-    tokenizer_converter.add_special_tokens({'pad_token': '[PAD]'})
-
-    # Manually format the prompt for the model from instructions
-    # The original code used apply_chat_template which may not exist in the current tokenizer
-    prompt = f"{instructions[0]['role']}: {instructions[0]['content']}\n"
-
-    # Encode the prompt into a tensor suitable for the model
-    encoded_prompt = tokenizer_converter.encode(
-        prompt, 
-        return_tensors='pt', 
-        padding=True, 
-        truncation=True
-    )
-
-    # Generate text from the model
-    results = client.text_generation(
-        encoded_prompt, 
-        max_new_tokens=max_new_tokens, 
-        return_full_text=False, 
-        temperature=temperature, 
-        seed=101
-    )
-
-    # Return results based on the specified return type
-    if return_gen:
-        return results[0], None
-    else:
-        return results[0]
-
-
-def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1,                   # google/gemma-2-27b-it
-                     # EleutherAI/gpt-neox-20b
-                     # bigcode/starcoder
-                     # google/gemma-2-2b-jpn-it
-                      model_id="google/gemma-2-2b-jpn-it",
-                      return_gen=False):
+def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
+                      model_id="meta-llama/Meta-Llama-3.1-70B-Instruct", return_gen=False):
     max_new_tokens = np.random.randint(900, 1300)
     os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
     huggingface_hub.login(new_session=False)
@@ -221,6 +158,7 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
     client.headers["x-use-cache"] = "0"
 
     instructions = [
+
             {
                 "role": "user",
                 "content": "Provide code in Python\n" + txt2llama,
@@ -228,7 +166,7 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
     ]
 
     tokenizer_converter = AutoTokenizer.from_pretrained(model_id)
-    prompt = tokenizer_converter.apply_chat_template(instructions, tokenize=False) # Line causing Error
+    prompt = tokenizer_converter.apply_chat_template(instructions, tokenize=False)
     results = [client.text_generation(prompt, max_new_tokens=max_new_tokens, 
                                       return_full_text=False, 
                                       temperature=temperature, seed=101)]
@@ -236,6 +174,7 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
         return results[0], None
     else:
         return results[0]
+
 
 def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1, 
                    model_id="mistralai/Mixtral-8x7B-Instruct-v0.1", return_gen=False):

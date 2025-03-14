@@ -150,7 +150,7 @@ def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
         return results[0]
     
 def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
-                      model_id="meta-llama/Meta-Llama-3-70B-Instruct", return_gen=False):
+                      model_id="meta-llama/Meta-Llama-3.1-70B-Instruct", return_gen=False):
     max_new_tokens = np.random.randint(900, 1300)
     os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
     huggingface_hub.login(new_session=False)

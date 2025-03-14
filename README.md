@@ -1,7 +1,7 @@
 ## Guided Evolution:
 
 <p align="center">
-  <img src="https://i.ibb.co/whMScMY/Picture1.png" alt="">
+  <img src="./assets/header.png" alt="">
 </p>
 <br>
 

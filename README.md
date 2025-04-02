@@ -1,9 +1,13 @@
 ## Guided Evolution:
 
+
 <p align="center">
-  <img src="https://i.ibb.co/whMScMY/Picture1.png" alt="">
+  <img src="https://github.com/MosesTheRedSea/LLM-Guided-Evolution-Generic/blob/main/llm-guided-evolution-image.png
+" alt="">
 </p>
 <br>
+
+https://i.ibb.co/whMScMY/Picture1.png
 
 ______
 

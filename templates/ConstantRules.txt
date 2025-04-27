@@ -1,4 +1,4 @@
-1. Retain original class names.
+1. Preserve every original class name and method name.
 2. Format the code in Markdown.
 3. Exclude setup/demonstration code.
 4. Retain original tensor input/output sizes.

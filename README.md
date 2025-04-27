@@ -1,12 +1,14 @@
 ## Guided Evolution:
 
-![Logo](https://github.com/MosesTheRedSea/LLM-Guided-Evolution-Generic/blob/main/llm-guided-evolution-image.png)
-
-https://i.ibb.co/whMScMY/Picture1.png
+<p align="center">
+  <img src="https://i.ibb.co/whMScMY/Picture1.png" alt="">
+</p>
+<br>
 
 ______
 
 ### Introduction:
+
 ______
 
 In the ever-evolving domain of machine learning, the convergence of human cognitive skills and automated algorithms is entering a pivotal junction. This paper introduces “Guided Evolution” (GE), a novel framework that combines the human-like expertise of Large Language Models (LLMs) with the robust capabilities of Neural Architecture Search (NAS) through genetic algorithms. This innovative fusion advances automated machine learning, elevating traditional NAS by integrating a more insightful, intelligently guided evolutionary process.
@@ -26,6 +28,25 @@ First install dependencies using `pip install -r requirements.txt`
 Then follow the instructions to prepare the CIFAR10 dataset in the [ExquisiteNetV2 README](./sota/ExquisiteNetV2/README.md)
 
 This code has been tested on Python 3.12
+
+### Setup -- Pointnet++
+
+This code utilizes [pointnet_pointnet2_pytroch](https://github.com/yanx27/Pointnet_Pointnet2_pytorch) which is copied into the sota directory.
+
+First install dependencies using `conda env create -f environment.yml`
+
+Then follow the instructions to prepare the modelnet40 dataset in the [pointnet_pointnet2_pytroch](https://github.com/yanx27/Pointnet_Pointnet2_pytorch/README.md)
+(if this is being run on PACE-ICE, then there is no need to acquire the dataset as the path already points to modelnet40)
+
+Necessary changes needed to run the LLMGE on Pointnet++ is to change all paths in to your own paths in your directory (all paths point to my absolute directory). 
+  - run_improved.py line 311 the python runline
+  - src/cfg/constants.py
+  - If you are utilizing a local LLM in constants.py make sure the path to that model is updated, if you have the huggingface paid version then comment out all of new_server.py and LLM_MODEL_PATH in constants.py
+  - If there are more changes that need to be made elsewhere I apologize
+
+If all changes above have been made run bash run.sh and you should be able to use the framework.
+
+This code has been tested on Python 3.9
 
 ### Autonomous Model Evolution:
 _____

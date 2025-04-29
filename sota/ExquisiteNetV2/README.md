@@ -26,7 +26,7 @@ The best weight has been in the directory `weight/exp`.
 If you want to reproduce the result, you can follow the precedure below.
 - __Download the cifar-10 from [official website](https://www.cs.toronto.edu/~kriz/cifar.html)__
   1. Download python version and unzip it.
-  2. Put `split.py` into the directory `cifar-10-python`  
+  2. Copy  the directory as `cifar-10-python` into this folder.
      then type:
      ```
      python split.py

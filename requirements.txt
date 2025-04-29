@@ -1,8 +1,0 @@
-numpy
-deap
-transformers
-torch
-torchvision
-uvicorn
-fastapi
-pydantic

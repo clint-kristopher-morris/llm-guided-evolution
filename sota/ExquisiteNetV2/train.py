@@ -46,10 +46,7 @@ def get_args():
 
 def main():
     # ADDED FOR LLM
-    # os.chdir('./sota/ExquisiteNetV2')
-
-    # I used the absolute path Instead
-    os.chdir('/storage/ice1/2/6/madewolu9/LLM_PointNet/LLM-Guided-PointCloud-Class/sota/ExquisiteNetV2')
+    os.chdir('./sota/ExquisiteNetV2')
 
     args = get_args()
 
@@ -60,8 +57,13 @@ def main():
     ExquisiteNetV2 = getattr(networks_module, 'ExquisiteNetV2')
     get_optimizer = getattr(networks_module, 'get_optimizer')
     # this will get the gene id value 
-    gene_id = args.network.split('network_')[1] # Causing an error
+    try:
+        gene_id = args.network.split('network_')[1] # Causing an error
+    except:
+        gene_id = 'seed'
     save_dir = f'{args.save_dir}/{gene_id}' 
+
+
     
 
     # ExquisiteNetV2 Code

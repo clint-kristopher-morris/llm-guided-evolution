@@ -1,5 +1,6 @@
 import os
 import numpy as np
+<<<<<<< HEAD
 
 # Pointnet++ Implementation
 ROOT_DIR = "/home/hice1/htirumalai3/scratch/llm-guided-evolution"
@@ -12,14 +13,23 @@ TRAIN_FILE = os.path.join(SOTA_ROOT, 'train_classification.py')
 '''
 #ExquisiteNetV2 Implementation
 ROOT_DIR = "/home/hice1/htirumalai3/scratch/llm-guided-evolution"
+=======
+import torch
+
+ROOT_DIR = "/home/hice1/jzutty3/llm-guided-evolution"
+>>>>>>> base/main
 # DATA_PATH absolute or relative to ExquisiteNetV2
 DATA_PATH = "/home/hice1/htirumalai3/scratch/llm-guided-evolution/sota/ExquisiteNetV2/cifar10"
 SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/ExquisiteNetV2')
 SEED_NETWORK = os.path.join(SOTA_ROOT, "network.py")
+<<<<<<< HEAD
 MODEL = "network"
 TRAIN_FILE = os.path.join(SOTA_ROOT, 'train.py')
 '''
 LOCAL = False
+=======
+LOCAL = True
+>>>>>>> base/main
 if LOCAL:
 	RUN_COMMAND = 'bash'
 	DELAYED_CHECK = False
@@ -27,16 +37,24 @@ else:
 	RUN_COMMAND = 'sbatch'
 	DELAYED_CHECK = True
 MACOS = False
-if MACOS:
+if torch.mps.is_available():
 	DEVICE = 'mps'
-else:
+elif torch.cuda.is_available():
 	DEVICE = 'cuda'
+<<<<<<< HEAD
 	# DEVICE = 'cpu'
 
 LLM_MODEL = 'mixtral'
 #LLM_MODEL_PATH = '/storage/ice-shared/vip-vvk/llm_storage/deepseek-ai/DeepSeek-R1-Distill-Llama-70B/'
 LLM_MODEL_PATH = '/storage/ice-shared/vip-vvk/llm_storage/mixtral/Mixtral-8x7B-Instruct-v0.1/'
 # LLM_MODEL = 'llama3'
+=======
+else:
+	DEVICE = 'cpu'
+
+#LLM_MODEL = 'mixtral'
+LLM_MODEL = 'llama3'
+>>>>>>> base/main
 # SEED_PACKAGE_DIR = "./sota/ExquisiteNetV2/divine_seed_module"
 
 """

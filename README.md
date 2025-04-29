@@ -1,7 +1,7 @@
 ## Guided Evolution:
 
 <p align="center">
-  <img src="https://i.ibb.co/whMScMY/Picture1.png" alt="">
+  <img src="./assets/header.png" alt="">
 </p>
 <br>
 
@@ -23,7 +23,7 @@ The effectiveness of the Guided Evolution (GE) framework is showcased in the evo
 
 This code utilizes [ExquisiteNetV2](https://github.com/shyhyawJou/ExquisiteNetV2) which is copied into the sota directory.
 
-First install dependencies using `pip install -r requirements.txt`
+Dependencies are managed through `pyproject.toml`. This package can be installed with `pip install .` or interacted with through tools such as `uv` 
 
 Then follow the instructions to prepare the CIFAR10 dataset in the [ExquisiteNetV2 README](./sota/ExquisiteNetV2/README.md)
 

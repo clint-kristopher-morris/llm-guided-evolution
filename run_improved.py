@@ -600,7 +600,6 @@ def customCrossover(ind1, ind2):
         Returns:
         str: The gene ID of the new individual.
         """
-        global GLOBAL_DATA
         out_dir = str(GENERATION)
         # Retrieve gene IDs from the individuals
         gene_id_1 = ind1[0]
@@ -639,10 +638,7 @@ def customCrossover(ind1, ind2):
         failed_process = True if (successful_sub_flag is False) or (job_done is False) else False
         # Return the new gene ID
         return new_gene_id, failed_process
-    
-    global GLOBAL_DATA
-    global DELAYED_CHECK
-    
+        
     new_gene_id1, failed_process1 = combine_elements(ind1, ind2)
     new_gene_id2, failed_process2 = combine_elements(ind2, ind1)
     
@@ -675,7 +671,6 @@ def customMutation(individual, indpb, temp_min=0.02, temp_max=0.35):
     """
     # Check if mutation occurs (based on the mutation probability)
     # if random.random() < indpb: # TODO: connect this to temp
-    global DELAYED_CHECK
     out_dir = str(GENERATION)
     old_gene_id = individual[0]
     # Generate a new gene ID

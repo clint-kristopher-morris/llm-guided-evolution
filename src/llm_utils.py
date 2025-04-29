@@ -1,6 +1,5 @@
 import sys
 sys.path.append("src")
-
 import re
 import os
 import glob
@@ -11,54 +10,84 @@ from torch import bfloat16
 from utils.privit import *
 from cfg.constants import *
 from utils.print_utils import box_print
-
 from typing import Optional
-#import fire
-# from llama import Llama
 import requests
 import huggingface_hub
 from huggingface_hub import InferenceClient
 import textwrap
 from transformers import AutoTokenizer
 
-
 def retrieve_base_code(idx):
     """Retrieves base code for quality control."""
     base_network = SEED_NETWORK
     return split_file(base_network)[1:][idx].strip()
 
-
 def clean_code_from_llm(code_from_llm):
     """Cleans the code received from LLM."""
-    return '\n'.join(code_from_llm.strip().split("```")[1].split('\n')[1:]).strip()
-
+    code_generator = None
+    # Select Correct LLM
+    if LLM_MODEL == 'mixtral':
+        code_generator = submit_mixtral_local
+    elif LLM_MODEL == 'llama3':
+        code_generator = submit_llama3_hf
+    code_checker_prompt = os.path.join(ROOT_DIR, 'templates/FixedPrompts/validation/code_validation_prompt.txt')
+    old_code = ""
+    if "```" in code_from_llm:
+        try:
+            old_code = code_from_llm.split("```")[1]
+            if old_code.strip().startswith("python"):
+                old_code = '\n'.join(old_code.split("\n")[1:])
+        except IndexError:
+            print("Failed to extract code block from LLM response.")
+            old_code = code_from_llm
+    else:
+        old_code = code_from_llm
+    template_text = ""
+    with open(code_checker_prompt, 'r') as file:
+        template_text = file.read()
+    # Read the info from the prompt
+    prompt = template_text.format(old_code.strip())
+    box_print("VALIDATING LLM CODE", print_bbox_len=60, new_line_end=False)
+    print(prompt)
+    verified_code = code_generator(prompt, top_p=0.15, temperature=0.1) 
+    print(verified_code)
+    return '\n'.join(verified_code.strip().split("```")[1].split('\n')[1:])
 
 def generate_augmented_code(txt2llm, augment_idx, apply_quality_control, top_p, temperature, hugging_face=False):
     """Generates augmented code using Mixtral."""
     box_print("PROMPT TO LLM", print_bbox_len=60, new_line_end=False)
     print(txt2llm)
-    
     if hugging_face is False:
-        llm_code_generator = submit_mixtral
+        llm_code_generator = submit_mixtral_local
         qc_func = llm_code_qc
     else:
         if LLM_MODEL == 'mixtral':
-            llm_code_generator = submit_mixtral_hf
+            llm_code_generator = submit_mixtral_local
         elif LLM_MODEL == 'llama3':
             llm_code_generator = submit_llama3_hf
         qc_func = llm_code_qc_hf
-    
     if apply_quality_control:
         base_code = retrieve_base_code(augment_idx)
         code_from_llm, generate_text = llm_code_generator(txt2llm, return_gen=True, top_p=top_p, temperature=temperature)
         code_from_llm = qc_func(code_from_llm, base_code, generate_text)
     else:
         code_from_llm = llm_code_generator(txt2llm, top_p=top_p, temperature=temperature)
+        # Dealing with No code returned from the LLM
+        # Give the LLM 3 Tries to Output correct code
+        print("Checking to See if Response was Empty")
+        if not code_from_llm or code_from_llm == None:
+            print("Response Was Empty")
+            for i in range(3):
+                code_from_llm = llm_code_generator(txt2llm, top_p=top_p, temperature=temperature) 
+                if code_from_llm != "None":
+                    break
+        print("Response Was Not Empty")
         box_print("TEXT FROM LLM", print_bbox_len=60, new_line_end=False)
         print(code_from_llm)
         code_from_llm = clean_code_from_llm(code_from_llm)
     box_print("CODE FROM LLM", print_bbox_len=60, new_line_end=False)
     print(code_from_llm)
+    # This is where I should be fixing the Code Issue if it's None
     return code_from_llm
 
 def extract_note(txt):
@@ -68,7 +97,6 @@ def extract_note(txt):
         return '# -- NOTE --\n' + note_txt[1].strip() + '# -- NOTE --\n'
     return ''
 
-# Function to load and split the file
 def split_file(filename):
     with open(filename, 'r') as file:
         content = file.read()
@@ -115,7 +143,7 @@ def llm_code_qc_hf(code_from_llm, base_code, generate_text=None):
     box_print("QC PROMPT TO LLM", print_bbox_len=120, new_line_end=False)
     print(prompt2llm)
     
-    code_from_llm = submit_mixtral_hf(prompt2llm, max_new_tokens=1500, top_p=0.1, temperature=0.1, 
+    code_from_llm = submit_mixtral_local(prompt2llm, max_new_tokens=1500, top_p=0.1, temperature=0.1, 
                       model_id="mistralai/Mixtral-8x7B-v0.1", return_gen=False)
     box_print("TEXT FROM LLM", print_bbox_len=60, new_line_end=False)
     print(code_from_llm)
@@ -149,8 +177,99 @@ def submit_mixtral_hf(txt2mixtral, max_new_tokens=1024, top_p=0.15, temperature=
     else:
         return results[0]
     
-def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1, 
-                      model_id="meta-llama/Meta-Llama-3.1-70B-Instruct", return_gen=False):
+def submit_mixtral_local(prompt, max_new_tokens=850, temperature=0.2, top_p=0.15, server_url=f"http://{os.getenv('SERVER_HOSTNAME', 'localhost')}:8000/generate", return_gen=False):
+    payload = {
+        "prompt": prompt,
+        "max_new_tokens": max_new_tokens, # can change to random between 800 - 1000 if needed
+        "temperature": temperature,
+        "top_p": top_p
+    }
+    print(os.getenv("SERVER_HOSTNAME", "localhost"))
+
+    headers = {"Content-Type": "application/json"}
+    
+    try:
+        response = requests.post(server_url, headers=headers, json=payload)
+        
+        if response.status_code == 200:
+            output_txt = response.json().get("generated_text", "No output received.")
+            print(f'{response.json().get("response_time_sec", "-1")} sec')
+            if return_gen is False:
+                return output_txt
+            else:
+                return output_txt, generate_text
+        else:
+            print(f"Error: {response.status_code}")
+            print(response.text)
+            return None
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+        return None
+
+def submit_llama3_hf(txt2llama, 
+                     max_new_tokens=1024, 
+                     top_p=0.15, 
+                     temperature=0.1,                   
+                     model_id="google/gemma-2-27b-it",
+                     return_gen=False):
+    # Randomly set max_new_tokens between 900 and 1300
+    max_new_tokens = np.random.randint(900, 1300)
+    
+    # Set up Hugging Face API key and login
+    os.environ['HF_API_KEY'] = "DONT_SCRAPE_ME"  # Replace with your actual key or a method to retrieve it securely
+    huggingface_hub.login(new_session=False)
+    
+    # Create an inference client for the model
+    client = InferenceClient(model=model_id)
+    client.headers["x-use-cache"] = "0"
+
+    # Prepare the instructions for the model
+    instructions = [
+        {
+            "role": "user",
+            "content": "Provide code in Python\n" + txt2llama,
+        },
+    ]
+
+    # Load the tokenizer for the model
+    tokenizer_converter = AutoTokenizer.from_pretrained(model_id)
+
+    tokenizer_converter.add_special_tokens({'pad_token': '[PAD]'})
+
+    # Manually format the prompt for the model from instructions
+    # The original code used apply_chat_template which may not exist in the current tokenizer
+    prompt = f"{instructions[0]['role']}: {instructions[0]['content']}\n"
+
+    # Encode the prompt into a tensor suitable for the model
+    encoded_prompt = tokenizer_converter.encode(
+        prompt, 
+        return_tensors='pt', 
+        padding=True, 
+        truncation=True
+    )
+
+    # Generate text from the model
+    results = client.text_generation(
+        encoded_prompt, 
+        max_new_tokens=max_new_tokens, 
+        return_full_text=False, 
+        temperature=temperature, 
+        seed=101
+    )
+
+    # Return results based on the specified return type
+    if return_gen:
+        return results[0], None
+    else:
+        return results[0]
+
+
+def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1,                   # google/gemma-2-27b-it
+                     # EleutherAI/gpt-neox-20b
+                     # bigcode/starcoder
+                     # google/gemma-2-2b-jpn-it
+                      model_id="google/gemma-2-2b-jpn-it",
+                      return_gen=False):
     max_new_tokens = np.random.randint(900, 1300)
     os.environ['HF_API_KEY'] = DONT_SCRAPE_ME
     huggingface_hub.login(new_session=False)
@@ -158,7 +277,6 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
     client.headers["x-use-cache"] = "0"
 
     instructions = [
-
             {
                 "role": "user",
                 "content": "Provide code in Python\n" + txt2llama,
@@ -166,7 +284,7 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
     ]
 
     tokenizer_converter = AutoTokenizer.from_pretrained(model_id)
-    prompt = tokenizer_converter.apply_chat_template(instructions, tokenize=False)
+    prompt = tokenizer_converter.apply_chat_template(instructions, tokenize=False) # Line causing Error
     results = [client.text_generation(prompt, max_new_tokens=max_new_tokens, 
                                       return_full_text=False, 
                                       temperature=temperature, seed=101)]
@@ -225,7 +343,7 @@ def mutate_prompts(n=5):
         prompt = "Can you rephrase this text:\n```\n{}\n```".format(prompt_text)
         temp = np.random.uniform(0.01, 0.4)
         if LLM_MODEL == 'mixtral':
-            llm_code_generator = submit_mixtral_hf
+            llm_code_generator = submit_mixtral_local
         elif LLM_MODEL == 'llama3':
             llm_code_generator = submit_llama3_hf
         output = llm_code_generator(prompt, temperature=temp).strip()

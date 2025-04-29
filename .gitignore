@@ -1,8 +1,8 @@
-sota/Data
-sota/PNPP
-sota/Point-Transformers
 __pycache__/
-xXx*
-network_xXx*
-sota/ExquisiteNetV2/cifar-10-batches-py
-*.bmp
+sota/ExquisiteNetV2/cifar-10-batches-py/
+sota/Pointnet_Pointnet2_pytorch/Miniconda3-latest-MacOSX-arm64.sh
+0/
+1/
+first_test/
+z_slurm/
+data/

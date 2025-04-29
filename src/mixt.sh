@@ -20,4 +20,8 @@ conda info
 # Set the TOKENIZERS_PARALLELISM environment variable if needed
 export TOKENIZERS_PARALLELISM=false
 
-python llm_crossover.py '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/ExquisiteNetV2/network.py' '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/ExquisiteNetV2/models/network_x.py' '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/ExquisiteNetV2/models/network_z.py' --top_p 0.15 --temperature 0.1 --apply_quality_control 'True' --bit 8
+# Run Python script for ExquisiteNetV2
+# python llm_crossover.py '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/ExquisiteNetV2/network.py' '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/ExquisiteNetV2/models/network_x.py' '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/ExquisiteNetV2/models/network_z.py' --top_p 0.15 --temperature 0.1 --apply_quality_control 'True' --bit 8
+
+# Run Python script for PointNet++
+python llm_crossover.py '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/Pointnet_Pointnet2_pytorch/models/pointnet2_cls_ssg.py' '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/Pointnet_Pointnet2_pytorch/models/llmge-models/pointnet2_cls_ssg_x.py' '/gv1/projects/AI_Surrogate/dev/clint/CodeLLama/codellama/sota/Pointnet_Pointnet2_pytroch/models/llmge-models/pointnet2_cls_ssg_z.py' python train_classification.py --model pointnet2_cls_ssg --log_dir pointnet2_cls_ssg

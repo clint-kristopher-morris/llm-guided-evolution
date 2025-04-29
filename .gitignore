@@ -1,4 +1,8 @@
 sota/Data
-sota/ExquisiteNetV2
 sota/PNPP
 sota/Point-Transformers
+__pycache__/
+xXx*
+network_xXx*
+sota/ExquisiteNetV2/cifar-10-batches-py
+*.bmp

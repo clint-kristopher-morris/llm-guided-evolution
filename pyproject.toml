@@ -1,5 +1,5 @@
 [project]
-name = "llm-guided-evolution-to-clean"
+name = "llm-guided-evolution"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

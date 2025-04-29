@@ -1,13 +1,13 @@
 import os
 import numpy as np
-
+import torch
 
 ROOT_DIR = "/home/hice1/jzutty3/llm-guided-evolution"
 # DATA_PATH absolute or relative to ExquisiteNetV2
 DATA_PATH = "./cifar10"
 SOTA_ROOT = os.path.join(ROOT_DIR, 'sota/ExquisiteNetV2')
 SEED_NETWORK = os.path.join(SOTA_ROOT, "network.py")
-LOCAL = False
+LOCAL = True
 if LOCAL:
 	RUN_COMMAND = 'bash'
 	DELAYED_CHECK = False
@@ -15,11 +15,13 @@ else:
 	RUN_COMMAND = 'sbatch'
 	DELAYED_CHECK = True
 MACOS = False
-if MACOS:
+if torch.mps.is_available():
 	DEVICE = 'mps'
-else:
+elif torch.cuda.is_available():
 	DEVICE = 'cuda'
-	# DEVICE = 'cpu'
+else:
+	DEVICE = 'cpu'
+
 #LLM_MODEL = 'mixtral'
 LLM_MODEL = 'llama3'
 # SEED_PACKAGE_DIR = "./sota/ExquisiteNetV2/divine_seed_module"

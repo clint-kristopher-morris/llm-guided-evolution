@@ -28,6 +28,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         pip install .
+    - name: Prepare cifar-10
+      run: |
+        curl -O https://www.cs.toronto.edu/\~kriz/cifar-10-python.tar.gz
+        tar -xzf cifar-10-python.tar.gz -C sota/ExquisiteNetV2/
+        cd sota/ExquisiteNetV2
+        python split.py
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names

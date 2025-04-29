@@ -1,0 +1,13 @@
+[project]
+name = "llm-guided-evolution-to-clean"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "deap==1.4.1",
+    "numpy>=2.0.2",
+    "torch>=2.7.0",
+    "torchvision>=0.22.0",
+    "transformers>=4.51.3",
+]

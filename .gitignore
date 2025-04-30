@@ -6,3 +6,5 @@ xXx*
 network_xXx*
 sota/ExquisiteNetV2/cifar-10-batches-py
 *.bmp
+build/
+tests/*/outputs

@@ -14,16 +14,21 @@ if LOCAL:
 else: 
 	RUN_COMMAND = 'sbatch'
 	DELAYED_CHECK = True
+
 MACOS = False
 if torch.mps.is_available():
 	DEVICE = 'mps'
+	MACOS = True
 elif torch.cuda.is_available():
 	DEVICE = 'cuda'
 else:
 	DEVICE = 'cpu'
 
 #LLM_MODEL = 'mixtral'
-LLM_MODEL = 'llama3'
+#LLM_MODEL = 'llama3'
+LLM_MODEL = 'gemini'
+
+GEMINI_API_KEY = os.environ['GEMINI_API_KEY']
 # SEED_PACKAGE_DIR = "./sota/ExquisiteNetV2/divine_seed_module"
 
 """
@@ -53,7 +58,7 @@ hof_size = 100
 Job Sub Constants/Params
 """
 QC_CHECK_BOOL = False
-HUGGING_FACE_BOOL = True
+INFERENCE_SUBMISSION = True
 #LLM_GPU = 'NVIDIAA100-SXM4-80GB|NVIDIAA10080GBPCIe|TeslaV100-PCIE-32GB|QuadroRTX4000|GeForceGTX1080Ti|GeForceGTX1080|TeslaV100-PCIE-32GB|TeslaV100S-PCIE-32GB'
 #LLM_GPU = 'NVIDIAA100-SXM4-80GB|NVIDIAA10080GBPCIe|TeslaV100-PCIE-32GB|TeslaV100S-PCIE-32GB|NVIDIARTX6000AdaGeneration|NVIDIARTXA6000|NVIDIARTXA5000|NVIDIARTXA4000|GeForceGTX1080Ti|QuadroRTX4000|QuadroP4000|GeForceGTX1080|TeslaP4'
 LLM_GPU = 'A100-40GB|A100-80GB|H100|V100-16GB|V100-32GB|RTX6000|A40|L40S'

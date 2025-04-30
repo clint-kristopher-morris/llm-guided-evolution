@@ -20,6 +20,9 @@ import huggingface_hub
 from huggingface_hub import InferenceClient
 import textwrap
 from transformers import AutoTokenizer
+from google import genai
+from google.genai import types
+
 
 
 def retrieve_base_code(idx):
@@ -33,12 +36,12 @@ def clean_code_from_llm(code_from_llm):
     return '\n'.join(code_from_llm.strip().split("```")[1].split('\n')[1:]).strip()
 
 
-def generate_augmented_code(txt2llm, augment_idx, apply_quality_control, top_p, temperature, hugging_face=False):
+def generate_augmented_code(txt2llm, augment_idx, apply_quality_control, top_p, temperature, inference_submission=False):
     """Generates augmented code using Mixtral."""
     box_print("PROMPT TO LLM", print_bbox_len=60, new_line_end=False)
     print(txt2llm)
     
-    if hugging_face is False:
+    if inference_submission is False:
         llm_code_generator = submit_mixtral
         qc_func = llm_code_qc
     else:
@@ -46,6 +49,8 @@ def generate_augmented_code(txt2llm, augment_idx, apply_quality_control, top_p, 
             llm_code_generator = submit_mixtral_hf
         elif LLM_MODEL == 'llama3':
             llm_code_generator = submit_llama3_hf
+        elif LLM_MODEL == 'gemini':
+            llm_code_generator = submit_gemini_api
         qc_func = llm_code_qc_hf
     
     if apply_quality_control:
@@ -174,6 +179,16 @@ def submit_llama3_hf(txt2llama, max_new_tokens=1024, top_p=0.15, temperature=0.1
         return results[0], None
     else:
         return results[0]
+    
+def submit_gemini_api(txt2gemini, **kwargs):
+    client = genai.Client(api_key=GEMINI_API_KEY)
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=[txt2gemini],
+        
+    )
+    return response.text
+
 
 
 def submit_mixtral(txt2mixtral, max_new_tokens=764, top_p=0.15, temperature=0.1, 

@@ -29,6 +29,8 @@ Then follow the instructions to prepare the CIFAR10 dataset in the [ExquisiteNet
 
 This code has been tested on Python 3.12
 
+If you wish to use features with Google's Gemini, please follow the instructions for [Setting Up an API Key](https://ai.google.dev/gemini-api/docs/api-key)
+
 ### Autonomous Model Evolution:
 _____
 <p align="center">

@@ -10,10 +10,11 @@ from utils.print_utils import box_print
 from llm_utils import (split_file, submit_mixtral, submit_mixtral_hf, 
                        llm_code_qc, str2bool, generate_augmented_code, 
                        extract_note, clean_code_from_llm, retrieve_base_code)
+from pathlib import Path
 
 
 def augment_network(input_filename='network.py', output_filename='network_x.py', template_txt=None,
-                    top_p=0.15, temperature=0.1, apply_quality_control=False, hugging_face=False):
+                    top_p=0.15, temperature=0.1, apply_quality_control=False, inference_submission=False):
     
     print(f'Loading {input_filename} code')
     parts = split_file(input_filename)
@@ -29,13 +30,15 @@ def augment_network(input_filename='network.py', output_filename='network_x.py',
     # add code to be augmented 
     txt2llm = template_txt.format(code2llm.strip())
     code_from_llm = generate_augmented_code(txt2llm, augment_idx-1, apply_quality_control,
-                                            top_p, temperature, hugging_face=hugging_face)
+                                            top_p, temperature, inference_submission=inference_submission)
     note_txt = extract_note(code2llm)
     parts[augment_idx] = f"\n{note_txt}{code_from_llm}\n"
     # prompt_log = f'# Parent Prompt: {template_path} Root Code: {input_filename}\n'
     # python_network_txt = prompt_log + '# --OPTION--'.join(parts)
     python_network_txt = '# --OPTION--'.join(parts)
     # Write the text to the file
+    file = Path(output_filename)
+    file.parent.mkdir(parents=True, exist_ok=True)
     with open(output_filename, 'w') as file:
         file.write(python_network_txt)
         
@@ -54,7 +57,7 @@ if __name__ == "__main__":
     parser.add_argument('--top_p', type=float, default=0.15, help='Top P value for text generation')
     parser.add_argument('--temperature', type=float, default=0.1, help='Temperature value for text generation')
     parser.add_argument('--apply_quality_control', type=str2bool, default=False, help='Use LLM QC')
-    parser.add_argument('--hugging_face', type=str2bool, default=False, help='Hugging Face bool')
+    parser.add_argument('--inference_submission', type=str2bool, default=False, help='True to submit for inference remotely')
 
     # Parse the arguments
     args = parser.parse_args()
@@ -66,5 +69,5 @@ if __name__ == "__main__":
                     top_p=args.top_p, 
                     temperature=args.temperature,
                     apply_quality_control=args.apply_quality_control,
-                    hugging_face=args.hugging_face,
+                    inference_submission=args.inference_submission,
                    )

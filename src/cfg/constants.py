@@ -27,8 +27,10 @@ else:
 #LLM_MODEL = 'mixtral'
 #LLM_MODEL = 'llama3'
 LLM_MODEL = 'gemini'
-
-GEMINI_API_KEY = os.environ['GEMINI_API_KEY']
+try:
+	GEMINI_API_KEY = os.environ['GEMINI_API_KEY']
+except:
+	GEMINI_API_KEY = ''
 # SEED_PACKAGE_DIR = "./sota/ExquisiteNetV2/divine_seed_module"
 
 """

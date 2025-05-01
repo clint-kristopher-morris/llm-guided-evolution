@@ -27,11 +27,12 @@ else:
 	RUN_COMMAND = 'sbatch'
 	DELAYED_CHECK = True
 MACOS = False
-if MACOS:
+if torch.mps.is_available():
 	DEVICE = 'mps'
-else:
+elif torch.cuda.is_available():
 	DEVICE = 'cuda'
-	# DEVICE = 'cpu'
+else:
+	DEVICE = 'cpu'
 
 LLM_MODEL = 'mixtral'
 #LLM_MODEL_PATH = '/storage/ice-shared/vip-vvk/llm_storage/deepseek-ai/DeepSeek-R1-Distill-Llama-70B/'

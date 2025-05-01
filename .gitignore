@@ -5,4 +5,7 @@ sota/ExquisiteNetV2/cifar-10-batches-py/
 first_test/
 z_slurm/
 data/
-.DS_Store.DS_Store
+.DS_Store
+xXx*
+network_xXx*
+*.bmp

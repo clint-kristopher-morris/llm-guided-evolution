@@ -29,6 +29,25 @@ Then follow the instructions to prepare the CIFAR10 dataset in the [ExquisiteNet
 
 This code has been tested on Python 3.12
 
+### Setup -- Pointnet++
+
+This code utilizes [pointnet_pointnet2_pytroch](https://github.com/yanx27/Pointnet_Pointnet2_pytorch) which is copied into the sota directory.
+
+First install dependencies using `conda env create -f environment.yml`
+
+Then follow the instructions to prepare the modelnet40 dataset in the [pointnet_pointnet2_pytroch](https://github.com/yanx27/Pointnet_Pointnet2_pytorch/README.md)
+(if this is being run on PACE-ICE, then there is no need to acquire the dataset as the path already points to modelnet40)
+
+Necessary changes needed to run the LLMGE on Pointnet++ is to change all paths in to your own paths in your directory (all paths point to my absolute directory). 
+  - run_improved.py line 311 the python runline
+  - src/cfg/constants.py
+  - If you are utilizing a local LLM in constants.py make sure the path to that model is updated, if you have the huggingface paid version then comment out all of new_server.py and LLM_MODEL_PATH in constants.py
+  - If there are more changes that need to be made elsewhere I apologize
+
+If all changes above have been made run bash run.sh and you should be able to use the framework.
+
+This code has been tested on Python 3.9
+
 ### Autonomous Model Evolution:
 _____
 <p align="center">

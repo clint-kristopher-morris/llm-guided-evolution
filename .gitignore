@@ -1,8 +1,11 @@
-sota/Data
-sota/PNPP
-sota/Point-Transformers
 __pycache__/
+sota/ExquisiteNetV2/cifar-10-batches-py/
+0/
+1/
+first_test/
+z_slurm/
+data/
+.DS_Store
 xXx*
 network_xXx*
-sota/ExquisiteNetV2/cifar-10-batches-py
 *.bmp

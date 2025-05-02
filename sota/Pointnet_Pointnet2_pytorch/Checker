@@ -1,0 +1,42 @@
+import torch
+import torch.nn as nn
+
+# Example classifier definition
+class SimpleClassifier(nn.Module):
+    def __init__(self):
+        super(SimpleClassifier, self).__init__()
+        self.fc = nn.Linear(1024, 40)
+
+    def forward(self, x):
+        return self.fc(x)
+
+classifier = SimpleClassifier()
+
+# Move classifier to CPU
+classifier = classifier.cpu()
+
+# Check the device
+device = next(classifier.parameters()).device
+print(f"Model is using device: {device}")
+
+
+if torch.cuda.is_available():
+    print("CUDA is available!")
+else:
+    print("CUDA is not available.")
+
+if torch.backends.mps.is_available():
+    print("MPS is available!")
+else:
+    print("MPS is not available.")
+
+tensor = torch.randn(1)
+print(tensor.device)
+
+
+if torch.backends.mps.is_available():
+    device = torch.device("mps")
+    classifier = classifier.to(device)
+else:
+    device = torch.device("Model is using device: cpu")
+    classifier = classifier.to(device)

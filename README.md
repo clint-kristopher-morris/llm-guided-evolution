@@ -47,7 +47,7 @@ ______
 
 ### Cited by DeepMind **AlphaEvolve**
 
-DeepMind’s Gemini-powered agent **AlphaEvolve** references our *LLM-Guided Evolution* framework as prior work (see reference \[72\] in the white-paper). 
+DeepMind’s agent **AlphaEvolve** references our *LLM-Guided Evolution* framework as prior work (see reference \[72\] in the white-paper). 
 
 AlphaEvolve shares the GE concept of letting an LLM propose, mutate, and test code and scales it to discover state-of-the-art algorithms across mathematics, scheduling, and hardware design.
 
